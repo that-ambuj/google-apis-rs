@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -77,7 +78,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = PolicyTroubleshooter::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = PolicyTroubleshooter::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -125,7 +126,7 @@ impl<'a, S> PolicyTroubleshooter<S> {
         PolicyTroubleshooter {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://policytroubleshooter.googleapis.com/".to_string(),
             _root_url: "https://policytroubleshooter.googleapis.com/".to_string(),
         }
@@ -136,7 +137,7 @@ impl<'a, S> PolicyTroubleshooter<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -169,7 +170,7 @@ impl<'a, S> PolicyTroubleshooter<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPolicytroubleshooterV1AccessTuple {
     /// Required. The full resource name that identifies the resource. For example, `//compute.googleapis.com/projects/my-project/zones/us-central1-a/instances/my-instance`. For examples of full resource names for Google Cloud services, see https://cloud.google.com/iam/help/troubleshooter/full-resource-names.
     #[serde(rename="fullResourceName")]
@@ -191,7 +192,7 @@ impl client::Part for GoogleCloudPolicytroubleshooterV1AccessTuple {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPolicytroubleshooterV1BindingExplanation {
     /// Required. Indicates whether _this binding_ provides the specified permission to the specified principal for the specified resource. This field does _not_ indicate whether the principal actually has the permission for the resource. There might be another binding that overrides this binding. To determine whether the principal actually has the permission, use the `access` field in the TroubleshootIamPolicyResponse.
     
@@ -226,7 +227,7 @@ impl client::Part for GoogleCloudPolicytroubleshooterV1BindingExplanation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPolicytroubleshooterV1BindingExplanationAnnotatedMembership {
     /// Indicates whether the binding includes the principal.
     
@@ -244,7 +245,7 @@ impl client::Part for GoogleCloudPolicytroubleshooterV1BindingExplanationAnnotat
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPolicytroubleshooterV1ExplainedPolicy {
     /// Indicates whether _this policy_ provides the specified permission to the specified principal for the specified resource. This field does _not_ indicate whether the principal actually has the permission for the resource. There might be another policy that overrides this policy. To determine whether the principal actually has the permission, use the `access` field in the TroubleshootIamPolicyResponse.
     
@@ -277,7 +278,7 @@ impl client::Part for GoogleCloudPolicytroubleshooterV1ExplainedPolicy {}
 /// 
 /// * [troubleshoot iam](IamTroubleshootCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPolicytroubleshooterV1TroubleshootIamPolicyRequest {
     /// The information to use for checking whether a principal has a permission for a resource.
     #[serde(rename="accessTuple")]
@@ -297,7 +298,7 @@ impl client::RequestValue for GoogleCloudPolicytroubleshooterV1TroubleshootIamPo
 /// 
 /// * [troubleshoot iam](IamTroubleshootCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPolicytroubleshooterV1TroubleshootIamPolicyResponse {
     /// Indicates whether the principal has the specified permission for the specified resource, based on evaluating all of the applicable IAM policies.
     
@@ -319,7 +320,7 @@ impl client::ResponseResult for GoogleCloudPolicytroubleshooterV1TroubleshootIam
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleIamV1AuditConfig {
     /// The configuration for logging of each type of permission.
     #[serde(rename="auditLogConfigs")]
@@ -338,7 +339,7 @@ impl client::Part for GoogleIamV1AuditConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleIamV1AuditLogConfig {
     /// Specifies the identities that do not cause logging for this type of permission. Follows the same format of Binding.members.
     #[serde(rename="exemptedMembers")]
@@ -358,7 +359,7 @@ impl client::Part for GoogleIamV1AuditLogConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleIamV1Binding {
     /// The condition that is associated with this binding. If the condition evaluates to `true`, then this binding applies to the current request. If the condition evaluates to `false`, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
     
@@ -379,7 +380,7 @@ impl client::Part for GoogleIamV1Binding {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleIamV1Policy {
     /// Specifies cloud audit logging configuration for this policy.
     #[serde(rename="auditConfigs")]
@@ -405,7 +406,7 @@ impl client::Part for GoogleIamV1Policy {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleRpcStatus {
     /// The status code, which should be an enum value of google.rpc.Code.
     
@@ -426,7 +427,7 @@ impl client::Part for GoogleRpcStatus {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeExpr {
     /// Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
     
@@ -471,7 +472,7 @@ impl client::Part for GoogleTypeExpr {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = PolicyTroubleshooter::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = PolicyTroubleshooter::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `troubleshoot(...)`
 /// // to build up your call.
@@ -537,7 +538,7 @@ impl<'a, S> IamMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PolicyTroubleshooter::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PolicyTroubleshooter::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !

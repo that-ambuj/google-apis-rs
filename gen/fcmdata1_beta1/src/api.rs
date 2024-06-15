@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -76,7 +77,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Fcmdata::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Fcmdata::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -121,7 +122,7 @@ impl<'a, S> Fcmdata<S> {
         Fcmdata {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://fcmdata.googleapis.com/".to_string(),
             _root_url: "https://fcmdata.googleapis.com/".to_string(),
         }
@@ -132,7 +133,7 @@ impl<'a, S> Fcmdata<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -165,7 +166,7 @@ impl<'a, S> Fcmdata<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleFirebaseFcmDataV1beta1AndroidDeliveryData {
     /// The analytics label associated with the messages sent. All messages sent without an analytics label will be grouped together in a single entry.
     #[serde(rename="analyticsLabel")]
@@ -191,7 +192,7 @@ impl client::Part for GoogleFirebaseFcmDataV1beta1AndroidDeliveryData {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleFirebaseFcmDataV1beta1Data {
     /// Count of messages accepted by FCM intended to Android devices. The targeted device must have opted in to the collection of usage and diagnostic information.
     #[serde(rename="countMessagesAccepted")]
@@ -220,7 +221,7 @@ impl client::Part for GoogleFirebaseFcmDataV1beta1Data {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleFirebaseFcmDataV1beta1DeliveryPerformancePercents {
     /// The percentage of accepted messages that were delayed because the device was in doze mode. Only [normal priority messages](https://firebase.google.com/docs/cloud-messaging/concept-options#setting-the-priority-of-a-message) should be delayed due to doze mode.
     #[serde(rename="delayedDeviceDoze")]
@@ -256,7 +257,7 @@ impl client::Part for GoogleFirebaseFcmDataV1beta1DeliveryPerformancePercents {}
 /// 
 /// * [android apps delivery data list projects](ProjectAndroidAppDeliveryDataListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleFirebaseFcmDataV1beta1ListAndroidDeliveryDataResponse {
     /// The delivery data for the provided app. There will be one entry per combination of app, date, and analytics label.
     #[serde(rename="androidDeliveryData")]
@@ -276,7 +277,7 @@ impl client::ResponseResult for GoogleFirebaseFcmDataV1beta1ListAndroidDeliveryD
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleFirebaseFcmDataV1beta1MessageInsightPercents {
     /// The percentage of accepted messages that had their priority lowered from high to normal. See [documentation for setting message priority](https://firebase.google.com/docs/cloud-messaging/android/message-priority).
     #[serde(rename="priorityLowered")]
@@ -292,7 +293,7 @@ impl client::Part for GoogleFirebaseFcmDataV1beta1MessageInsightPercents {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleFirebaseFcmDataV1beta1MessageOutcomePercents {
     /// The percentage of all accepted messages that were successfully delivered to the device.
     
@@ -322,7 +323,7 @@ impl client::Part for GoogleFirebaseFcmDataV1beta1MessageOutcomePercents {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeDate {
     /// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.
     
@@ -364,7 +365,7 @@ impl client::Part for GoogleTypeDate {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Fcmdata::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Fcmdata::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `android_apps_delivery_data_list(...)`
 /// // to build up your call.
@@ -431,7 +432,7 @@ impl<'a, S> ProjectMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Fcmdata::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Fcmdata::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -539,6 +540,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await

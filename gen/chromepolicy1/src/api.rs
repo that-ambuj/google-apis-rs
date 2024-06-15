@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -81,7 +82,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -129,7 +130,7 @@ impl<'a, S> ChromePolicy<S> {
         ChromePolicy {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://chromepolicy.googleapis.com/".to_string(),
             _root_url: "https://chromepolicy.googleapis.com/".to_string(),
         }
@@ -143,7 +144,7 @@ impl<'a, S> ChromePolicy<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -176,7 +177,7 @@ impl<'a, S> ChromePolicy<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1AdditionalTargetKeyName {
     /// Key name.
     
@@ -199,7 +200,7 @@ impl client::Part for GoogleChromePolicyVersionsV1AdditionalTargetKeyName {}
 /// 
 /// * [policies groups batch delete customers](CustomerPolicyGroupBatchDeleteCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1BatchDeleteGroupPoliciesRequest {
     /// List of policies that will be deleted as defined by the `requests`. All requests in the list must follow these restrictions: 1. All schemas in the list must have the same root namespace. 2. All `policyTargetKey.targetResource` values must point to a group resource. 3. All `policyTargetKey` values must have the same `app_id` key name in the `additionalTargetKeys`. 4. No two modification requests can reference the same `policySchema` + ` policyTargetKey` pair. 
     
@@ -218,7 +219,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1BatchDeleteGroupPolici
 /// 
 /// * [policies orgunits batch inherit customers](CustomerPolicyOrgunitBatchInheritCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1BatchInheritOrgUnitPoliciesRequest {
     /// List of policies that have to inherit their values as defined by the `requests`. All requests in the list must follow these restrictions: 1. All schemas in the list must have the same root namespace. 2. All `policyTargetKey.targetResource` values must point to an org unit resource. 3. All `policyTargetKey` values must have the same key names in the ` additionalTargetKeys`. This also means if one of the targets has an empty `additionalTargetKeys` map, all of the targets must have an empty `additionalTargetKeys` map. 4. No two modification requests can reference the same `policySchema` + ` policyTargetKey` pair. 
     
@@ -237,7 +238,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1BatchInheritOrgUnitPol
 /// 
 /// * [policies groups batch modify customers](CustomerPolicyGroupBatchModifyCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1BatchModifyGroupPoliciesRequest {
     /// List of policies to modify as defined by the `requests`. All requests in the list must follow these restrictions: 1. All schemas in the list must have the same root namespace. 2. All `policyTargetKey.targetResource` values must point to a group resource. 3. All `policyTargetKey` values must have the same `app_id` key name in the `additionalTargetKeys`. 4. No two modification requests can reference the same `policySchema` + ` policyTargetKey` pair. 
     
@@ -256,7 +257,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1BatchModifyGroupPolici
 /// 
 /// * [policies orgunits batch modify customers](CustomerPolicyOrgunitBatchModifyCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1BatchModifyOrgUnitPoliciesRequest {
     /// List of policies to modify as defined by the `requests`. All requests in the list must follow these restrictions: 1. All schemas in the list must have the same root namespace. 2. All `policyTargetKey.targetResource` values must point to an org unit resource. 3. All `policyTargetKey` values must have the same key names in the ` additionalTargetKeys`. This also means if one of the targets has an empty `additionalTargetKeys` map, all of the targets must have an empty `additionalTargetKeys` map. 4. No two modification requests can reference the same `policySchema` + ` policyTargetKey` pair. 
     
@@ -275,7 +276,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1BatchModifyOrgUnitPoli
 /// 
 /// * [policies networks define certificate customers](CustomerPolicyNetworkDefineCertificateCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1DefineCertificateRequest {
     /// Optional. The optional name of the certificate. If not specified, the certificate issuer will be used as the name.
     #[serde(rename="ceritificateName")]
@@ -305,7 +306,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1DefineCertificateReque
 /// 
 /// * [policies networks define certificate customers](CustomerPolicyNetworkDefineCertificateCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1DefineCertificateResponse {
     /// The guid of the certificate created by the action.
     #[serde(rename="networkId")]
@@ -332,7 +333,7 @@ impl client::ResponseResult for GoogleChromePolicyVersionsV1DefineCertificateRes
 /// 
 /// * [policies networks define network customers](CustomerPolicyNetworkDefineNetworkCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1DefineNetworkRequest {
     /// Required. Name of the new created network.
     
@@ -358,7 +359,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1DefineNetworkRequest {
 /// 
 /// * [policies networks define network customers](CustomerPolicyNetworkDefineNetworkCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1DefineNetworkResponse {
     /// Network ID of the new created network.
     #[serde(rename="networkId")]
@@ -381,7 +382,7 @@ impl client::ResponseResult for GoogleChromePolicyVersionsV1DefineNetworkRespons
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1DeleteGroupPolicyRequest {
     /// The fully qualified name of the policy schema that is being inherited.
     #[serde(rename="policySchema")]
@@ -401,7 +402,7 @@ impl client::Part for GoogleChromePolicyVersionsV1DeleteGroupPolicyRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1FieldConstraints {
     /// The allowed range for numeric fields.
     #[serde(rename="numericRangeConstraint")]
@@ -421,7 +422,7 @@ impl client::Part for GoogleChromePolicyVersionsV1FieldConstraints {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1InheritOrgUnitPolicyRequest {
     /// The fully qualified name of the policy schema that is being inherited.
     #[serde(rename="policySchema")]
@@ -445,7 +446,7 @@ impl client::Part for GoogleChromePolicyVersionsV1InheritOrgUnitPolicyRequest {}
 /// 
 /// * [policies groups list group priority ordering customers](CustomerPolicyGroupListGroupPriorityOrderingCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1ListGroupPriorityOrderingRequest {
     /// The namespace of the policy type for the request.
     #[serde(rename="policyNamespace")]
@@ -473,7 +474,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1ListGroupPriorityOrder
 /// 
 /// * [policies groups list group priority ordering customers](CustomerPolicyGroupListGroupPriorityOrderingCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1ListGroupPriorityOrderingResponse {
     /// Output only. The group IDs, in priority ordering.
     #[serde(rename="groupIds")]
@@ -505,7 +506,7 @@ impl client::ResponseResult for GoogleChromePolicyVersionsV1ListGroupPriorityOrd
 /// 
 /// * [policy schemas list customers](CustomerPolicySchemaListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1ListPolicySchemasResponse {
     /// The page token used to get the next page of policy schemas.
     #[serde(rename="nextPageToken")]
@@ -525,7 +526,7 @@ impl client::ResponseResult for GoogleChromePolicyVersionsV1ListPolicySchemasRes
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1ModifyGroupPolicyRequest {
     /// Required. The key of the target for which we want to modify a policy. The target resource must point to a Group.
     #[serde(rename="policyTargetKey")]
@@ -549,7 +550,7 @@ impl client::Part for GoogleChromePolicyVersionsV1ModifyGroupPolicyRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1ModifyOrgUnitPolicyRequest {
     /// Required. The key of the target for which we want to modify a policy. The target resource must point to an Org Unit.
     #[serde(rename="policyTargetKey")]
@@ -573,7 +574,7 @@ impl client::Part for GoogleChromePolicyVersionsV1ModifyOrgUnitPolicyRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1NetworkSetting {
     /// The fully qualified name of the network setting.
     #[serde(rename="policySchema")]
@@ -592,7 +593,7 @@ impl client::Part for GoogleChromePolicyVersionsV1NetworkSetting {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1NumericRangeConstraint {
     /// Maximum value.
     
@@ -612,7 +613,7 @@ impl client::Part for GoogleChromePolicyVersionsV1NumericRangeConstraint {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1PolicyApiLifecycle {
     /// In the event that this policy was deprecated in favor of another policy, the fully qualified namespace(s) of the new policies as they will show in PolicyAPI. Could only be set if policy_api_lifecycle_stage is API_DEPRECATED.
     #[serde(rename="deprecatedInFavorOf")]
@@ -647,7 +648,7 @@ impl client::Part for GoogleChromePolicyVersionsV1PolicyApiLifecycle {}
 /// 
 /// * [policy schemas get customers](CustomerPolicySchemaGetCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1PolicySchema {
     /// Output only. Specific access restrictions related to this policy.
     #[serde(rename="accessRestrictions")]
@@ -708,7 +709,7 @@ impl client::ResponseResult for GoogleChromePolicyVersionsV1PolicySchema {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1PolicySchemaFieldDependencies {
     /// The source field which this field depends on.
     #[serde(rename="sourceField")]
@@ -728,7 +729,7 @@ impl client::Part for GoogleChromePolicyVersionsV1PolicySchemaFieldDependencies 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1PolicySchemaFieldDescription {
     /// Output only. Client default if the policy is unset.
     #[serde(rename="defaultValue")]
@@ -781,7 +782,7 @@ impl client::Part for GoogleChromePolicyVersionsV1PolicySchemaFieldDescription {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1PolicySchemaFieldKnownValueDescription {
     /// Output only. Additional description for this value.
     
@@ -803,7 +804,7 @@ impl client::Part for GoogleChromePolicyVersionsV1PolicySchemaFieldKnownValueDes
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1PolicySchemaNoticeDescription {
     /// Output only. Whether the user needs to acknowledge the notice message before the value can be set.
     #[serde(rename="acknowledgementRequired")]
@@ -830,7 +831,7 @@ impl client::Part for GoogleChromePolicyVersionsV1PolicySchemaNoticeDescription 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1PolicySchemaRequiredItems {
     /// The value(s) of the field that provoke required field enforcement. An empty field_conditions implies that any value assigned to this field will provoke required field enforcement.
     #[serde(rename="fieldConditions")]
@@ -850,7 +851,7 @@ impl client::Part for GoogleChromePolicyVersionsV1PolicySchemaRequiredItems {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1PolicyTargetKey {
     /// Map containing the additional target key name and value pairs used to further identify the target of the policy.
     #[serde(rename="additionalTargetKeys")]
@@ -870,7 +871,7 @@ impl client::Part for GoogleChromePolicyVersionsV1PolicyTargetKey {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1PolicyValue {
     /// The fully qualified name of the policy schema associated with this policy.
     #[serde(rename="policySchema")]
@@ -893,7 +894,7 @@ impl client::Part for GoogleChromePolicyVersionsV1PolicyValue {}
 /// 
 /// * [policies networks remove certificate customers](CustomerPolicyNetworkRemoveCertificateCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1RemoveCertificateRequest {
     /// Required. The GUID of the certificate to remove.
     #[serde(rename="networkId")]
@@ -917,7 +918,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1RemoveCertificateReque
 /// 
 /// * [policies networks remove certificate customers](CustomerPolicyNetworkRemoveCertificateCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1RemoveCertificateResponse { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleChromePolicyVersionsV1RemoveCertificateResponse {}
@@ -932,7 +933,7 @@ impl client::ResponseResult for GoogleChromePolicyVersionsV1RemoveCertificateRes
 /// 
 /// * [policies networks remove network customers](CustomerPolicyNetworkRemoveNetworkCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1RemoveNetworkRequest {
     /// Required. The GUID of the network to remove.
     #[serde(rename="networkId")]
@@ -956,7 +957,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1RemoveNetworkRequest {
 /// 
 /// * [policies networks remove network customers](CustomerPolicyNetworkRemoveNetworkCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1RemoveNetworkResponse { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleChromePolicyVersionsV1RemoveNetworkResponse {}
@@ -971,7 +972,7 @@ impl client::ResponseResult for GoogleChromePolicyVersionsV1RemoveNetworkRespons
 /// 
 /// * [policies resolve customers](CustomerPolicyResolveCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1ResolveRequest {
     /// The maximum number of policies to return, defaults to 100 and has a maximum of 1000.
     #[serde(rename="pageSize")]
@@ -1003,7 +1004,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1ResolveRequest {}
 /// 
 /// * [policies resolve customers](CustomerPolicyResolveCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1ResolveResponse {
     /// The page token used to get the next set of resolved policies found by the request.
     #[serde(rename="nextPageToken")]
@@ -1023,7 +1024,7 @@ impl client::ResponseResult for GoogleChromePolicyVersionsV1ResolveResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1ResolvedPolicy {
     /// Output only. The added source key establishes at which level an entity was explicitly added for management. This is useful for certain type of policies that are only applied if they are explicitly added for management. For example: apps and networks. An entity can only be deleted from management in an Organizational Unit that it was explicitly added to. If this is not present it means that the policy is managed without the need to explicitly add an entity, for example: standard user or device policies.
     #[serde(rename="addedSourceKey")]
@@ -1054,7 +1055,7 @@ impl client::Part for GoogleChromePolicyVersionsV1ResolvedPolicy {}
 /// 
 /// * [policies groups update group priority ordering customers](CustomerPolicyGroupUpdateGroupPriorityOrderingCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1UpdateGroupPriorityOrderingRequest {
     /// Required. The group IDs, in desired priority ordering.
     #[serde(rename="groupIds")]
@@ -1086,7 +1087,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1UpdateGroupPriorityOrd
 /// 
 /// * [upload media](MediaUploadCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1UploadPolicyFileRequest {
     /// Required. The fully qualified policy schema and field name this file is uploaded for. This information will be used to validate the content type of the file.
     #[serde(rename="policyField")]
@@ -1106,7 +1107,7 @@ impl client::RequestValue for GoogleChromePolicyVersionsV1UploadPolicyFileReques
 /// 
 /// * [upload media](MediaUploadCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1UploadPolicyFileResponse {
     /// The uri for end user to download the file.
     #[serde(rename="downloadUri")]
@@ -1122,7 +1123,7 @@ impl client::ResponseResult for GoogleChromePolicyVersionsV1UploadPolicyFileResp
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleChromePolicyVersionsV1UploadedFileConstraints {
     /// The size limit of uploaded files for a setting, in bytes.
     #[serde(rename="sizeLimitBytes")]
@@ -1151,7 +1152,7 @@ impl client::Part for GoogleChromePolicyVersionsV1UploadedFileConstraints {}
 /// * [policies orgunits batch inherit customers](CustomerPolicyOrgunitBatchInheritCall) (response)
 /// * [policies orgunits batch modify customers](CustomerPolicyOrgunitBatchModifyCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleProtobufEmpty { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleProtobufEmpty {}
@@ -1162,7 +1163,7 @@ impl client::ResponseResult for GoogleProtobufEmpty {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeDate {
     /// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.
     
@@ -1183,7 +1184,7 @@ impl client::Part for GoogleTypeDate {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Proto2DescriptorProto {
     /// no description provided
     #[serde(rename="enumType")]
@@ -1213,7 +1214,7 @@ impl client::Part for Proto2DescriptorProto {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Proto2EnumDescriptorProto {
     /// no description provided
     
@@ -1231,7 +1232,7 @@ impl client::Part for Proto2EnumDescriptorProto {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Proto2EnumValueDescriptorProto {
     /// no description provided
     
@@ -1249,7 +1250,7 @@ impl client::Part for Proto2EnumValueDescriptorProto {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Proto2FieldDescriptorProto {
     /// For numeric types, contains the original text representation of the value. For booleans, "true" or "false". For strings, contains the default text contents (not escaped in any way). For bytes, contains the C escaped value. All bytes >= 128 are escaped.
     #[serde(rename="defaultValue")]
@@ -1294,7 +1295,7 @@ impl client::Part for Proto2FieldDescriptorProto {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Proto2FileDescriptorProto {
     /// BEGIN GOOGLE-INTERNAL TODO(b/297898292) Deprecate and remove this field in favor of enums. END GOOGLE-INTERNAL
     #[serde(rename="editionDeprecated")]
@@ -1327,7 +1328,7 @@ impl client::Part for Proto2FileDescriptorProto {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Proto2OneofDescriptorProto {
     /// no description provided
     
@@ -1363,7 +1364,7 @@ impl client::Part for Proto2OneofDescriptorProto {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `policies_groups_batch_delete(...)`, `policies_groups_batch_modify(...)`, `policies_groups_list_group_priority_ordering(...)`, `policies_groups_update_group_priority_ordering(...)`, `policies_networks_define_certificate(...)`, `policies_networks_define_network(...)`, `policies_networks_remove_certificate(...)`, `policies_networks_remove_network(...)`, `policies_orgunits_batch_inherit(...)`, `policies_orgunits_batch_modify(...)`, `policies_resolve(...)`, `policy_schemas_get(...)` and `policy_schemas_list(...)`
 /// // to build up your call.
@@ -1650,7 +1651,7 @@ impl<'a, S> CustomerMethods<'a, S> {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `upload(...)`
 /// // to build up your call.
@@ -1718,7 +1719,7 @@ impl<'a, S> MediaMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2010,7 +2011,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2302,7 +2303,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2594,7 +2595,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2886,7 +2887,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3178,7 +3179,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3470,7 +3471,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3762,7 +3763,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4054,7 +4055,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4346,7 +4347,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4638,7 +4639,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4929,7 +4930,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -5027,6 +5028,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -5191,7 +5193,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -5304,6 +5306,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -5491,7 +5494,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = ChromePolicy::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !

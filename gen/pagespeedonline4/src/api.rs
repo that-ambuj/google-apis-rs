@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -54,7 +55,7 @@ use crate::{client, client::GetToken, client::serde_with};
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Pagespeedonline::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Pagespeedonline::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -105,7 +106,7 @@ impl<'a, S> Pagespeedonline<S> {
         Pagespeedonline {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://www.googleapis.com/pagespeedonline/v4/".to_string(),
             _root_url: "https://www.googleapis.com/".to_string(),
         }
@@ -116,7 +117,7 @@ impl<'a, S> Pagespeedonline<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -149,7 +150,7 @@ impl<'a, S> Pagespeedonline<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiFormatStringV4 {
     /// List of arguments for the format string.
     
@@ -167,7 +168,7 @@ impl client::Part for PagespeedApiFormatStringV4 {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiImageV4 {
     /// Image data base64 encoded.
     
@@ -202,7 +203,7 @@ impl client::Part for PagespeedApiImageV4 {}
 /// 
 /// * [runpagespeed pagespeedapi](PagespeedapiRunpagespeedCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4 {
     /// The captcha verify result
     #[serde(rename="captchaResult")]
@@ -260,7 +261,7 @@ impl client::ResponseResult for PagespeedApiPagespeedResponseV4 {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiFormatStringV4Args {
     /// The placeholder key for this arg, as a string.
     
@@ -289,7 +290,7 @@ impl client::Part for PagespeedApiFormatStringV4Args {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiFormatStringV4ArgsRects {
     /// no description provided
     
@@ -314,7 +315,7 @@ impl client::Part for PagespeedApiFormatStringV4ArgsRects {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiFormatStringV4ArgsSecondaryRects {
     /// no description provided
     
@@ -339,7 +340,7 @@ impl client::Part for PagespeedApiFormatStringV4ArgsSecondaryRects {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiImageV4PageRect {
     /// no description provided
     
@@ -364,7 +365,7 @@ impl client::Part for PagespeedApiImageV4PageRect {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4FormattedResults {
     /// The locale of the formattedResults, e.g. "en_US".
     
@@ -384,7 +385,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4FormattedResults {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4FormattedResultsRuleResults {
     /// Whether this rule is in 'beta'. Rules in beta are new rules that are being tested, which do not impact the overall score.
     
@@ -418,7 +419,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4FormattedResultsRuleResults
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4FormattedResultsRuleResultsUrlBlocks {
     /// Heading to be displayed with the list of URLs.
     
@@ -437,7 +438,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4FormattedResultsRuleResults
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4FormattedResultsRuleResultsUrlBlocksUrls {
     /// List of entries that provide additional details about a single URL. Optional.
     
@@ -456,7 +457,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4FormattedResultsRuleResults
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4LoadingExperience {
     /// The url, pattern or origin which the metrics are on.
     
@@ -481,7 +482,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4LoadingExperience {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4LoadingExperienceMetrics {
     /// no description provided
     
@@ -503,7 +504,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4LoadingExperienceMetrics {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4LoadingExperienceMetricsDistributions {
     /// no description provided
     
@@ -525,7 +526,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4LoadingExperienceMetricsDis
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4PageStats {
     /// Content management system (CMS) used for the page.
     
@@ -630,7 +631,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4PageStats {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4RuleGroups {
     /// no description provided
     
@@ -649,7 +650,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4RuleGroups {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PagespeedApiPagespeedResponseV4Version {
     /// The major version number of PageSpeed used to generate these results.
     
@@ -689,7 +690,7 @@ impl client::Part for PagespeedApiPagespeedResponseV4Version {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Pagespeedonline::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Pagespeedonline::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `runpagespeed(...)`
 /// // to build up your call.
@@ -761,7 +762,7 @@ impl<'a, S> PagespeedapiMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Pagespeedonline::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Pagespeedonline::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -883,6 +884,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await

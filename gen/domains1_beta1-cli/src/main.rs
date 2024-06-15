@@ -2334,7 +2334,7 @@ async fn main() {
                      Some(false)),
                   ]),
             ("locations-registrations-configure-contact-settings",
-                    Some(r##"Updates a `Registration`'s contact settings. Some changes require confirmation by the domain's registrant contact ."##),
+                    Some(r##"Updates a `Registration`'s contact settings. Some changes require confirmation by the domain's registrant contact . Caution: Please consider carefully any changes to contact privacy settings when changing from `REDACTED_CONTACT_DATA` to `PUBLIC_CONTACT_DATA.` There may be a delay in reflecting updates you make to registrant contact information such that any changes you make to contact privacy (including from `REDACTED_CONTACT_DATA` to `PUBLIC_CONTACT_DATA`) will be applied without delay but changes to registrant contact information may take a limited time to be publicized. This means that changes to contact privacy from `REDACTED_CONTACT_DATA` to `PUBLIC_CONTACT_DATA` may make the previous registrant contact data public until the modified registrant contact details are published."##),
                     "Details at http://byron.github.io/google-apis-rs/google_domains1_beta1_cli/projects_locations-registrations-configure-contact-settings",
                   vec![
                     (Some(r##"registration"##),
@@ -2845,7 +2845,7 @@ async fn main() {
     
     let mut app = App::new("domains1-beta1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240221")
+           .version("5.0.5+20240327")
            .about("Enables management and configuration of domain names.")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_domains1_beta1_cli")
            .arg(Arg::with_name("url")
@@ -2909,6 +2909,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

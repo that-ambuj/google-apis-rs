@@ -1006,6 +1006,68 @@ where
         }
     }
 
+    async fn _organizations_locations_connections_search(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
+                                                    -> Result<(), DoitError> {
+        let mut call = self.hub.organizations().locations_connections_search(opt.value_of("parent").unwrap_or(""));
+        for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let (key, value) = parse_kv_arg(&*parg, err, false);
+            match key {
+                "page-token" => {
+                    call = call.page_token(value.unwrap_or(""));
+                },
+                "page-size" => {
+                    call = call.page_size(        value.map(|v| arg_from_str(v, err, "page-size", "int32")).unwrap_or(-0));
+                },
+                "filter" => {
+                    call = call.filter(value.unwrap_or(""));
+                },
+                _ => {
+                    let mut found = false;
+                    for param in &self.gp {
+                        if key == *param {
+                            found = true;
+                            call = call.param(self.gpm.iter().find(|t| t.0 == key).unwrap_or(&("", key)).1, value.unwrap_or("unset"));
+                            break;
+                        }
+                    }
+                    if !found {
+                        err.issues.push(CLIError::UnknownParameter(key.to_string(),
+                                                                  {let mut v = Vec::new();
+                                                                           v.extend(self.gp.iter().map(|v|*v));
+                                                                           v.extend(["filter", "page-size", "page-token"].iter().map(|v|*v));
+                                                                           v } ));
+                    }
+                }
+            }
+        }
+        let protocol = CallType::Standard;
+        if dry_run {
+            Ok(())
+        } else {
+            assert!(err.issues.len() == 0);
+            for scope in self.opt.values_of("url").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+                call = call.add_scope(scope);
+            }
+            let mut ostream = match writer_from_opts(opt.value_of("out")) {
+                Ok(mut f) => f,
+                Err(io_err) => return Err(DoitError::IoError(opt.value_of("out").unwrap_or("-").to_string(), io_err)),
+            };
+            match match protocol {
+                CallType::Standard => call.doit().await,
+                _ => unreachable!()
+            } {
+                Err(api_err) => Err(DoitError::ApiError(api_err)),
+                Ok((mut response, output_schema)) => {
+                    let mut value = json::value::to_value(&output_schema).expect("serde to work");
+                    remove_json_null_values(&mut value);
+                    json::to_writer_pretty(&mut ostream, &value).unwrap();
+                    ostream.flush().unwrap();
+                    Ok(())
+                }
+            }
+        }
+    }
+
     async fn _organizations_locations_deidentify_templates_create(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
                                                     -> Result<(), DoitError> {
         
@@ -3001,6 +3063,58 @@ where
         }
         let mut request: api::GooglePrivacyDlpV2UpdateStoredInfoTypeRequest = json::value::from_value(object).unwrap();
         let mut call = self.hub.organizations().locations_stored_info_types_patch(request, opt.value_of("name").unwrap_or(""));
+        for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let (key, value) = parse_kv_arg(&*parg, err, false);
+            match key {
+                _ => {
+                    let mut found = false;
+                    for param in &self.gp {
+                        if key == *param {
+                            found = true;
+                            call = call.param(self.gpm.iter().find(|t| t.0 == key).unwrap_or(&("", key)).1, value.unwrap_or("unset"));
+                            break;
+                        }
+                    }
+                    if !found {
+                        err.issues.push(CLIError::UnknownParameter(key.to_string(),
+                                                                  {let mut v = Vec::new();
+                                                                           v.extend(self.gp.iter().map(|v|*v));
+                                                                           v } ));
+                    }
+                }
+            }
+        }
+        let protocol = CallType::Standard;
+        if dry_run {
+            Ok(())
+        } else {
+            assert!(err.issues.len() == 0);
+            for scope in self.opt.values_of("url").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+                call = call.add_scope(scope);
+            }
+            let mut ostream = match writer_from_opts(opt.value_of("out")) {
+                Ok(mut f) => f,
+                Err(io_err) => return Err(DoitError::IoError(opt.value_of("out").unwrap_or("-").to_string(), io_err)),
+            };
+            match match protocol {
+                CallType::Standard => call.doit().await,
+                _ => unreachable!()
+            } {
+                Err(api_err) => Err(DoitError::ApiError(api_err)),
+                Ok((mut response, output_schema)) => {
+                    let mut value = json::value::to_value(&output_schema).expect("serde to work");
+                    remove_json_null_values(&mut value);
+                    json::to_writer_pretty(&mut ostream, &value).unwrap();
+                    ostream.flush().unwrap();
+                    Ok(())
+                }
+            }
+        }
+    }
+
+    async fn _organizations_locations_table_data_profiles_delete(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
+                                                    -> Result<(), DoitError> {
+        let mut call = self.hub.organizations().locations_table_data_profiles_delete(opt.value_of("name").unwrap_or(""));
         for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
             let (key, value) = parse_kv_arg(&*parg, err, false);
             match key {
@@ -5602,6 +5716,417 @@ where
                                                                   {let mut v = Vec::new();
                                                                            v.extend(self.gp.iter().map(|v|*v));
                                                                            v.extend(["filter", "order-by", "page-size", "page-token"].iter().map(|v|*v));
+                                                                           v } ));
+                    }
+                }
+            }
+        }
+        let protocol = CallType::Standard;
+        if dry_run {
+            Ok(())
+        } else {
+            assert!(err.issues.len() == 0);
+            for scope in self.opt.values_of("url").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+                call = call.add_scope(scope);
+            }
+            let mut ostream = match writer_from_opts(opt.value_of("out")) {
+                Ok(mut f) => f,
+                Err(io_err) => return Err(DoitError::IoError(opt.value_of("out").unwrap_or("-").to_string(), io_err)),
+            };
+            match match protocol {
+                CallType::Standard => call.doit().await,
+                _ => unreachable!()
+            } {
+                Err(api_err) => Err(DoitError::ApiError(api_err)),
+                Ok((mut response, output_schema)) => {
+                    let mut value = json::value::to_value(&output_schema).expect("serde to work");
+                    remove_json_null_values(&mut value);
+                    json::to_writer_pretty(&mut ostream, &value).unwrap();
+                    ostream.flush().unwrap();
+                    Ok(())
+                }
+            }
+        }
+    }
+
+    async fn _projects_locations_connections_create(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
+                                                    -> Result<(), DoitError> {
+        
+        let mut field_cursor = FieldCursor::default();
+        let mut object = json::value::Value::Object(Default::default());
+        
+        for kvarg in opt.values_of("kv").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let last_errc = err.issues.len();
+            let (key, value) = parse_kv_arg(&*kvarg, err, false);
+            let mut temp_cursor = field_cursor.clone();
+            if let Err(field_err) = temp_cursor.set(&*key) {
+                err.issues.push(field_err);
+            }
+            if value.is_none() {
+                field_cursor = temp_cursor.clone();
+                if err.issues.len() > last_errc {
+                    err.issues.remove(last_errc);
+                }
+                continue;
+            }
+        
+            let type_info: Option<(&'static str, JsonTypeInfo)> =
+                match &temp_cursor.to_string()[..] {
+                    "connection.cloud-sql.connection-name" => Some(("connection.cloudSql.connectionName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.cloud-sql.database-engine" => Some(("connection.cloudSql.databaseEngine", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.cloud-sql.max-connections" => Some(("connection.cloudSql.maxConnections", JsonTypeInfo { jtype: JsonType::Int, ctype: ComplexType::Pod })),
+                    "connection.cloud-sql.username-password.password-secret-version-name" => Some(("connection.cloudSql.usernamePassword.passwordSecretVersionName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.cloud-sql.username-password.username" => Some(("connection.cloudSql.usernamePassword.username", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.name" => Some(("connection.name", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.state" => Some(("connection.state", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    _ => {
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["cloud-sql", "connection", "connection-name", "database-engine", "max-connections", "name", "password-secret-version-name", "state", "username", "username-password"]);
+                        err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
+                        None
+                    }
+                };
+            if let Some((field_cursor_str, type_info)) = type_info {
+                FieldCursor::from(field_cursor_str).set_json_value(&mut object, value.unwrap(), type_info, err, &temp_cursor);
+            }
+        }
+        let mut request: api::GooglePrivacyDlpV2CreateConnectionRequest = json::value::from_value(object).unwrap();
+        let mut call = self.hub.projects().locations_connections_create(request, opt.value_of("parent").unwrap_or(""));
+        for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let (key, value) = parse_kv_arg(&*parg, err, false);
+            match key {
+                _ => {
+                    let mut found = false;
+                    for param in &self.gp {
+                        if key == *param {
+                            found = true;
+                            call = call.param(self.gpm.iter().find(|t| t.0 == key).unwrap_or(&("", key)).1, value.unwrap_or("unset"));
+                            break;
+                        }
+                    }
+                    if !found {
+                        err.issues.push(CLIError::UnknownParameter(key.to_string(),
+                                                                  {let mut v = Vec::new();
+                                                                           v.extend(self.gp.iter().map(|v|*v));
+                                                                           v } ));
+                    }
+                }
+            }
+        }
+        let protocol = CallType::Standard;
+        if dry_run {
+            Ok(())
+        } else {
+            assert!(err.issues.len() == 0);
+            for scope in self.opt.values_of("url").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+                call = call.add_scope(scope);
+            }
+            let mut ostream = match writer_from_opts(opt.value_of("out")) {
+                Ok(mut f) => f,
+                Err(io_err) => return Err(DoitError::IoError(opt.value_of("out").unwrap_or("-").to_string(), io_err)),
+            };
+            match match protocol {
+                CallType::Standard => call.doit().await,
+                _ => unreachable!()
+            } {
+                Err(api_err) => Err(DoitError::ApiError(api_err)),
+                Ok((mut response, output_schema)) => {
+                    let mut value = json::value::to_value(&output_schema).expect("serde to work");
+                    remove_json_null_values(&mut value);
+                    json::to_writer_pretty(&mut ostream, &value).unwrap();
+                    ostream.flush().unwrap();
+                    Ok(())
+                }
+            }
+        }
+    }
+
+    async fn _projects_locations_connections_delete(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
+                                                    -> Result<(), DoitError> {
+        let mut call = self.hub.projects().locations_connections_delete(opt.value_of("name").unwrap_or(""));
+        for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let (key, value) = parse_kv_arg(&*parg, err, false);
+            match key {
+                _ => {
+                    let mut found = false;
+                    for param in &self.gp {
+                        if key == *param {
+                            found = true;
+                            call = call.param(self.gpm.iter().find(|t| t.0 == key).unwrap_or(&("", key)).1, value.unwrap_or("unset"));
+                            break;
+                        }
+                    }
+                    if !found {
+                        err.issues.push(CLIError::UnknownParameter(key.to_string(),
+                                                                  {let mut v = Vec::new();
+                                                                           v.extend(self.gp.iter().map(|v|*v));
+                                                                           v } ));
+                    }
+                }
+            }
+        }
+        let protocol = CallType::Standard;
+        if dry_run {
+            Ok(())
+        } else {
+            assert!(err.issues.len() == 0);
+            for scope in self.opt.values_of("url").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+                call = call.add_scope(scope);
+            }
+            let mut ostream = match writer_from_opts(opt.value_of("out")) {
+                Ok(mut f) => f,
+                Err(io_err) => return Err(DoitError::IoError(opt.value_of("out").unwrap_or("-").to_string(), io_err)),
+            };
+            match match protocol {
+                CallType::Standard => call.doit().await,
+                _ => unreachable!()
+            } {
+                Err(api_err) => Err(DoitError::ApiError(api_err)),
+                Ok((mut response, output_schema)) => {
+                    let mut value = json::value::to_value(&output_schema).expect("serde to work");
+                    remove_json_null_values(&mut value);
+                    json::to_writer_pretty(&mut ostream, &value).unwrap();
+                    ostream.flush().unwrap();
+                    Ok(())
+                }
+            }
+        }
+    }
+
+    async fn _projects_locations_connections_get(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
+                                                    -> Result<(), DoitError> {
+        let mut call = self.hub.projects().locations_connections_get(opt.value_of("name").unwrap_or(""));
+        for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let (key, value) = parse_kv_arg(&*parg, err, false);
+            match key {
+                _ => {
+                    let mut found = false;
+                    for param in &self.gp {
+                        if key == *param {
+                            found = true;
+                            call = call.param(self.gpm.iter().find(|t| t.0 == key).unwrap_or(&("", key)).1, value.unwrap_or("unset"));
+                            break;
+                        }
+                    }
+                    if !found {
+                        err.issues.push(CLIError::UnknownParameter(key.to_string(),
+                                                                  {let mut v = Vec::new();
+                                                                           v.extend(self.gp.iter().map(|v|*v));
+                                                                           v } ));
+                    }
+                }
+            }
+        }
+        let protocol = CallType::Standard;
+        if dry_run {
+            Ok(())
+        } else {
+            assert!(err.issues.len() == 0);
+            for scope in self.opt.values_of("url").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+                call = call.add_scope(scope);
+            }
+            let mut ostream = match writer_from_opts(opt.value_of("out")) {
+                Ok(mut f) => f,
+                Err(io_err) => return Err(DoitError::IoError(opt.value_of("out").unwrap_or("-").to_string(), io_err)),
+            };
+            match match protocol {
+                CallType::Standard => call.doit().await,
+                _ => unreachable!()
+            } {
+                Err(api_err) => Err(DoitError::ApiError(api_err)),
+                Ok((mut response, output_schema)) => {
+                    let mut value = json::value::to_value(&output_schema).expect("serde to work");
+                    remove_json_null_values(&mut value);
+                    json::to_writer_pretty(&mut ostream, &value).unwrap();
+                    ostream.flush().unwrap();
+                    Ok(())
+                }
+            }
+        }
+    }
+
+    async fn _projects_locations_connections_list(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
+                                                    -> Result<(), DoitError> {
+        let mut call = self.hub.projects().locations_connections_list(opt.value_of("parent").unwrap_or(""));
+        for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let (key, value) = parse_kv_arg(&*parg, err, false);
+            match key {
+                "page-token" => {
+                    call = call.page_token(value.unwrap_or(""));
+                },
+                "page-size" => {
+                    call = call.page_size(        value.map(|v| arg_from_str(v, err, "page-size", "int32")).unwrap_or(-0));
+                },
+                "filter" => {
+                    call = call.filter(value.unwrap_or(""));
+                },
+                _ => {
+                    let mut found = false;
+                    for param in &self.gp {
+                        if key == *param {
+                            found = true;
+                            call = call.param(self.gpm.iter().find(|t| t.0 == key).unwrap_or(&("", key)).1, value.unwrap_or("unset"));
+                            break;
+                        }
+                    }
+                    if !found {
+                        err.issues.push(CLIError::UnknownParameter(key.to_string(),
+                                                                  {let mut v = Vec::new();
+                                                                           v.extend(self.gp.iter().map(|v|*v));
+                                                                           v.extend(["filter", "page-size", "page-token"].iter().map(|v|*v));
+                                                                           v } ));
+                    }
+                }
+            }
+        }
+        let protocol = CallType::Standard;
+        if dry_run {
+            Ok(())
+        } else {
+            assert!(err.issues.len() == 0);
+            for scope in self.opt.values_of("url").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+                call = call.add_scope(scope);
+            }
+            let mut ostream = match writer_from_opts(opt.value_of("out")) {
+                Ok(mut f) => f,
+                Err(io_err) => return Err(DoitError::IoError(opt.value_of("out").unwrap_or("-").to_string(), io_err)),
+            };
+            match match protocol {
+                CallType::Standard => call.doit().await,
+                _ => unreachable!()
+            } {
+                Err(api_err) => Err(DoitError::ApiError(api_err)),
+                Ok((mut response, output_schema)) => {
+                    let mut value = json::value::to_value(&output_schema).expect("serde to work");
+                    remove_json_null_values(&mut value);
+                    json::to_writer_pretty(&mut ostream, &value).unwrap();
+                    ostream.flush().unwrap();
+                    Ok(())
+                }
+            }
+        }
+    }
+
+    async fn _projects_locations_connections_patch(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
+                                                    -> Result<(), DoitError> {
+        
+        let mut field_cursor = FieldCursor::default();
+        let mut object = json::value::Value::Object(Default::default());
+        
+        for kvarg in opt.values_of("kv").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let last_errc = err.issues.len();
+            let (key, value) = parse_kv_arg(&*kvarg, err, false);
+            let mut temp_cursor = field_cursor.clone();
+            if let Err(field_err) = temp_cursor.set(&*key) {
+                err.issues.push(field_err);
+            }
+            if value.is_none() {
+                field_cursor = temp_cursor.clone();
+                if err.issues.len() > last_errc {
+                    err.issues.remove(last_errc);
+                }
+                continue;
+            }
+        
+            let type_info: Option<(&'static str, JsonTypeInfo)> =
+                match &temp_cursor.to_string()[..] {
+                    "connection.cloud-sql.connection-name" => Some(("connection.cloudSql.connectionName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.cloud-sql.database-engine" => Some(("connection.cloudSql.databaseEngine", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.cloud-sql.max-connections" => Some(("connection.cloudSql.maxConnections", JsonTypeInfo { jtype: JsonType::Int, ctype: ComplexType::Pod })),
+                    "connection.cloud-sql.username-password.password-secret-version-name" => Some(("connection.cloudSql.usernamePassword.passwordSecretVersionName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.cloud-sql.username-password.username" => Some(("connection.cloudSql.usernamePassword.username", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.name" => Some(("connection.name", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "connection.state" => Some(("connection.state", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "update-mask" => Some(("updateMask", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    _ => {
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["cloud-sql", "connection", "connection-name", "database-engine", "max-connections", "name", "password-secret-version-name", "state", "update-mask", "username", "username-password"]);
+                        err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
+                        None
+                    }
+                };
+            if let Some((field_cursor_str, type_info)) = type_info {
+                FieldCursor::from(field_cursor_str).set_json_value(&mut object, value.unwrap(), type_info, err, &temp_cursor);
+            }
+        }
+        let mut request: api::GooglePrivacyDlpV2UpdateConnectionRequest = json::value::from_value(object).unwrap();
+        let mut call = self.hub.projects().locations_connections_patch(request, opt.value_of("name").unwrap_or(""));
+        for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let (key, value) = parse_kv_arg(&*parg, err, false);
+            match key {
+                _ => {
+                    let mut found = false;
+                    for param in &self.gp {
+                        if key == *param {
+                            found = true;
+                            call = call.param(self.gpm.iter().find(|t| t.0 == key).unwrap_or(&("", key)).1, value.unwrap_or("unset"));
+                            break;
+                        }
+                    }
+                    if !found {
+                        err.issues.push(CLIError::UnknownParameter(key.to_string(),
+                                                                  {let mut v = Vec::new();
+                                                                           v.extend(self.gp.iter().map(|v|*v));
+                                                                           v } ));
+                    }
+                }
+            }
+        }
+        let protocol = CallType::Standard;
+        if dry_run {
+            Ok(())
+        } else {
+            assert!(err.issues.len() == 0);
+            for scope in self.opt.values_of("url").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+                call = call.add_scope(scope);
+            }
+            let mut ostream = match writer_from_opts(opt.value_of("out")) {
+                Ok(mut f) => f,
+                Err(io_err) => return Err(DoitError::IoError(opt.value_of("out").unwrap_or("-").to_string(), io_err)),
+            };
+            match match protocol {
+                CallType::Standard => call.doit().await,
+                _ => unreachable!()
+            } {
+                Err(api_err) => Err(DoitError::ApiError(api_err)),
+                Ok((mut response, output_schema)) => {
+                    let mut value = json::value::to_value(&output_schema).expect("serde to work");
+                    remove_json_null_values(&mut value);
+                    json::to_writer_pretty(&mut ostream, &value).unwrap();
+                    ostream.flush().unwrap();
+                    Ok(())
+                }
+            }
+        }
+    }
+
+    async fn _projects_locations_connections_search(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
+                                                    -> Result<(), DoitError> {
+        let mut call = self.hub.projects().locations_connections_search(opt.value_of("parent").unwrap_or(""));
+        for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let (key, value) = parse_kv_arg(&*parg, err, false);
+            match key {
+                "page-token" => {
+                    call = call.page_token(value.unwrap_or(""));
+                },
+                "page-size" => {
+                    call = call.page_size(        value.map(|v| arg_from_str(v, err, "page-size", "int32")).unwrap_or(-0));
+                },
+                "filter" => {
+                    call = call.filter(value.unwrap_or(""));
+                },
+                _ => {
+                    let mut found = false;
+                    for param in &self.gp {
+                        if key == *param {
+                            found = true;
+                            call = call.param(self.gpm.iter().find(|t| t.0 == key).unwrap_or(&("", key)).1, value.unwrap_or("unset"));
+                            break;
+                        }
+                    }
+                    if !found {
+                        err.issues.push(CLIError::UnknownParameter(key.to_string(),
+                                                                  {let mut v = Vec::new();
+                                                                           v.extend(self.gp.iter().map(|v|*v));
+                                                                           v.extend(["filter", "page-size", "page-token"].iter().map(|v|*v));
                                                                            v } ));
                     }
                 }
@@ -8737,6 +9262,58 @@ where
         }
     }
 
+    async fn _projects_locations_table_data_profiles_delete(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
+                                                    -> Result<(), DoitError> {
+        let mut call = self.hub.projects().locations_table_data_profiles_delete(opt.value_of("name").unwrap_or(""));
+        for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+            let (key, value) = parse_kv_arg(&*parg, err, false);
+            match key {
+                _ => {
+                    let mut found = false;
+                    for param in &self.gp {
+                        if key == *param {
+                            found = true;
+                            call = call.param(self.gpm.iter().find(|t| t.0 == key).unwrap_or(&("", key)).1, value.unwrap_or("unset"));
+                            break;
+                        }
+                    }
+                    if !found {
+                        err.issues.push(CLIError::UnknownParameter(key.to_string(),
+                                                                  {let mut v = Vec::new();
+                                                                           v.extend(self.gp.iter().map(|v|*v));
+                                                                           v } ));
+                    }
+                }
+            }
+        }
+        let protocol = CallType::Standard;
+        if dry_run {
+            Ok(())
+        } else {
+            assert!(err.issues.len() == 0);
+            for scope in self.opt.values_of("url").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
+                call = call.add_scope(scope);
+            }
+            let mut ostream = match writer_from_opts(opt.value_of("out")) {
+                Ok(mut f) => f,
+                Err(io_err) => return Err(DoitError::IoError(opt.value_of("out").unwrap_or("-").to_string(), io_err)),
+            };
+            match match protocol {
+                CallType::Standard => call.doit().await,
+                _ => unreachable!()
+            } {
+                Err(api_err) => Err(DoitError::ApiError(api_err)),
+                Ok((mut response, output_schema)) => {
+                    let mut value = json::value::to_value(&output_schema).expect("serde to work");
+                    remove_json_null_values(&mut value);
+                    json::to_writer_pretty(&mut ostream, &value).unwrap();
+                    ostream.flush().unwrap();
+                    Ok(())
+                }
+            }
+        }
+    }
+
     async fn _projects_locations_table_data_profiles_get(&self, opt: &ArgMatches<'n>, dry_run: bool, err: &mut InvalidOptionsError)
                                                     -> Result<(), DoitError> {
         let mut call = self.hub.projects().locations_table_data_profiles_get(opt.value_of("name").unwrap_or(""));
@@ -9283,6 +9860,9 @@ where
                     ("locations-column-data-profiles-list", Some(opt)) => {
                         call_result = self._organizations_locations_column_data_profiles_list(opt, dry_run, &mut err).await;
                     },
+                    ("locations-connections-search", Some(opt)) => {
+                        call_result = self._organizations_locations_connections_search(opt, dry_run, &mut err).await;
+                    },
                     ("locations-deidentify-templates-create", Some(opt)) => {
                         call_result = self._organizations_locations_deidentify_templates_create(opt, dry_run, &mut err).await;
                     },
@@ -9366,6 +9946,9 @@ where
                     },
                     ("locations-stored-info-types-patch", Some(opt)) => {
                         call_result = self._organizations_locations_stored_info_types_patch(opt, dry_run, &mut err).await;
+                    },
+                    ("locations-table-data-profiles-delete", Some(opt)) => {
+                        call_result = self._organizations_locations_table_data_profiles_delete(opt, dry_run, &mut err).await;
                     },
                     ("locations-table-data-profiles-get", Some(opt)) => {
                         call_result = self._organizations_locations_table_data_profiles_get(opt, dry_run, &mut err).await;
@@ -9476,6 +10059,24 @@ where
                     },
                     ("locations-column-data-profiles-list", Some(opt)) => {
                         call_result = self._projects_locations_column_data_profiles_list(opt, dry_run, &mut err).await;
+                    },
+                    ("locations-connections-create", Some(opt)) => {
+                        call_result = self._projects_locations_connections_create(opt, dry_run, &mut err).await;
+                    },
+                    ("locations-connections-delete", Some(opt)) => {
+                        call_result = self._projects_locations_connections_delete(opt, dry_run, &mut err).await;
+                    },
+                    ("locations-connections-get", Some(opt)) => {
+                        call_result = self._projects_locations_connections_get(opt, dry_run, &mut err).await;
+                    },
+                    ("locations-connections-list", Some(opt)) => {
+                        call_result = self._projects_locations_connections_list(opt, dry_run, &mut err).await;
+                    },
+                    ("locations-connections-patch", Some(opt)) => {
+                        call_result = self._projects_locations_connections_patch(opt, dry_run, &mut err).await;
+                    },
+                    ("locations-connections-search", Some(opt)) => {
+                        call_result = self._projects_locations_connections_search(opt, dry_run, &mut err).await;
                     },
                     ("locations-content-deidentify", Some(opt)) => {
                         call_result = self._projects_locations_content_deidentify(opt, dry_run, &mut err).await;
@@ -9596,6 +10197,9 @@ where
                     },
                     ("locations-stored-info-types-patch", Some(opt)) => {
                         call_result = self._projects_locations_stored_info_types_patch(opt, dry_run, &mut err).await;
+                    },
+                    ("locations-table-data-profiles-delete", Some(opt)) => {
+                        call_result = self._projects_locations_table_data_profiles_delete(opt, dry_run, &mut err).await;
                     },
                     ("locations-table-data-profiles-get", Some(opt)) => {
                         call_result = self._projects_locations_table_data_profiles_get(opt, dry_run, &mut err).await;
@@ -9741,7 +10345,7 @@ async fn main() {
                   ]),
             ]),
         
-        ("organizations", "methods: 'deidentify-templates-create', 'deidentify-templates-delete', 'deidentify-templates-get', 'deidentify-templates-list', 'deidentify-templates-patch', 'inspect-templates-create', 'inspect-templates-delete', 'inspect-templates-get', 'inspect-templates-list', 'inspect-templates-patch', 'locations-column-data-profiles-get', 'locations-column-data-profiles-list', 'locations-deidentify-templates-create', 'locations-deidentify-templates-delete', 'locations-deidentify-templates-get', 'locations-deidentify-templates-list', 'locations-deidentify-templates-patch', 'locations-discovery-configs-create', 'locations-discovery-configs-delete', 'locations-discovery-configs-get', 'locations-discovery-configs-list', 'locations-discovery-configs-patch', 'locations-dlp-jobs-list', 'locations-inspect-templates-create', 'locations-inspect-templates-delete', 'locations-inspect-templates-get', 'locations-inspect-templates-list', 'locations-inspect-templates-patch', 'locations-job-triggers-create', 'locations-job-triggers-delete', 'locations-job-triggers-get', 'locations-job-triggers-list', 'locations-job-triggers-patch', 'locations-project-data-profiles-get', 'locations-project-data-profiles-list', 'locations-stored-info-types-create', 'locations-stored-info-types-delete', 'locations-stored-info-types-get', 'locations-stored-info-types-list', 'locations-stored-info-types-patch', 'locations-table-data-profiles-get', 'locations-table-data-profiles-list', 'stored-info-types-create', 'stored-info-types-delete', 'stored-info-types-get', 'stored-info-types-list' and 'stored-info-types-patch'", vec![
+        ("organizations", "methods: 'deidentify-templates-create', 'deidentify-templates-delete', 'deidentify-templates-get', 'deidentify-templates-list', 'deidentify-templates-patch', 'inspect-templates-create', 'inspect-templates-delete', 'inspect-templates-get', 'inspect-templates-list', 'inspect-templates-patch', 'locations-column-data-profiles-get', 'locations-column-data-profiles-list', 'locations-connections-search', 'locations-deidentify-templates-create', 'locations-deidentify-templates-delete', 'locations-deidentify-templates-get', 'locations-deidentify-templates-list', 'locations-deidentify-templates-patch', 'locations-discovery-configs-create', 'locations-discovery-configs-delete', 'locations-discovery-configs-get', 'locations-discovery-configs-list', 'locations-discovery-configs-patch', 'locations-dlp-jobs-list', 'locations-inspect-templates-create', 'locations-inspect-templates-delete', 'locations-inspect-templates-get', 'locations-inspect-templates-list', 'locations-inspect-templates-patch', 'locations-job-triggers-create', 'locations-job-triggers-delete', 'locations-job-triggers-get', 'locations-job-triggers-list', 'locations-job-triggers-patch', 'locations-project-data-profiles-get', 'locations-project-data-profiles-list', 'locations-stored-info-types-create', 'locations-stored-info-types-delete', 'locations-stored-info-types-get', 'locations-stored-info-types-list', 'locations-stored-info-types-patch', 'locations-table-data-profiles-delete', 'locations-table-data-profiles-get', 'locations-table-data-profiles-list', 'stored-info-types-create', 'stored-info-types-delete', 'stored-info-types-get', 'stored-info-types-list' and 'stored-info-types-patch'", vec![
             ("deidentify-templates-create",
                     Some(r##"Creates a DeidentifyTemplate for reusing frequently used configuration for de-identifying content, images, and storage. See https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid to learn more."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/organizations_deidentify-templates-create",
@@ -10009,12 +10613,34 @@ async fn main() {
                      Some(false)),
                   ]),
             ("locations-column-data-profiles-list",
-                    Some(r##"Lists data profiles for an organization."##),
+                    Some(r##"Lists column data profiles for an organization."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/organizations_locations-column-data-profiles-list",
                   vec![
                     (Some(r##"parent"##),
                      None,
-                     Some(r##"Required. Resource name of the organization or project, for example `organizations/433245324/locations/europe` or projects/project-id/locations/asia."##),
+                     Some(r##"Required. Resource name of the organization or project, for example `organizations/433245324/locations/europe` or `projects/project-id/locations/asia`."##),
+                     Some(true),
+                     Some(false)),
+        
+                    (Some(r##"v"##),
+                     Some(r##"p"##),
+                     Some(r##"Set various optional parameters, matching the key=value form"##),
+                     Some(false),
+                     Some(true)),
+        
+                    (Some(r##"out"##),
+                     Some(r##"o"##),
+                     Some(r##"Specify the file into which to write the program's output"##),
+                     Some(false),
+                     Some(false)),
+                  ]),
+            ("locations-connections-search",
+                    Some(r##"Searches for Connections in a parent."##),
+                    "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/organizations_locations-connections-search",
+                  vec![
+                    (Some(r##"parent"##),
+                     None,
+                     Some(r##"Required. Parent name, typically an organization, without location. For example: "organizations/12345678"."##),
                      Some(true),
                      Some(false)),
         
@@ -10563,7 +11189,7 @@ async fn main() {
                      Some(false)),
                   ]),
             ("locations-project-data-profiles-list",
-                    Some(r##"Lists data profiles for an organization."##),
+                    Some(r##"Lists project data profiles for an organization."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/organizations_locations-project-data-profiles-list",
                   vec![
                     (Some(r##"parent"##),
@@ -10706,6 +11332,28 @@ async fn main() {
                      Some(false),
                      Some(false)),
                   ]),
+            ("locations-table-data-profiles-delete",
+                    Some(r##"Delete a TableDataProfile. Will not prevent the profile from being regenerated if the table is still included in a discovery configuration."##),
+                    "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/organizations_locations-table-data-profiles-delete",
+                  vec![
+                    (Some(r##"name"##),
+                     None,
+                     Some(r##"Required. Resource name of the table data profile."##),
+                     Some(true),
+                     Some(false)),
+        
+                    (Some(r##"v"##),
+                     Some(r##"p"##),
+                     Some(r##"Set various optional parameters, matching the key=value form"##),
+                     Some(false),
+                     Some(true)),
+        
+                    (Some(r##"out"##),
+                     Some(r##"o"##),
+                     Some(r##"Specify the file into which to write the program's output"##),
+                     Some(false),
+                     Some(false)),
+                  ]),
             ("locations-table-data-profiles-get",
                     Some(r##"Gets a table data profile."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/organizations_locations-table-data-profiles-get",
@@ -10729,7 +11377,7 @@ async fn main() {
                      Some(false)),
                   ]),
             ("locations-table-data-profiles-list",
-                    Some(r##"Lists data profiles for an organization."##),
+                    Some(r##"Lists table data profiles for an organization."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/organizations_locations-table-data-profiles-list",
                   vec![
                     (Some(r##"parent"##),
@@ -10874,7 +11522,7 @@ async fn main() {
                   ]),
             ]),
         
-        ("projects", "methods: 'content-deidentify', 'content-inspect', 'content-reidentify', 'deidentify-templates-create', 'deidentify-templates-delete', 'deidentify-templates-get', 'deidentify-templates-list', 'deidentify-templates-patch', 'dlp-jobs-cancel', 'dlp-jobs-create', 'dlp-jobs-delete', 'dlp-jobs-get', 'dlp-jobs-list', 'image-redact', 'inspect-templates-create', 'inspect-templates-delete', 'inspect-templates-get', 'inspect-templates-list', 'inspect-templates-patch', 'job-triggers-activate', 'job-triggers-create', 'job-triggers-delete', 'job-triggers-get', 'job-triggers-list', 'job-triggers-patch', 'locations-column-data-profiles-get', 'locations-column-data-profiles-list', 'locations-content-deidentify', 'locations-content-inspect', 'locations-content-reidentify', 'locations-deidentify-templates-create', 'locations-deidentify-templates-delete', 'locations-deidentify-templates-get', 'locations-deidentify-templates-list', 'locations-deidentify-templates-patch', 'locations-discovery-configs-create', 'locations-discovery-configs-delete', 'locations-discovery-configs-get', 'locations-discovery-configs-list', 'locations-discovery-configs-patch', 'locations-dlp-jobs-cancel', 'locations-dlp-jobs-create', 'locations-dlp-jobs-delete', 'locations-dlp-jobs-finish', 'locations-dlp-jobs-get', 'locations-dlp-jobs-hybrid-inspect', 'locations-dlp-jobs-list', 'locations-image-redact', 'locations-inspect-templates-create', 'locations-inspect-templates-delete', 'locations-inspect-templates-get', 'locations-inspect-templates-list', 'locations-inspect-templates-patch', 'locations-job-triggers-activate', 'locations-job-triggers-create', 'locations-job-triggers-delete', 'locations-job-triggers-get', 'locations-job-triggers-hybrid-inspect', 'locations-job-triggers-list', 'locations-job-triggers-patch', 'locations-project-data-profiles-get', 'locations-project-data-profiles-list', 'locations-stored-info-types-create', 'locations-stored-info-types-delete', 'locations-stored-info-types-get', 'locations-stored-info-types-list', 'locations-stored-info-types-patch', 'locations-table-data-profiles-get', 'locations-table-data-profiles-list', 'stored-info-types-create', 'stored-info-types-delete', 'stored-info-types-get', 'stored-info-types-list' and 'stored-info-types-patch'", vec![
+        ("projects", "methods: 'content-deidentify', 'content-inspect', 'content-reidentify', 'deidentify-templates-create', 'deidentify-templates-delete', 'deidentify-templates-get', 'deidentify-templates-list', 'deidentify-templates-patch', 'dlp-jobs-cancel', 'dlp-jobs-create', 'dlp-jobs-delete', 'dlp-jobs-get', 'dlp-jobs-list', 'image-redact', 'inspect-templates-create', 'inspect-templates-delete', 'inspect-templates-get', 'inspect-templates-list', 'inspect-templates-patch', 'job-triggers-activate', 'job-triggers-create', 'job-triggers-delete', 'job-triggers-get', 'job-triggers-list', 'job-triggers-patch', 'locations-column-data-profiles-get', 'locations-column-data-profiles-list', 'locations-connections-create', 'locations-connections-delete', 'locations-connections-get', 'locations-connections-list', 'locations-connections-patch', 'locations-connections-search', 'locations-content-deidentify', 'locations-content-inspect', 'locations-content-reidentify', 'locations-deidentify-templates-create', 'locations-deidentify-templates-delete', 'locations-deidentify-templates-get', 'locations-deidentify-templates-list', 'locations-deidentify-templates-patch', 'locations-discovery-configs-create', 'locations-discovery-configs-delete', 'locations-discovery-configs-get', 'locations-discovery-configs-list', 'locations-discovery-configs-patch', 'locations-dlp-jobs-cancel', 'locations-dlp-jobs-create', 'locations-dlp-jobs-delete', 'locations-dlp-jobs-finish', 'locations-dlp-jobs-get', 'locations-dlp-jobs-hybrid-inspect', 'locations-dlp-jobs-list', 'locations-image-redact', 'locations-inspect-templates-create', 'locations-inspect-templates-delete', 'locations-inspect-templates-get', 'locations-inspect-templates-list', 'locations-inspect-templates-patch', 'locations-job-triggers-activate', 'locations-job-triggers-create', 'locations-job-triggers-delete', 'locations-job-triggers-get', 'locations-job-triggers-hybrid-inspect', 'locations-job-triggers-list', 'locations-job-triggers-patch', 'locations-project-data-profiles-get', 'locations-project-data-profiles-list', 'locations-stored-info-types-create', 'locations-stored-info-types-delete', 'locations-stored-info-types-get', 'locations-stored-info-types-list', 'locations-stored-info-types-patch', 'locations-table-data-profiles-delete', 'locations-table-data-profiles-get', 'locations-table-data-profiles-list', 'stored-info-types-create', 'stored-info-types-delete', 'stored-info-types-get', 'stored-info-types-list' and 'stored-info-types-patch'", vec![
             ("content-deidentify",
                     Some(r##"De-identifies potentially sensitive info from a ContentItem. This method has limits on input size and output size. See https://cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data to learn more. When no InfoTypes or CustomInfoTypes are specified in this request, the system will automatically choose what detectors to run. By default this may be all types, but may change over time as detectors are updated."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_content-deidentify",
@@ -11526,12 +12174,156 @@ async fn main() {
                      Some(false)),
                   ]),
             ("locations-column-data-profiles-list",
-                    Some(r##"Lists data profiles for an organization."##),
+                    Some(r##"Lists column data profiles for an organization."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-column-data-profiles-list",
                   vec![
                     (Some(r##"parent"##),
                      None,
-                     Some(r##"Required. Resource name of the organization or project, for example `organizations/433245324/locations/europe` or projects/project-id/locations/asia."##),
+                     Some(r##"Required. Resource name of the organization or project, for example `organizations/433245324/locations/europe` or `projects/project-id/locations/asia`."##),
+                     Some(true),
+                     Some(false)),
+        
+                    (Some(r##"v"##),
+                     Some(r##"p"##),
+                     Some(r##"Set various optional parameters, matching the key=value form"##),
+                     Some(false),
+                     Some(true)),
+        
+                    (Some(r##"out"##),
+                     Some(r##"o"##),
+                     Some(r##"Specify the file into which to write the program's output"##),
+                     Some(false),
+                     Some(false)),
+                  ]),
+            ("locations-connections-create",
+                    Some(r##"Create a Connection to an external data source."##),
+                    "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-connections-create",
+                  vec![
+                    (Some(r##"parent"##),
+                     None,
+                     Some(r##"Required. Parent resource name in the format: "projects/{project}/locations/{location}"."##),
+                     Some(true),
+                     Some(false)),
+        
+                    (Some(r##"kv"##),
+                     Some(r##"r"##),
+                     Some(r##"Set various fields of the request structure, matching the key=value form"##),
+                     Some(true),
+                     Some(true)),
+        
+                    (Some(r##"v"##),
+                     Some(r##"p"##),
+                     Some(r##"Set various optional parameters, matching the key=value form"##),
+                     Some(false),
+                     Some(true)),
+        
+                    (Some(r##"out"##),
+                     Some(r##"o"##),
+                     Some(r##"Specify the file into which to write the program's output"##),
+                     Some(false),
+                     Some(false)),
+                  ]),
+            ("locations-connections-delete",
+                    Some(r##"Delete a Connection."##),
+                    "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-connections-delete",
+                  vec![
+                    (Some(r##"name"##),
+                     None,
+                     Some(r##"Required. Resource name of the Connection to be deleted, in the format: "projects/{project}/locations/{location}/connections/{connection}"."##),
+                     Some(true),
+                     Some(false)),
+        
+                    (Some(r##"v"##),
+                     Some(r##"p"##),
+                     Some(r##"Set various optional parameters, matching the key=value form"##),
+                     Some(false),
+                     Some(true)),
+        
+                    (Some(r##"out"##),
+                     Some(r##"o"##),
+                     Some(r##"Specify the file into which to write the program's output"##),
+                     Some(false),
+                     Some(false)),
+                  ]),
+            ("locations-connections-get",
+                    Some(r##"Get a Connection by name."##),
+                    "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-connections-get",
+                  vec![
+                    (Some(r##"name"##),
+                     None,
+                     Some(r##"Required. Resource name in the format: "projects/{project}/locations/{location}/connections/{connection}"."##),
+                     Some(true),
+                     Some(false)),
+        
+                    (Some(r##"v"##),
+                     Some(r##"p"##),
+                     Some(r##"Set various optional parameters, matching the key=value form"##),
+                     Some(false),
+                     Some(true)),
+        
+                    (Some(r##"out"##),
+                     Some(r##"o"##),
+                     Some(r##"Specify the file into which to write the program's output"##),
+                     Some(false),
+                     Some(false)),
+                  ]),
+            ("locations-connections-list",
+                    Some(r##"Lists Connections in a parent."##),
+                    "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-connections-list",
+                  vec![
+                    (Some(r##"parent"##),
+                     None,
+                     Some(r##"Required. Parent name, for example: "projects/project-id/locations/global"."##),
+                     Some(true),
+                     Some(false)),
+        
+                    (Some(r##"v"##),
+                     Some(r##"p"##),
+                     Some(r##"Set various optional parameters, matching the key=value form"##),
+                     Some(false),
+                     Some(true)),
+        
+                    (Some(r##"out"##),
+                     Some(r##"o"##),
+                     Some(r##"Specify the file into which to write the program's output"##),
+                     Some(false),
+                     Some(false)),
+                  ]),
+            ("locations-connections-patch",
+                    Some(r##"Update a Connection."##),
+                    "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-connections-patch",
+                  vec![
+                    (Some(r##"name"##),
+                     None,
+                     Some(r##"Required. Resource name in the format: "projects/{project}/locations/{location}/connections/{connection}"."##),
+                     Some(true),
+                     Some(false)),
+        
+                    (Some(r##"kv"##),
+                     Some(r##"r"##),
+                     Some(r##"Set various fields of the request structure, matching the key=value form"##),
+                     Some(true),
+                     Some(true)),
+        
+                    (Some(r##"v"##),
+                     Some(r##"p"##),
+                     Some(r##"Set various optional parameters, matching the key=value form"##),
+                     Some(false),
+                     Some(true)),
+        
+                    (Some(r##"out"##),
+                     Some(r##"o"##),
+                     Some(r##"Specify the file into which to write the program's output"##),
+                     Some(false),
+                     Some(false)),
+                  ]),
+            ("locations-connections-search",
+                    Some(r##"Searches for Connections in a parent."##),
+                    "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-connections-search",
+                  vec![
+                    (Some(r##"parent"##),
+                     None,
+                     Some(r##"Required. Parent name, typically an organization, without location. For example: "organizations/12345678"."##),
                      Some(true),
                      Some(false)),
         
@@ -12404,7 +13196,7 @@ async fn main() {
                      Some(false)),
                   ]),
             ("locations-project-data-profiles-list",
-                    Some(r##"Lists data profiles for an organization."##),
+                    Some(r##"Lists project data profiles for an organization."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-project-data-profiles-list",
                   vec![
                     (Some(r##"parent"##),
@@ -12547,6 +13339,28 @@ async fn main() {
                      Some(false),
                      Some(false)),
                   ]),
+            ("locations-table-data-profiles-delete",
+                    Some(r##"Delete a TableDataProfile. Will not prevent the profile from being regenerated if the table is still included in a discovery configuration."##),
+                    "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-table-data-profiles-delete",
+                  vec![
+                    (Some(r##"name"##),
+                     None,
+                     Some(r##"Required. Resource name of the table data profile."##),
+                     Some(true),
+                     Some(false)),
+        
+                    (Some(r##"v"##),
+                     Some(r##"p"##),
+                     Some(r##"Set various optional parameters, matching the key=value form"##),
+                     Some(false),
+                     Some(true)),
+        
+                    (Some(r##"out"##),
+                     Some(r##"o"##),
+                     Some(r##"Specify the file into which to write the program's output"##),
+                     Some(false),
+                     Some(false)),
+                  ]),
             ("locations-table-data-profiles-get",
                     Some(r##"Gets a table data profile."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-table-data-profiles-get",
@@ -12570,7 +13384,7 @@ async fn main() {
                      Some(false)),
                   ]),
             ("locations-table-data-profiles-list",
-                    Some(r##"Lists data profiles for an organization."##),
+                    Some(r##"Lists table data profiles for an organization."##),
                     "Details at http://byron.github.io/google-apis-rs/google_dlp2_cli/projects_locations-table-data-profiles-list",
                   vec![
                     (Some(r##"parent"##),
@@ -12719,7 +13533,7 @@ async fn main() {
     
     let mut app = App::new("dlp2")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240225")
+           .version("5.0.5+20240414")
            .about("Discover and protect your sensitive data. A fully managed service designed to help you discover, classify, and protect your valuable data assets with ease.")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_dlp2_cli")
            .arg(Arg::with_name("url")
@@ -12783,6 +13597,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

@@ -847,6 +847,8 @@ where
                     "metadata.resource-version" => Some(("metadata.resourceVersion", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "metadata.self-link" => Some(("metadata.selfLink", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "metadata.uid" => Some(("metadata.uid", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "spec.run-execution-token" => Some(("spec.runExecutionToken", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "spec.start-execution-token" => Some(("spec.startExecutionToken", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "spec.template.metadata.annotations" => Some(("spec.template.metadata.annotations", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Map })),
                     "spec.template.metadata.cluster-name" => Some(("spec.template.metadata.clusterName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "spec.template.metadata.creation-timestamp" => Some(("spec.template.metadata.creationTimestamp", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -872,7 +874,7 @@ where
                     "status.latest-created-execution.name" => Some(("status.latestCreatedExecution.name", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "status.observed-generation" => Some(("status.observedGeneration", JsonTypeInfo { jtype: JsonType::Int, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["annotations", "api-version", "cluster-name", "completion-timestamp", "creation-timestamp", "deletion-grace-period-seconds", "deletion-timestamp", "execution-count", "finalizers", "generate-name", "generation", "kind", "labels", "latest-created-execution", "max-retries", "metadata", "name", "namespace", "observed-generation", "parallelism", "resource-version", "self-link", "service-account-name", "spec", "status", "task-count", "template", "timeout-seconds", "uid"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["annotations", "api-version", "cluster-name", "completion-timestamp", "creation-timestamp", "deletion-grace-period-seconds", "deletion-timestamp", "execution-count", "finalizers", "generate-name", "generation", "kind", "labels", "latest-created-execution", "max-retries", "metadata", "name", "namespace", "observed-generation", "parallelism", "resource-version", "run-execution-token", "self-link", "service-account-name", "spec", "start-execution-token", "status", "task-count", "template", "timeout-seconds", "uid"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -1159,6 +1161,8 @@ where
                     "metadata.resource-version" => Some(("metadata.resourceVersion", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "metadata.self-link" => Some(("metadata.selfLink", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "metadata.uid" => Some(("metadata.uid", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "spec.run-execution-token" => Some(("spec.runExecutionToken", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "spec.start-execution-token" => Some(("spec.startExecutionToken", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "spec.template.metadata.annotations" => Some(("spec.template.metadata.annotations", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Map })),
                     "spec.template.metadata.cluster-name" => Some(("spec.template.metadata.clusterName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "spec.template.metadata.creation-timestamp" => Some(("spec.template.metadata.creationTimestamp", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -1184,7 +1188,7 @@ where
                     "status.latest-created-execution.name" => Some(("status.latestCreatedExecution.name", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "status.observed-generation" => Some(("status.observedGeneration", JsonTypeInfo { jtype: JsonType::Int, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["annotations", "api-version", "cluster-name", "completion-timestamp", "creation-timestamp", "deletion-grace-period-seconds", "deletion-timestamp", "execution-count", "finalizers", "generate-name", "generation", "kind", "labels", "latest-created-execution", "max-retries", "metadata", "name", "namespace", "observed-generation", "parallelism", "resource-version", "self-link", "service-account-name", "spec", "status", "task-count", "template", "timeout-seconds", "uid"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["annotations", "api-version", "cluster-name", "completion-timestamp", "creation-timestamp", "deletion-grace-period-seconds", "deletion-timestamp", "execution-count", "finalizers", "generate-name", "generation", "kind", "labels", "latest-created-execution", "max-retries", "metadata", "name", "namespace", "observed-generation", "parallelism", "resource-version", "run-execution-token", "self-link", "service-account-name", "spec", "start-execution-token", "status", "task-count", "template", "timeout-seconds", "uid"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -5938,7 +5942,7 @@ async fn main() {
     
     let mut app = App::new("run1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240225")
+           .version("5.0.5+20240412")
            .about("Deploy and manage user provided container images that scale automatically based on incoming requests. The Cloud Run Admin API v1 follows the Knative Serving API specification, while v2 is aligned with Google Cloud AIP-based API standards, as described in https://google.aip.dev/.")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_run1_cli")
            .arg(Arg::with_name("url")
@@ -6002,6 +6006,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

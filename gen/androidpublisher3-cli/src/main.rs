@@ -7168,6 +7168,9 @@ where
                 "max-results" => {
                     call = call.max_results(        value.map(|v| arg_from_str(v, err, "max-results", "uint32")).unwrap_or(0));
                 },
+                "include-quantity-based-partial-refund" => {
+                    call = call.include_quantity_based_partial_refund(        value.map(|v| arg_from_str(v, err, "include-quantity-based-partial-refund", "boolean")).unwrap_or(false));
+                },
                 "end-time" => {
                     call = call.end_time(        value.map(|v| arg_from_str(v, err, "end-time", "int64")).unwrap_or(-0));
                 },
@@ -7184,7 +7187,7 @@ where
                         err.issues.push(CLIError::UnknownParameter(key.to_string(),
                                                                   {let mut v = Vec::new();
                                                                            v.extend(self.gp.iter().map(|v|*v));
-                                                                           v.extend(["end-time", "max-results", "start-index", "start-time", "token", "type"].iter().map(|v|*v));
+                                                                           v.extend(["end-time", "include-quantity-based-partial-refund", "max-results", "start-index", "start-time", "token", "type"].iter().map(|v|*v));
                                                                            v } ));
                     }
                 }
@@ -12175,7 +12178,7 @@ async fn main() {
     
     let mut app = App::new("androidpublisher3")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240229")
+           .version("5.0.5+20240418")
            .about("Lets Android application developers access their Google Play accounts. At a high level, the expected workflow is to \"insert\" an Edit, make changes as necessary, and then \"commit\" it. ")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_androidpublisher3_cli")
            .arg(Arg::with_name("url")
@@ -12250,6 +12253,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -93,7 +94,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -141,7 +142,7 @@ impl<'a, S> Docs<S> {
         Docs {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://docs.googleapis.com/".to_string(),
             _root_url: "https://docs.googleapis.com/".to_string(),
         }
@@ -152,7 +153,7 @@ impl<'a, S> Docs<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -185,7 +186,7 @@ impl<'a, S> Docs<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AutoText {
     /// The suggested deletion IDs. If empty, then there are no suggested deletions of this content.
     #[serde(rename="suggestedDeletionIds")]
@@ -217,7 +218,7 @@ impl client::Part for AutoText {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Background {
     /// The background color.
     
@@ -232,7 +233,7 @@ impl client::Part for Background {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct BackgroundSuggestionState {
     /// Indicates whether the current background color has been modified in this suggestion.
     #[serde(rename="backgroundColorSuggested")]
@@ -252,7 +253,7 @@ impl client::Part for BackgroundSuggestionState {}
 /// 
 /// * [batch update documents](DocumentBatchUpdateCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct BatchUpdateDocumentRequest {
     /// A list of updates to apply to the document.
     
@@ -275,7 +276,7 @@ impl client::RequestValue for BatchUpdateDocumentRequest {}
 /// 
 /// * [batch update documents](DocumentBatchUpdateCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct BatchUpdateDocumentResponse {
     /// The ID of the document to which the updates were applied to.
     #[serde(rename="documentId")]
@@ -298,7 +299,7 @@ impl client::ResponseResult for BatchUpdateDocumentResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Body {
     /// The contents of the body. The indexes for the body's content begin at zero.
     
@@ -313,7 +314,7 @@ impl client::Part for Body {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Bullet {
     /// The ID of the list this paragraph belongs to.
     #[serde(rename="listId")]
@@ -337,7 +338,7 @@ impl client::Part for Bullet {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct BulletSuggestionState {
     /// Indicates if there was a suggested change to the list_id.
     #[serde(rename="listIdSuggested")]
@@ -361,7 +362,7 @@ impl client::Part for BulletSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Color {
     /// The RGB color value.
     #[serde(rename="rgbColor")]
@@ -377,7 +378,7 @@ impl client::Part for Color {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ColumnBreak {
     /// The suggested deletion IDs. If empty, then there are no suggested deletions of this content.
     #[serde(rename="suggestedDeletionIds")]
@@ -405,7 +406,7 @@ impl client::Part for ColumnBreak {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateFooterRequest {
     /// The location of the SectionBreak immediately preceding the section whose SectionStyle this footer should belong to. If this is unset or refers to the first section break in the document, the footer applies to the document style.
     #[serde(rename="sectionBreakLocation")]
@@ -425,7 +426,7 @@ impl client::Part for CreateFooterRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateFooterResponse {
     /// The ID of the created footer.
     #[serde(rename="footerId")]
@@ -441,7 +442,7 @@ impl client::Part for CreateFooterResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateFootnoteRequest {
     /// Inserts the footnote reference at the end of the document body. Footnote references cannot be inserted inside a header, footer or footnote. Since footnote references can only be inserted in the body, the segment ID field must be empty.
     #[serde(rename="endOfSegmentLocation")]
@@ -460,7 +461,7 @@ impl client::Part for CreateFootnoteRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateFootnoteResponse {
     /// The ID of the created footnote.
     #[serde(rename="footnoteId")]
@@ -476,7 +477,7 @@ impl client::Part for CreateFootnoteResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateHeaderRequest {
     /// The location of the SectionBreak which begins the section this header should belong to. If `section_break_location' is unset or if it refers to the first section break in the document body, the header applies to the DocumentStyle
     #[serde(rename="sectionBreakLocation")]
@@ -496,7 +497,7 @@ impl client::Part for CreateHeaderRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateHeaderResponse {
     /// The ID of the created header.
     #[serde(rename="headerId")]
@@ -512,7 +513,7 @@ impl client::Part for CreateHeaderResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateNamedRangeRequest {
     /// The name of the NamedRange. Names do not need to be unique. Names must be at least 1 character and no more than 256 characters, measured in UTF-16 code units.
     
@@ -530,7 +531,7 @@ impl client::Part for CreateNamedRangeRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateNamedRangeResponse {
     /// The ID of the created named range.
     #[serde(rename="namedRangeId")]
@@ -546,7 +547,7 @@ impl client::Part for CreateNamedRangeResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateParagraphBulletsRequest {
     /// The kinds of bullet glyphs to be used.
     #[serde(rename="bulletPreset")]
@@ -565,7 +566,7 @@ impl client::Part for CreateParagraphBulletsRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CropProperties {
     /// The clockwise rotation angle of the crop rectangle around its center, in radians. Rotation is applied after the offsets.
     
@@ -596,7 +597,7 @@ impl client::Part for CropProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CropPropertiesSuggestionState {
     /// Indicates if there was a suggested change to angle.
     #[serde(rename="angleSuggested")]
@@ -628,7 +629,7 @@ impl client::Part for CropPropertiesSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteContentRangeRequest {
     /// The range of content to delete. Deleting text that crosses a paragraph boundary may result in changes to paragraph styles, lists, positioned objects and bookmarks as the two paragraphs are merged. Attempting to delete certain ranges can result in an invalid document structure in which case a 400 bad request error is returned. Some examples of invalid delete requests include: * Deleting one code unit of a surrogate pair. * Deleting the last newline character of a Body, Header, Footer, Footnote, TableCell or TableOfContents. * Deleting the start or end of a Table, TableOfContents or Equation without deleting the entire element. * Deleting the newline character before a Table, TableOfContents or SectionBreak without deleting the element. * Deleting individual rows or cells of a table. Deleting the content within a table cell is allowed.
     
@@ -643,7 +644,7 @@ impl client::Part for DeleteContentRangeRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteFooterRequest {
     /// The id of the footer to delete. If this footer is defined on DocumentStyle, the reference to this footer is removed, resulting in no footer of that type for the first section of the document. If this footer is defined on a SectionStyle, the reference to this footer is removed and the footer of that type is now continued from the previous section.
     #[serde(rename="footerId")]
@@ -659,7 +660,7 @@ impl client::Part for DeleteFooterRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteHeaderRequest {
     /// The id of the header to delete. If this header is defined on DocumentStyle, the reference to this header is removed, resulting in no header of that type for the first section of the document. If this header is defined on a SectionStyle, the reference to this header is removed and the header of that type is now continued from the previous section.
     #[serde(rename="headerId")]
@@ -675,7 +676,7 @@ impl client::Part for DeleteHeaderRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteNamedRangeRequest {
     /// The name of the range(s) to delete. All named ranges with the given name will be deleted.
     
@@ -694,7 +695,7 @@ impl client::Part for DeleteNamedRangeRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteParagraphBulletsRequest {
     /// The range to delete bullets from.
     
@@ -709,7 +710,7 @@ impl client::Part for DeleteParagraphBulletsRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeletePositionedObjectRequest {
     /// The ID of the positioned object to delete.
     #[serde(rename="objectId")]
@@ -725,7 +726,7 @@ impl client::Part for DeletePositionedObjectRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteTableColumnRequest {
     /// The reference table cell location from which the column will be deleted. The column this cell spans will be deleted. If this is a merged cell that spans multiple columns, all columns that the cell spans will be deleted. If no columns remain in the table after this deletion, the whole table is deleted.
     #[serde(rename="tableCellLocation")]
@@ -741,7 +742,7 @@ impl client::Part for DeleteTableColumnRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteTableRowRequest {
     /// The reference table cell location from which the row will be deleted. The row this cell spans will be deleted. If this is a merged cell that spans multiple rows, all rows that the cell spans will be deleted. If no rows remain in the table after this deletion, the whole table is deleted.
     #[serde(rename="tableCellLocation")]
@@ -757,7 +758,7 @@ impl client::Part for DeleteTableRowRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Dimension {
     /// The magnitude.
     
@@ -781,7 +782,7 @@ impl client::Part for Dimension {}
 /// * [create documents](DocumentCreateCall) (request|response)
 /// * [get documents](DocumentGetCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Document {
     /// Output only. The main body of the document.
     
@@ -853,7 +854,7 @@ impl client::ResponseResult for Document {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DocumentStyle {
     /// The background of the document. Documents cannot have a transparent background color.
     
@@ -940,7 +941,7 @@ impl client::Part for DocumentStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DocumentStyleSuggestionState {
     /// A mask that indicates which of the fields in background have been changed in this suggestion.
     #[serde(rename="backgroundSuggestionState")]
@@ -1028,7 +1029,7 @@ impl client::Part for DocumentStyleSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EmbeddedDrawingProperties { _never_set: Option<bool> }
 
 impl client::Part for EmbeddedDrawingProperties {}
@@ -1039,7 +1040,7 @@ impl client::Part for EmbeddedDrawingProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EmbeddedDrawingPropertiesSuggestionState { _never_set: Option<bool> }
 
 impl client::Part for EmbeddedDrawingPropertiesSuggestionState {}
@@ -1050,7 +1051,7 @@ impl client::Part for EmbeddedDrawingPropertiesSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EmbeddedObject {
     /// The description of the embedded object. The `title` and `description` are both combined to display alt text.
     
@@ -1103,7 +1104,7 @@ impl client::Part for EmbeddedObject {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EmbeddedObjectBorder {
     /// The color of the border.
     
@@ -1129,7 +1130,7 @@ impl client::Part for EmbeddedObjectBorder {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EmbeddedObjectBorderSuggestionState {
     /// Indicates if there was a suggested change to color.
     #[serde(rename="colorSuggested")]
@@ -1157,7 +1158,7 @@ impl client::Part for EmbeddedObjectBorderSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EmbeddedObjectSuggestionState {
     /// Indicates if there was a suggested change to description.
     #[serde(rename="descriptionSuggested")]
@@ -1213,7 +1214,7 @@ impl client::Part for EmbeddedObjectSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EndOfSegmentLocation {
     /// The ID of the header, footer or footnote the location is in. An empty segment ID signifies the document's body.
     #[serde(rename="segmentId")]
@@ -1229,7 +1230,7 @@ impl client::Part for EndOfSegmentLocation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Equation {
     /// The suggested deletion IDs. If empty, then there are no suggested deletions of this content.
     #[serde(rename="suggestedDeletionIds")]
@@ -1249,7 +1250,7 @@ impl client::Part for Equation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Footer {
     /// The contents of the footer. The indexes for a footer's content begin at zero.
     
@@ -1268,7 +1269,7 @@ impl client::Part for Footer {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Footnote {
     /// The contents of the footnote. The indexes for a footnote's content begin at zero.
     
@@ -1287,7 +1288,7 @@ impl client::Part for Footnote {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct FootnoteReference {
     /// The ID of the footnote that contains the content of this footnote reference.
     #[serde(rename="footnoteId")]
@@ -1323,7 +1324,7 @@ impl client::Part for FootnoteReference {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Header {
     /// The contents of the header. The indexes for a header's content begin at zero.
     
@@ -1342,7 +1343,7 @@ impl client::Part for Header {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct HorizontalRule {
     /// The suggested deletion IDs. If empty, then there are no suggested deletions of this content.
     #[serde(rename="suggestedDeletionIds")]
@@ -1370,7 +1371,7 @@ impl client::Part for HorizontalRule {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ImageProperties {
     /// The clockwise rotation angle of the image, in radians.
     
@@ -1406,7 +1407,7 @@ impl client::Part for ImageProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ImagePropertiesSuggestionState {
     /// Indicates if there was a suggested change to angle.
     #[serde(rename="angleSuggested")]
@@ -1446,7 +1447,7 @@ impl client::Part for ImagePropertiesSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InlineObject {
     /// The properties of this inline object.
     #[serde(rename="inlineObjectProperties")]
@@ -1478,7 +1479,7 @@ impl client::Part for InlineObject {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InlineObjectElement {
     /// The ID of the InlineObject this element contains.
     #[serde(rename="inlineObjectId")]
@@ -1510,7 +1511,7 @@ impl client::Part for InlineObjectElement {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InlineObjectProperties {
     /// The embedded object of this inline object.
     #[serde(rename="embeddedObject")]
@@ -1526,7 +1527,7 @@ impl client::Part for InlineObjectProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InlineObjectPropertiesSuggestionState {
     /// A mask that indicates which of the fields in embedded_object have been changed in this suggestion.
     #[serde(rename="embeddedObjectSuggestionState")]
@@ -1542,7 +1543,7 @@ impl client::Part for InlineObjectPropertiesSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InsertInlineImageRequest {
     /// Inserts the text at the end of a header, footer or the document body. Inline images cannot be inserted inside a footnote.
     #[serde(rename="endOfSegmentLocation")]
@@ -1568,7 +1569,7 @@ impl client::Part for InsertInlineImageRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InsertInlineImageResponse {
     /// The ID of the created InlineObject.
     #[serde(rename="objectId")]
@@ -1584,7 +1585,7 @@ impl client::Part for InsertInlineImageResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InsertInlineSheetsChartResponse {
     /// The object ID of the inserted chart.
     #[serde(rename="objectId")]
@@ -1600,7 +1601,7 @@ impl client::Part for InsertInlineSheetsChartResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InsertPageBreakRequest {
     /// Inserts the page break at the end of the document body. Page breaks cannot be inserted inside a footnote, header or footer. Since page breaks can only be inserted inside the body, the segment ID field must be empty.
     #[serde(rename="endOfSegmentLocation")]
@@ -1619,7 +1620,7 @@ impl client::Part for InsertPageBreakRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InsertSectionBreakRequest {
     /// Inserts a newline and a section break at the end of the document body. Section breaks cannot be inserted inside a footnote, header or footer. Because section breaks can only be inserted inside the body, the segment ID field must be empty.
     #[serde(rename="endOfSegmentLocation")]
@@ -1642,7 +1643,7 @@ impl client::Part for InsertSectionBreakRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InsertTableColumnRequest {
     /// Whether to insert new column to the right of the reference cell location. - `True`: insert to the right. - `False`: insert to the left.
     #[serde(rename="insertRight")]
@@ -1662,7 +1663,7 @@ impl client::Part for InsertTableColumnRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InsertTableRequest {
     /// The number of columns in the table.
     
@@ -1687,7 +1688,7 @@ impl client::Part for InsertTableRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InsertTableRowRequest {
     /// Whether to insert new row below the reference cell location. - `True`: insert below the cell. - `False`: insert above the cell.
     #[serde(rename="insertBelow")]
@@ -1707,7 +1708,7 @@ impl client::Part for InsertTableRowRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InsertTextRequest {
     /// Inserts the text at the end of a header, footer, footnote or the document body.
     #[serde(rename="endOfSegmentLocation")]
@@ -1729,7 +1730,7 @@ impl client::Part for InsertTextRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Link {
     /// The ID of a bookmark in this document.
     #[serde(rename="bookmarkId")]
@@ -1752,7 +1753,7 @@ impl client::Part for Link {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct LinkedContentReference {
     /// A reference to the linked chart.
     #[serde(rename="sheetsChartReference")]
@@ -1768,7 +1769,7 @@ impl client::Part for LinkedContentReference {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct LinkedContentReferenceSuggestionState {
     /// A mask that indicates which of the fields in sheets_chart_reference have been changed in this suggestion.
     #[serde(rename="sheetsChartReferenceSuggestionState")]
@@ -1784,7 +1785,7 @@ impl client::Part for LinkedContentReferenceSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct List {
     /// The properties of the list.
     #[serde(rename="listProperties")]
@@ -1812,7 +1813,7 @@ impl client::Part for List {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ListProperties {
     /// Describes the properties of the bullets at the associated level. A list has at most 9 levels of nesting with nesting level 0 corresponding to the top-most level and nesting level 8 corresponding to the most nested level. The nesting levels are returned in ascending order with the least nested returned first.
     #[serde(rename="nestingLevels")]
@@ -1828,7 +1829,7 @@ impl client::Part for ListProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ListPropertiesSuggestionState {
     /// A mask that indicates which of the fields on the corresponding NestingLevel in nesting_levels have been changed in this suggestion. The nesting level suggestion states are returned in ascending order of the nesting level with the least nested returned first.
     #[serde(rename="nestingLevelsSuggestionStates")]
@@ -1844,7 +1845,7 @@ impl client::Part for ListPropertiesSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Location {
     /// The zero-based index, in UTF-16 code units. The index is relative to the beginning of the segment specified by segment_id.
     
@@ -1863,7 +1864,7 @@ impl client::Part for Location {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct MergeTableCellsRequest {
     /// The table range specifying which cells of the table to merge. Any text in the cells being merged will be concatenated and stored in the "head" cell of the range. This is the upper-left cell of the range when the content direction is left to right, and the upper-right cell of the range otherwise. If the range is non-rectangular (which can occur in some cases where the range covers cells that are already merged or where the table is non-rectangular), a 400 bad request error is returned.
     #[serde(rename="tableRange")]
@@ -1879,7 +1880,7 @@ impl client::Part for MergeTableCellsRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct NamedRange {
     /// The name of the named range.
     
@@ -1901,7 +1902,7 @@ impl client::Part for NamedRange {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct NamedRanges {
     /// The name that all the named ranges share.
     
@@ -1920,7 +1921,7 @@ impl client::Part for NamedRanges {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct NamedStyle {
     /// The type of this named style.
     #[serde(rename="namedStyleType")]
@@ -1944,7 +1945,7 @@ impl client::Part for NamedStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct NamedStyleSuggestionState {
     /// The named style type that this suggestion state corresponds to. This field is provided as a convenience for matching the NamedStyleSuggestionState with its corresponding NamedStyle.
     #[serde(rename="namedStyleType")]
@@ -1968,7 +1969,7 @@ impl client::Part for NamedStyleSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct NamedStyles {
     /// The named styles. There's an entry for each of the possible named style types.
     
@@ -1983,7 +1984,7 @@ impl client::Part for NamedStyles {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct NamedStylesSuggestionState {
     /// A mask that indicates which of the fields on the corresponding NamedStyle in styles have been changed in this suggestion. The order of these named style suggestion states matches the order of the corresponding named style within the named styles suggestion.
     #[serde(rename="stylesSuggestionStates")]
@@ -1999,7 +2000,7 @@ impl client::Part for NamedStylesSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct NestingLevel {
     /// The alignment of the bullet within the space allotted for rendering the bullet.
     #[serde(rename="bulletAlignment")]
@@ -2043,7 +2044,7 @@ impl client::Part for NestingLevel {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct NestingLevelSuggestionState {
     /// Indicates if there was a suggested change to bullet_alignment.
     #[serde(rename="bulletAlignmentSuggested")]
@@ -2087,7 +2088,7 @@ impl client::Part for NestingLevelSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ObjectReferences {
     /// The object IDs.
     #[serde(rename="objectIds")]
@@ -2103,7 +2104,7 @@ impl client::Part for ObjectReferences {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct OptionalColor {
     /// If set, this will be used as an opaque color. If unset, this represents a transparent color.
     
@@ -2118,7 +2119,7 @@ impl client::Part for OptionalColor {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PageBreak {
     /// The suggested deletion IDs. If empty, then there are no suggested deletions of this content.
     #[serde(rename="suggestedDeletionIds")]
@@ -2146,7 +2147,7 @@ impl client::Part for PageBreak {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Paragraph {
     /// The bullet for this paragraph. If not present, the paragraph does not belong to a list.
     
@@ -2184,7 +2185,7 @@ impl client::Part for Paragraph {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ParagraphBorder {
     /// The color of the border.
     
@@ -2209,7 +2210,7 @@ impl client::Part for ParagraphBorder {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ParagraphElement {
     /// An auto text paragraph element.
     #[serde(rename="autoText")]
@@ -2267,7 +2268,7 @@ impl client::Part for ParagraphElement {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ParagraphStyle {
     /// The text alignment for this paragraph.
     
@@ -2364,7 +2365,7 @@ impl client::Part for ParagraphStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ParagraphStyleSuggestionState {
     /// Indicates if there was a suggested change to alignment.
     #[serde(rename="alignmentSuggested")]
@@ -2460,7 +2461,7 @@ impl client::Part for ParagraphStyleSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Person {
     /// Output only. The unique ID of this link.
     #[serde(rename="personId")]
@@ -2496,7 +2497,7 @@ impl client::Part for Person {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PersonProperties {
     /// Output only. The email address linked to this Person. This field is always present.
     
@@ -2514,7 +2515,7 @@ impl client::Part for PersonProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PinTableHeaderRowsRequest {
     /// The number of table rows to pin, where 0 implies that all rows are unpinned.
     #[serde(rename="pinnedHeaderRowsCount")]
@@ -2534,7 +2535,7 @@ impl client::Part for PinTableHeaderRowsRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PositionedObject {
     /// The ID of this positioned object.
     #[serde(rename="objectId")]
@@ -2566,7 +2567,7 @@ impl client::Part for PositionedObject {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PositionedObjectPositioning {
     /// The layout of this positioned object.
     
@@ -2589,7 +2590,7 @@ impl client::Part for PositionedObjectPositioning {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PositionedObjectPositioningSuggestionState {
     /// Indicates if there was a suggested change to layout.
     #[serde(rename="layoutSuggested")]
@@ -2613,7 +2614,7 @@ impl client::Part for PositionedObjectPositioningSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PositionedObjectProperties {
     /// The embedded object of this positioned object.
     #[serde(rename="embeddedObject")]
@@ -2632,7 +2633,7 @@ impl client::Part for PositionedObjectProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PositionedObjectPropertiesSuggestionState {
     /// A mask that indicates which of the fields in embedded_object have been changed in this suggestion.
     #[serde(rename="embeddedObjectSuggestionState")]
@@ -2652,7 +2653,7 @@ impl client::Part for PositionedObjectPropertiesSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Range {
     /// The zero-based end index of this range, exclusive, in UTF-16 code units. In all current uses, an end index must be provided. This field is an Int32Value in order to accommodate future use cases with open-ended ranges.
     #[serde(rename="endIndex")]
@@ -2676,7 +2677,7 @@ impl client::Part for Range {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ReplaceAllTextRequest {
     /// Finds text in the document matching this substring.
     #[serde(rename="containsText")]
@@ -2696,7 +2697,7 @@ impl client::Part for ReplaceAllTextRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ReplaceAllTextResponse {
     /// The number of occurrences changed by replacing all text.
     #[serde(rename="occurrencesChanged")]
@@ -2712,7 +2713,7 @@ impl client::Part for ReplaceAllTextResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ReplaceImageRequest {
     /// The ID of the existing image that will be replaced. The ID can be retrieved from the response of a get request.
     #[serde(rename="imageObjectId")]
@@ -2735,7 +2736,7 @@ impl client::Part for ReplaceImageRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ReplaceNamedRangeContentRequest {
     /// The ID of the named range whose content will be replaced. If there is no named range with the given ID a 400 bad request error is returned.
     #[serde(rename="namedRangeId")]
@@ -2758,7 +2759,7 @@ impl client::Part for ReplaceNamedRangeContentRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Request {
     /// Creates a footer.
     #[serde(rename="createFooter")]
@@ -2902,7 +2903,7 @@ impl client::Part for Request {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Response {
     /// The result of creating a footer.
     #[serde(rename="createFooter")]
@@ -2942,7 +2943,7 @@ impl client::Part for Response {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RgbColor {
     /// The blue component of the color, from 0.0 to 1.0.
     
@@ -2963,7 +2964,7 @@ impl client::Part for RgbColor {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RichLink {
     /// Output only. The ID of this link.
     #[serde(rename="richLinkId")]
@@ -2999,7 +3000,7 @@ impl client::Part for RichLink {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RichLinkProperties {
     /// Output only. The [MIME type](https://developers.google.com/drive/api/v3/mime-types) of the RichLink, if there's one (for example, when it's a file in Drive).
     #[serde(rename="mimeType")]
@@ -3021,7 +3022,7 @@ impl client::Part for RichLinkProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SectionBreak {
     /// The style of the section after this section break.
     #[serde(rename="sectionStyle")]
@@ -3045,7 +3046,7 @@ impl client::Part for SectionBreak {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SectionColumnProperties {
     /// The padding at the end of the column.
     #[serde(rename="paddingEnd")]
@@ -3064,7 +3065,7 @@ impl client::Part for SectionColumnProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SectionStyle {
     /// The section's columns properties. If empty, the section contains one column with the default properties in the Docs editor. A section can be updated to have no more than 3 columns. When updating this property, setting a concrete value is required. Unsetting this property will result in a 400 bad request error.
     #[serde(rename="columnProperties")]
@@ -3152,7 +3153,7 @@ impl client::Part for SectionStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Shading {
     /// The background color of this paragraph shading.
     #[serde(rename="backgroundColor")]
@@ -3168,7 +3169,7 @@ impl client::Part for Shading {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ShadingSuggestionState {
     /// Indicates if there was a suggested change to the Shading.
     #[serde(rename="backgroundColorSuggested")]
@@ -3184,7 +3185,7 @@ impl client::Part for ShadingSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SheetsChartReference {
     /// The ID of the specific chart in the Google Sheets spreadsheet that's embedded.
     #[serde(rename="chartId")]
@@ -3204,7 +3205,7 @@ impl client::Part for SheetsChartReference {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SheetsChartReferenceSuggestionState {
     /// Indicates if there was a suggested change to chart_id.
     #[serde(rename="chartIdSuggested")]
@@ -3224,7 +3225,7 @@ impl client::Part for SheetsChartReferenceSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Size {
     /// The height of the object.
     
@@ -3242,7 +3243,7 @@ impl client::Part for Size {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SizeSuggestionState {
     /// Indicates if there was a suggested change to height.
     #[serde(rename="heightSuggested")]
@@ -3262,7 +3263,7 @@ impl client::Part for SizeSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct StructuralElement {
     /// The zero-based end index of this structural element, exclusive, in UTF-16 code units.
     #[serde(rename="endIndex")]
@@ -3296,7 +3297,7 @@ impl client::Part for StructuralElement {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SubstringMatchCriteria {
     /// Indicates whether the search should respect case: - `True`: the search is case sensitive. - `False`: the search is case insensitive.
     #[serde(rename="matchCase")]
@@ -3315,7 +3316,7 @@ impl client::Part for SubstringMatchCriteria {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedBullet {
     /// A Bullet that only includes the changes made in this suggestion. This can be used along with the bullet_suggestion_state to see which fields have changed and their new values.
     
@@ -3334,7 +3335,7 @@ impl client::Part for SuggestedBullet {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedDocumentStyle {
     /// A DocumentStyle that only includes the changes made in this suggestion. This can be used along with the document_style_suggestion_state to see which fields have changed and their new values.
     #[serde(rename="documentStyle")]
@@ -3354,7 +3355,7 @@ impl client::Part for SuggestedDocumentStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedInlineObjectProperties {
     /// An InlineObjectProperties that only includes the changes made in this suggestion. This can be used along with the inline_object_properties_suggestion_state to see which fields have changed and their new values.
     #[serde(rename="inlineObjectProperties")]
@@ -3374,7 +3375,7 @@ impl client::Part for SuggestedInlineObjectProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedListProperties {
     /// A ListProperties that only includes the changes made in this suggestion. This can be used along with the list_properties_suggestion_state to see which fields have changed and their new values.
     #[serde(rename="listProperties")]
@@ -3394,7 +3395,7 @@ impl client::Part for SuggestedListProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedNamedStyles {
     /// A NamedStyles that only includes the changes made in this suggestion. This can be used along with the named_styles_suggestion_state to see which fields have changed and their new values.
     #[serde(rename="namedStyles")]
@@ -3414,7 +3415,7 @@ impl client::Part for SuggestedNamedStyles {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedParagraphStyle {
     /// A ParagraphStyle that only includes the changes made in this suggestion. This can be used along with the paragraph_style_suggestion_state to see which fields have changed and their new values.
     #[serde(rename="paragraphStyle")]
@@ -3434,7 +3435,7 @@ impl client::Part for SuggestedParagraphStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedPositionedObjectProperties {
     /// A PositionedObjectProperties that only includes the changes made in this suggestion. This can be used along with the positioned_object_properties_suggestion_state to see which fields have changed and their new values.
     #[serde(rename="positionedObjectProperties")]
@@ -3454,7 +3455,7 @@ impl client::Part for SuggestedPositionedObjectProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedTableCellStyle {
     /// A TableCellStyle that only includes the changes made in this suggestion. This can be used along with the table_cell_style_suggestion_state to see which fields have changed and their new values.
     #[serde(rename="tableCellStyle")]
@@ -3474,7 +3475,7 @@ impl client::Part for SuggestedTableCellStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedTableRowStyle {
     /// A TableRowStyle that only includes the changes made in this suggestion. This can be used along with the table_row_style_suggestion_state to see which fields have changed and their new values.
     #[serde(rename="tableRowStyle")]
@@ -3494,7 +3495,7 @@ impl client::Part for SuggestedTableRowStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SuggestedTextStyle {
     /// A TextStyle that only includes the changes made in this suggestion. This can be used along with the text_style_suggestion_state to see which fields have changed and their new values.
     #[serde(rename="textStyle")]
@@ -3514,7 +3515,7 @@ impl client::Part for SuggestedTextStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TabStop {
     /// The alignment of this tab stop. If unset, the value defaults to START.
     
@@ -3532,7 +3533,7 @@ impl client::Part for TabStop {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Table {
     /// Number of columns in the table. It's possible for a table to be non-rectangular, so some rows may have a different number of cells.
     
@@ -3566,7 +3567,7 @@ impl client::Part for Table {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableCell {
     /// The content of the cell.
     
@@ -3605,7 +3606,7 @@ impl client::Part for TableCell {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableCellBorder {
     /// The color of the border. This color cannot be transparent.
     
@@ -3627,7 +3628,7 @@ impl client::Part for TableCellBorder {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableCellLocation {
     /// The zero-based column index. For example, the second column in the table has a column index of 1.
     #[serde(rename="columnIndex")]
@@ -3651,7 +3652,7 @@ impl client::Part for TableCellLocation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableCellStyle {
     /// The background color of the cell.
     #[serde(rename="backgroundColor")]
@@ -3711,7 +3712,7 @@ impl client::Part for TableCellStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableCellStyleSuggestionState {
     /// Indicates if there was a suggested change to background_color.
     #[serde(rename="backgroundColorSuggested")]
@@ -3771,7 +3772,7 @@ impl client::Part for TableCellStyleSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableColumnProperties {
     /// The width of the column. Set when the column's `width_type` is FIXED_WIDTH.
     
@@ -3790,7 +3791,7 @@ impl client::Part for TableColumnProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableOfContents {
     /// The content of the table of contents.
     
@@ -3813,7 +3814,7 @@ impl client::Part for TableOfContents {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableRange {
     /// The column span of the table range.
     #[serde(rename="columnSpan")]
@@ -3837,7 +3838,7 @@ impl client::Part for TableRange {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableRow {
     /// The zero-based end index of this row, exclusive, in UTF-16 code units.
     #[serde(rename="endIndex")]
@@ -3877,7 +3878,7 @@ impl client::Part for TableRow {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableRowStyle {
     /// The minimum height of the row. The row will be rendered in the Docs editor at a height equal to or greater than this value in order to show all the content in the row's cells.
     #[serde(rename="minRowHeight")]
@@ -3901,7 +3902,7 @@ impl client::Part for TableRowStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableRowStyleSuggestionState {
     /// Indicates if there was a suggested change to min_row_height.
     #[serde(rename="minRowHeightSuggested")]
@@ -3917,7 +3918,7 @@ impl client::Part for TableRowStyleSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TableStyle {
     /// The properties of each column. Note that in Docs, tables contain rows and rows contain cells, similar to HTML. So the properties for a row can be found on the row's table_row_style.
     #[serde(rename="tableColumnProperties")]
@@ -3933,7 +3934,7 @@ impl client::Part for TableStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TextRun {
     /// The text of this run. Any non-text elements in the run are replaced with the Unicode character U+E907.
     
@@ -3964,7 +3965,7 @@ impl client::Part for TextRun {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TextStyle {
     /// The background color of the text. If set, the color is either an RGB color or transparent, depending on the `color` field.
     #[serde(rename="backgroundColor")]
@@ -4015,7 +4016,7 @@ impl client::Part for TextStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TextStyleSuggestionState {
     /// Indicates if there was a suggested change to background_color.
     #[serde(rename="backgroundColorSuggested")]
@@ -4071,7 +4072,7 @@ impl client::Part for TextStyleSuggestionState {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UnmergeTableCellsRequest {
     /// The table range specifying which cells of the table to unmerge. All merged cells in this range will be unmerged, and cells that are already unmerged will not be affected. If the range has no merged cells, the request will do nothing. If there is text in any of the merged cells, the text will remain in the "head" cell of the resulting block of unmerged cells. The "head" cell is the upper-left cell when the content direction is from left to right, and the upper-right otherwise.
     #[serde(rename="tableRange")]
@@ -4087,7 +4088,7 @@ impl client::Part for UnmergeTableCellsRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdateDocumentStyleRequest {
     /// The styles to set on the document. Certain document style changes may cause other changes in order to mirror the behavior of the Docs editor. See the documentation of DocumentStyle for more information.
     #[serde(rename="documentStyle")]
@@ -4106,7 +4107,7 @@ impl client::Part for UpdateDocumentStyleRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdateParagraphStyleRequest {
     /// The fields that should be updated. At least one field must be specified. The root `paragraph_style` is implied and should not be specified. A single `"*"` can be used as short-hand for listing every field. For example, to update the paragraph style's alignment property, set `fields` to `"alignment"`. To reset a property to its default value, include its field name in the field mask but leave the field itself unset.
     
@@ -4128,7 +4129,7 @@ impl client::Part for UpdateParagraphStyleRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdateSectionStyleRequest {
     /// The fields that should be updated. At least one field must be specified. The root `section_style` is implied and must not be specified. A single `"*"` can be used as short-hand for listing every field. For example to update the left margin, set `fields` to `"margin_left"`.
     
@@ -4150,7 +4151,7 @@ impl client::Part for UpdateSectionStyleRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdateTableCellStyleRequest {
     /// The fields that should be updated. At least one field must be specified. The root `tableCellStyle` is implied and should not be specified. A single `"*"` can be used as short-hand for listing every field. For example to update the table cell background color, set `fields` to `"backgroundColor"`. To reset a property to its default value, include its field name in the field mask but leave the field itself unset.
     
@@ -4177,7 +4178,7 @@ impl client::Part for UpdateTableCellStyleRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdateTableColumnPropertiesRequest {
     /// The list of zero-based column indices whose property should be updated. If no indices are specified, all columns will be updated.
     #[serde(rename="columnIndices")]
@@ -4204,7 +4205,7 @@ impl client::Part for UpdateTableColumnPropertiesRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdateTableRowStyleRequest {
     /// The fields that should be updated. At least one field must be specified. The root `tableRowStyle` is implied and should not be specified. A single `"*"` can be used as short-hand for listing every field. For example to update the minimum row height, set `fields` to `"min_row_height"`.
     
@@ -4231,7 +4232,7 @@ impl client::Part for UpdateTableRowStyleRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdateTextStyleRequest {
     /// The fields that should be updated. At least one field must be specified. The root `text_style` is implied and should not be specified. A single `"*"` can be used as short-hand for listing every field. For example, to update the text style to bold, set `fields` to `"bold"`. To reset a property to its default value, include its field name in the field mask but leave the field itself unset.
     
@@ -4253,7 +4254,7 @@ impl client::Part for UpdateTextStyleRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct WeightedFontFamily {
     /// The font family of the text. The font family can be any font from the Font menu in Docs or from [Google Fonts] (https://fonts.google.com/). If the font name is unrecognized, the text is rendered in `Arial`.
     #[serde(rename="fontFamily")]
@@ -4272,7 +4273,7 @@ impl client::Part for WeightedFontFamily {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct WriteControl {
     /// The optional revision ID of the document the write request is applied to. If this is not the latest revision of the document, the request is not processed and returns a 400 bad request error. When a required revision ID is returned in a response, it indicates the revision ID of the document after the request was applied.
     #[serde(rename="requiredRevisionId")]
@@ -4313,7 +4314,7 @@ impl client::Part for WriteControl {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `batch_update(...)`, `create(...)` and `get(...)`
 /// // to build up your call.
@@ -4416,7 +4417,7 @@ impl<'a, S> DocumentMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4708,7 +4709,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4980,7 +4981,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Docs::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -5083,6 +5084,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await

@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -77,7 +78,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -125,7 +126,7 @@ impl<'a, S> Contactcenterinsights<S> {
         Contactcenterinsights {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://contactcenterinsights.googleapis.com/".to_string(),
             _root_url: "https://contactcenterinsights.googleapis.com/".to_string(),
         }
@@ -136,7 +137,7 @@ impl<'a, S> Contactcenterinsights<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -164,6 +165,143 @@ impl<'a, S> Contactcenterinsights<S> {
 // ############
 // SCHEMAS ###
 // ##########
+/// Agent Coaching instructions that customer can configure.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1AgentCoachingInstruction {
+    /// Optional. The action that human agent should take. For example, "apologize for the slow shipping". If the users only want to use agent coaching for intent detection, agent_action can be empty
+    #[serde(rename="agentAction")]
+    
+    pub agent_action: Option<String>,
+    /// Optional. The condition of the instruction. For example, "the customer wants to cancel an order". If the users want the instruction to be triggered unconditionally, the condition can be empty.
+    
+    pub condition: Option<String>,
+    /// Optional. The detailed description of this instruction.
+    
+    pub description: Option<String>,
+    /// Optional. Display name for the instruction.
+    #[serde(rename="displayName")]
+    
+    pub display_name: Option<String>,
+    /// Optional. Additional information attached to this instruction.
+    
+    pub metadata: Option<HashMap<String, String>>,
+    /// Optional. The action that system should take. For example, "call GetOrderTime with order_number={order number provided by the customer}". If the users don't have plugins or don't want to trigger plugins, the system_action can be empty
+    #[serde(rename="systemAction")]
+    
+    pub system_action: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1AgentCoachingInstruction {}
+
+
+/// Suggestion for coaching agents.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1AgentCoachingSuggestion {
+    /// Optional. Suggested actions for the agent to take.
+    #[serde(rename="agentActionSuggestions")]
+    
+    pub agent_action_suggestions: Option<Vec<GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionAgentActionSuggestion>>,
+    /// Optional. Instructions applicable based on the current context.
+    #[serde(rename="applicableInstructions")]
+    
+    pub applicable_instructions: Option<Vec<GoogleCloudContactcenterinsightsV1AgentCoachingInstruction>>,
+    /// Optional. Sample response for the Agent.
+    #[serde(rename="sampleResponses")]
+    
+    pub sample_responses: Option<Vec<GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionSampleResponse>>,
+    /// Self evaluation of the suggestion.
+    #[serde(rename="suggestionEval")]
+    
+    pub suggestion_eval: Option<GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionAgentCoachingSuggestionEval>,
+    /// Reasoning for the suggestion.
+    #[serde(rename="suggestionReasoning")]
+    
+    pub suggestion_reasoning: Option<GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionAgentCoachingSuggestionReasoning>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1AgentCoachingSuggestion {}
+
+
+/// Actions suggested for the agent. This is based on applicable instructions.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionAgentActionSuggestion {
+    /// Optional. The suggested action for the agent.
+    #[serde(rename="agentAction")]
+    
+    pub agent_action: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionAgentActionSuggestion {}
+
+
+/// Self evaluations of the suggestion.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionAgentCoachingSuggestionEval {
+    /// Optional. Eval for Agent action suggestion.
+    #[serde(rename="actionActionSuggestionEval")]
+    
+    pub action_action_suggestion_eval: Option<String>,
+    /// Optional. Eval for sample response.
+    #[serde(rename="sampleResponseEval")]
+    
+    pub sample_response_eval: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionAgentCoachingSuggestionEval {}
+
+
+/// Reasoning for the suggestion.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionAgentCoachingSuggestionReasoning {
+    /// Optional. The actions that the agent has taken already.
+    #[serde(rename="agentActionTaken")]
+    
+    pub agent_action_taken: Option<String>,
+    /// Optional. Summary of the issue.
+    #[serde(rename="issueSummary")]
+    
+    pub issue_summary: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionAgentCoachingSuggestionReasoning {}
+
+
+/// Sample response that the agent can use. This could be based on applicable instructions and ingested data from other systems.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionSampleResponse {
+    /// Optional. Sample response for Agent in text.
+    #[serde(rename="responseText")]
+    
+    pub response_text: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1AgentCoachingSuggestionSampleResponse {}
+
+
 /// The analysis resource.
 /// 
 /// # Activities
@@ -174,7 +312,7 @@ impl<'a, S> Contactcenterinsights<S> {
 /// * [locations conversations analyses create projects](ProjectLocationConversationAnalysisCreateCall) (request)
 /// * [locations conversations analyses get projects](ProjectLocationConversationAnalysisGetCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1Analysis {
     /// Output only. The result of the analysis, which is populated when the analysis finishes.
     #[serde(rename="analysisResult")]
@@ -206,7 +344,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1Analysis {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1AnalysisResult {
     /// Call-specific metadata created by the analysis.
     #[serde(rename="callAnalysisMetadata")]
@@ -226,7 +364,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1AnalysisResult {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1AnalysisResultCallAnalysisMetadata {
     /// A list of call annotations that apply to this call.
     
@@ -258,7 +396,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1AnalysisResultCallAnalys
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1AnnotationBoundary {
     /// The index in the sequence of transcribed pieces of the conversation where the boundary is located. This index starts at zero.
     #[serde(rename="transcriptIndex")]
@@ -278,7 +416,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1AnnotationBoundary {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1AnnotatorSelector {
     /// The issue model to run. If not provided, the most recently deployed topic model will be used. The provided issue model will only be used for inference if the issue model is deployed and if run_issue_model_annotator is set to true. If more than one issue model is provided, only the first provided issue model will be used for inference.
     #[serde(rename="issueModels")]
@@ -334,7 +472,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1AnnotatorSelector {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1AnnotatorSelectorSummarizationConfig {
     /// Resource name of the Dialogflow conversation profile. Format: projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}
     #[serde(rename="conversationProfile")]
@@ -354,7 +492,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1AnnotatorSelectorSummari
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1AnswerFeedback {
     /// Indicates whether an answer or item was clicked by the human agent.
     
@@ -376,7 +514,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1AnswerFeedback {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ArticleSuggestionData {
     /// The system's confidence score that this article is a good match for this conversation, ranging from 0.0 (completely uncertain) to 1.0 (completely certain).
     #[serde(rename="confidenceScore")]
@@ -412,7 +550,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ArticleSuggestionData {}
 /// 
 /// * [locations conversations bulk analyze projects](ProjectLocationConversationBulkAnalyzeCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1BulkAnalyzeConversationsRequest {
     /// Required. Percentage of selected conversation to analyze, between [0, 100].
     #[serde(rename="analysisPercentage")]
@@ -442,7 +580,7 @@ impl client::RequestValue for GoogleCloudContactcenterinsightsV1BulkAnalyzeConve
 /// 
 /// * [locations conversations bulk delete projects](ProjectLocationConversationBulkDeleteCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1BulkDeleteConversationsRequest {
     /// Filter used to select the subset of conversations to delete.
     
@@ -471,7 +609,7 @@ impl client::RequestValue for GoogleCloudContactcenterinsightsV1BulkDeleteConver
 /// 
 /// * [locations issue models calculate issue model stats projects](ProjectLocationIssueModelCalculateIssueModelStatCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1CalculateIssueModelStatsResponse {
     /// The latest label statistics for the queried issue model. Includes results on both training data and data labeled after deployment.
     #[serde(rename="currentStats")]
@@ -491,7 +629,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1CalculateIssue
 /// 
 /// * [locations conversations calculate stats projects](ProjectLocationConversationCalculateStatCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1CalculateStatsResponse {
     /// The average duration of all conversations. The average is calculated using only conversations that have a time duration.
     #[serde(rename="averageDuration")]
@@ -536,7 +674,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1CalculateStats
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1CalculateStatsResponseTimeSeries {
     /// The duration of each interval.
     #[serde(rename="intervalDuration")]
@@ -556,7 +694,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1CalculateStatsResponseTi
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1CalculateStatsResponseTimeSeriesInterval {
     /// The number of conversations created in this interval.
     #[serde(rename="conversationCount")]
@@ -576,7 +714,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1CalculateStatsResponseTi
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1CallAnnotation {
     /// The boundary in the conversation where the annotation ends, inclusive.
     #[serde(rename="annotationEndBoundary")]
@@ -638,7 +776,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1CallAnnotation {}
 /// * [locations conversations get projects](ProjectLocationConversationGetCall) (response)
 /// * [locations conversations patch projects](ProjectLocationConversationPatchCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1Conversation {
     /// An opaque, user-specified string representing the human agent who handled the conversation.
     #[serde(rename="agentId")]
@@ -731,7 +869,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1Conversation {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationCallMetadata {
     /// The audio channel that contains the agent.
     #[serde(rename="agentChannel")]
@@ -751,7 +889,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationCallMetadata
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationDataSource {
     /// The source when the conversation comes from Dialogflow.
     #[serde(rename="dialogflowSource")]
@@ -771,7 +909,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationDataSource {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationLevelSentiment {
     /// The channel of the audio that the data applies to.
     #[serde(rename="channelTag")]
@@ -791,7 +929,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationLevelSentime
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationParticipant {
     /// Deprecated. Use `dialogflow_participant_name` instead. The name of the Dialogflow participant. Format: projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
     #[serde(rename="dialogflowParticipant")]
@@ -822,7 +960,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationParticipant 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationQualityMetadata {
     /// Information about agents involved in the call.
     #[serde(rename="agentInfo")]
@@ -851,7 +989,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationQualityMetad
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationQualityMetadataAgentInfo {
     /// A user-specified string representing the agent.
     #[serde(rename="agentId")]
@@ -878,7 +1016,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationQualityMetad
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationSummarizationSuggestionData {
     /// The name of the answer record. Format: projects/{project}/locations/{location}/answerRecords/{answer_record}
     #[serde(rename="answerRecord")]
@@ -911,7 +1049,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationSummarizatio
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationTranscript {
     /// A list of sequential transcript segments that comprise the conversation.
     #[serde(rename="transcriptSegments")]
@@ -927,7 +1065,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationTranscript {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegment {
     /// For conversations derived from multi-channel audio, this is the channel number corresponding to the audio from that channel. For audioChannelCount = N, its output values can range from '1' to 'N'. A channel tag of 0 indicates that the audio is mono.
     #[serde(rename="channelTag")]
@@ -971,7 +1109,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationTranscriptTr
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentDialogflowSegmentMetadata {
     /// Whether the transcript segment was covered under the configured smart reply allowlist in Agent Assist.
     #[serde(rename="smartReplyAllowlistCovered")]
@@ -987,7 +1125,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationTranscriptTr
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentWordInfo {
     /// A confidence estimate between 0.0 and 1.0 of the fidelity of this word. A default value of 0.0 indicates that the value is unset.
     
@@ -1019,7 +1157,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ConversationTranscriptTr
 /// 
 /// * [locations issue models deploy projects](ProjectLocationIssueModelDeployCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1DeployIssueModelRequest {
     /// Required. The issue model to deploy.
     
@@ -1034,7 +1172,7 @@ impl client::RequestValue for GoogleCloudContactcenterinsightsV1DeployIssueModel
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1DialogflowIntent {
     /// The human-readable name of the intent.
     #[serde(rename="displayName")]
@@ -1050,7 +1188,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1DialogflowIntent {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1DialogflowInteractionData {
     /// The confidence of the match ranging from 0.0 (completely uncertain) to 1.0 (completely certain).
     
@@ -1069,7 +1207,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1DialogflowInteractionDat
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1DialogflowSource {
     /// Cloud Storage URI that points to a file that contains the conversation audio.
     #[serde(rename="audioUri")]
@@ -1089,7 +1227,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1DialogflowSource {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1Entity {
     /// The representative name for the entity.
     #[serde(rename="displayName")]
@@ -1118,7 +1256,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1Entity {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1EntityMentionData {
     /// The key of this entity in conversation entities. Can be used to retrieve the exact `Entity` this mention is attached to.
     #[serde(rename="entityUniqueId")]
@@ -1141,7 +1279,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1EntityMentionData {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ExactMatchConfig {
     /// Whether to consider case sensitivity when performing an exact match.
     #[serde(rename="caseSensitive")]
@@ -1161,7 +1299,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ExactMatchConfig {}
 /// 
 /// * [locations insightsdata export projects](ProjectLocationInsightsdataExportCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ExportInsightsDataRequest {
     /// Specified if sink is a BigQuery table.
     #[serde(rename="bigQueryDestination")]
@@ -1191,7 +1329,7 @@ impl client::RequestValue for GoogleCloudContactcenterinsightsV1ExportInsightsDa
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ExportInsightsDataRequestBigQueryDestination {
     /// Required. The name of the BigQuery dataset that the snapshot result should be exported to. If this dataset does not exist, the export call returns an INVALID_ARGUMENT error.
     
@@ -1217,7 +1355,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ExportInsightsDataReques
 /// 
 /// * [locations issue models export projects](ProjectLocationIssueModelExportCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ExportIssueModelRequest {
     /// Google Cloud Storage URI to export the Issue Model to.
     #[serde(rename="gcsDestination")]
@@ -1236,7 +1374,7 @@ impl client::RequestValue for GoogleCloudContactcenterinsightsV1ExportIssueModel
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ExportIssueModelRequestGcsDestination {
     /// Required. Format: `gs:///`
     #[serde(rename="objectUri")]
@@ -1252,7 +1390,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ExportIssueModelRequestG
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1FaqAnswerData {
     /// The piece of text from the `source` knowledge base document.
     
@@ -1279,12 +1417,30 @@ pub struct GoogleCloudContactcenterinsightsV1FaqAnswerData {
 impl client::Part for GoogleCloudContactcenterinsightsV1FaqAnswerData {}
 
 
+/// Suggestion generated using free form generator.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1FreeFormSuggestion {
+    /// Optional. Labels for the generator.
+    
+    pub labels: Option<Vec<String>>,
+    /// Required. Free form suggestion.
+    
+    pub response: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1FreeFormSuggestion {}
+
+
 /// A Cloud Storage source of conversation data.
 /// 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1GcsSource {
     /// Cloud Storage URI that points to a file that contains the conversation audio.
     #[serde(rename="audioUri")]
@@ -1299,12 +1455,198 @@ pub struct GoogleCloudContactcenterinsightsV1GcsSource {
 impl client::Part for GoogleCloudContactcenterinsightsV1GcsSource {}
 
 
+/// Suggestion generated using a Generator.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1GeneratorSuggestion {
+    /// Optional. Suggestion to coach the agent.
+    #[serde(rename="agentCoachingSuggestion")]
+    
+    pub agent_coaching_suggestion: Option<GoogleCloudContactcenterinsightsV1AgentCoachingSuggestion>,
+    /// Optional. Free form suggestion.
+    #[serde(rename="freeFormSuggestion")]
+    
+    pub free_form_suggestion: Option<GoogleCloudContactcenterinsightsV1FreeFormSuggestion>,
+    /// Optional. Suggested summary.
+    #[serde(rename="summarySuggestion")]
+    
+    pub summary_suggestion: Option<GoogleCloudContactcenterinsightsV1SummarySuggestion>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1GeneratorSuggestion {}
+
+
+/// Represents response from generators.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1GetGeneratorSuggestionResponse {
+    /// The suggestion generated from the Generator.
+    #[serde(rename="generatorSuggestion")]
+    
+    pub generator_suggestion: Option<GoogleCloudContactcenterinsightsV1GeneratorSuggestion>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1GetGeneratorSuggestionResponse {}
+
+
+/// Response for Knowledge Assist. Contains suggested query and optionally includes an answer for the query.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponse {
+    /// The query suggested based on the context. Suggestion is made only if it is different from the previous suggestion.
+    #[serde(rename="suggestedQuery")]
+    
+    pub suggested_query: Option<GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseSuggestedQuery>,
+    /// The answer generated for the suggested query. Whether or not an answer is generated depends on how confident we are about the generated query.
+    #[serde(rename="suggestedQueryAnswer")]
+    
+    pub suggested_query_answer: Option<GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswer>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponse {}
+
+
+/// Represents an answer from Knowledge. Cuurently supports FAQ and Generative answers.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswer {
+    /// The piece of text from the `source` that answers this suggested query.
+    #[serde(rename="answerText")]
+    
+    pub answer_text: Option<String>,
+    /// Populated if the prediction came from FAQ.
+    #[serde(rename="faqSource")]
+    
+    pub faq_source: Option<GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerFaqSource>,
+    /// Populated if the prediction was Generative.
+    #[serde(rename="generativeSource")]
+    
+    pub generative_source: Option<GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerGenerativeSource>,
+    /// Populated if the prediction was from intent matching.
+    #[serde(rename="intentMatchingSource")]
+    
+    pub intent_matching_source: Option<GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerIntentMatchingSource>,
+    /// The system's confidence score that this answer is a good match for this conversational query. The range is from 0.0 (completely uncertain) to 1.0 (completely certain).
+    #[serde(rename="matchConfidence")]
+    
+    pub match_confidence: Option<f32>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswer {}
+
+
+/// Details about source of FAQ answer.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerFaqSource {
+    /// Indicates which Knowledge Document this answer was extracted from. Format: `projects//knowledgeBases//documents/`.
+    
+    pub document: Option<String>,
+    /// The corresponding FAQ question.
+    
+    pub question: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerFaqSource {}
+
+
+/// Details about source of Generative answer.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerGenerativeSource {
+    /// All snippets used for this Generative Prediction, with their source URI and data.
+    
+    pub snippets: Option<Vec<GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerGenerativeSourceSnippet>>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerGenerativeSource {}
+
+
+/// Snippet Source for a Generative Prediction.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerGenerativeSourceSnippet {
+    /// Indicates which Knowledge Document this snippet was extracted from. Format: `projects//knowledgeBases//documents/`.
+    
+    pub document: Option<String>,
+    /// text taken from that URI.
+    
+    pub text: Option<String>,
+    /// Title of the document.
+    
+    pub title: Option<String>,
+    /// URI the data is sourced from.
+    
+    pub uri: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerGenerativeSourceSnippet {}
+
+
+/// Details about source of Intent Matching answer.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerIntentMatchingSource {
+    /// Title of the document.
+    
+    pub title: Option<String>,
+    /// URI the data is sourced from.
+    
+    pub uri: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseKnowledgeAnswerIntentMatchingSource {}
+
+
+/// Represents a suggested query.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseSuggestedQuery {
+    /// Suggested query text.
+    #[serde(rename="queryText")]
+    
+    pub query_text: Option<String>,
+    /// Suggested query score.
+    
+    pub score: Option<f32>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponseSuggestedQuery {}
+
+
 /// The data for a hold annotation.
 /// 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1HoldData { _never_set: Option<bool> }
 
 impl client::Part for GoogleCloudContactcenterinsightsV1HoldData {}
@@ -1319,7 +1661,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1HoldData {}
 /// 
 /// * [locations issue models import projects](ProjectLocationIssueModelImportCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ImportIssueModelRequest {
     /// Optional. If set to true, will create a new issue model from the imported file with randomly generated IDs for the issue model and corresponding issues. Otherwise, replaces an existing model with the same ID as the file.
     #[serde(rename="createNewModel")]
@@ -1342,7 +1684,7 @@ impl client::RequestValue for GoogleCloudContactcenterinsightsV1ImportIssueModel
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ImportIssueModelRequestGcsSource {
     /// Required. Format: `gs:///`
     #[serde(rename="objectUri")]
@@ -1362,7 +1704,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1ImportIssueModelRequestG
 /// 
 /// * [locations conversations ingest projects](ProjectLocationConversationIngestCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IngestConversationsRequest {
     /// Configuration that applies to all conversations.
     #[serde(rename="conversationConfig")]
@@ -1397,7 +1739,7 @@ impl client::RequestValue for GoogleCloudContactcenterinsightsV1IngestConversati
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IngestConversationsRequestConversationConfig {
     /// Optional. Indicates which of the channels, 1 or 2, contains the agent. Note that this must be set for conversations to be properly displayed and analyzed.
     #[serde(rename="agentChannel")]
@@ -1421,7 +1763,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IngestConversationsReque
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IngestConversationsRequestGcsSource {
     /// Optional. Specifies the type of the objects in `bucket_uri`.
     #[serde(rename="bucketObjectType")]
@@ -1449,7 +1791,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IngestConversationsReque
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IngestConversationsRequestTranscriptObjectConfig {
     /// Required. The medium transcript objects represent.
     
@@ -1464,7 +1806,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IngestConversationsReque
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1Intent {
     /// The human-readable name of the intent.
     #[serde(rename="displayName")]
@@ -1483,7 +1825,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1Intent {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IntentMatchData {
     /// The id of the matched intent. Can be used to retrieve the corresponding intent information.
     #[serde(rename="intentUniqueId")]
@@ -1499,7 +1841,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IntentMatchData {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1InterruptionData { _never_set: Option<bool> }
 
 impl client::Part for GoogleCloudContactcenterinsightsV1InterruptionData {}
@@ -1515,7 +1857,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1InterruptionData {}
 /// * [locations issue models issues get projects](ProjectLocationIssueModelIssueGetCall) (response)
 /// * [locations issue models issues patch projects](ProjectLocationIssueModelIssuePatchCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1Issue {
     /// Output only. The time at which this issue was created.
     #[serde(rename="createTime")]
@@ -1547,7 +1889,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1Issue {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IssueAssignment {
     /// Immutable. Display name of the assigned issue. This field is set at time of analyis and immutable since then.
     #[serde(rename="displayName")]
@@ -1569,7 +1911,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IssueAssignment {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IssueMatchData {
     /// Information about the issue's assignment.
     #[serde(rename="issueAssignment")]
@@ -1591,7 +1933,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IssueMatchData {}
 /// * [locations issue models get projects](ProjectLocationIssueModelGetCall) (response)
 /// * [locations issue models patch projects](ProjectLocationIssueModelPatchCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IssueModel {
     /// Output only. The time at which this issue model was created.
     #[serde(rename="createTime")]
@@ -1643,7 +1985,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1IssueModel {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IssueModelInputDataConfig {
     /// A filter to reduce the conversations used for training the model to a specific subset.
     
@@ -1666,7 +2008,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IssueModelInputDataConfi
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IssueModelLabelStats {
     /// Number of conversations the issue model has analyzed at this point in time.
     #[serde(rename="analyzedConversationsCount")]
@@ -1692,7 +2034,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IssueModelLabelStats {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IssueModelLabelStatsIssueStats {
     /// Display name of the issue.
     #[serde(rename="displayName")]
@@ -1716,7 +2058,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IssueModelLabelStatsIssu
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1IssueModelResult {
     /// Issue model that generates the result. Format: projects/{project}/locations/{location}/issueModels/{issue_model}
     #[serde(rename="issueModel")]
@@ -1739,7 +2081,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1IssueModelResult {}
 /// 
 /// * [locations conversations analyses list projects](ProjectLocationConversationAnalysisListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ListAnalysesResponse {
     /// The analyses that match the request.
     
@@ -1762,7 +2104,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1ListAnalysesRe
 /// 
 /// * [locations conversations list projects](ProjectLocationConversationListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ListConversationsResponse {
     /// The conversations that match the request.
     
@@ -1785,7 +2127,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1ListConversati
 /// 
 /// * [locations issue models list projects](ProjectLocationIssueModelListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ListIssueModelsResponse {
     /// The issue models that match the request.
     #[serde(rename="issueModels")]
@@ -1805,7 +2147,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1ListIssueModel
 /// 
 /// * [locations issue models issues list projects](ProjectLocationIssueModelIssueListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ListIssuesResponse {
     /// The issues that match the request.
     
@@ -1824,7 +2166,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1ListIssuesResp
 /// 
 /// * [locations phrase matchers list projects](ProjectLocationPhraseMatcherListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ListPhraseMatchersResponse {
     /// A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
     #[serde(rename="nextPageToken")]
@@ -1848,7 +2190,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1ListPhraseMatc
 /// 
 /// * [locations views list projects](ProjectLocationViewListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1ListViewsResponse {
     /// A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
     #[serde(rename="nextPageToken")]
@@ -1867,7 +2209,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1ListViewsRespo
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1PhraseMatchData {
     /// The human-readable name of the phrase matcher.
     #[serde(rename="displayName")]
@@ -1887,7 +2229,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1PhraseMatchData {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1PhraseMatchRule {
     /// Provides additional information about the rule that specifies how to apply the rule.
     
@@ -1908,7 +2250,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1PhraseMatchRule {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1PhraseMatchRuleConfig {
     /// The configuration for the exact match rule.
     #[serde(rename="exactMatchConfig")]
@@ -1924,7 +2266,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1PhraseMatchRuleConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1PhraseMatchRuleGroup {
     /// A list of phrase match rules that are included in this group.
     #[serde(rename="phraseMatchRules")]
@@ -1950,7 +2292,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1PhraseMatchRuleGroup {}
 /// * [locations phrase matchers get projects](ProjectLocationPhraseMatcherGetCall) (response)
 /// * [locations phrase matchers patch projects](ProjectLocationPhraseMatcherPatchCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1PhraseMatcher {
     /// Output only. The most recent time at which the activation status was updated.
     #[serde(rename="activationUpdateTime")]
@@ -2005,7 +2347,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1PhraseMatcher 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1RedactionConfig {
     /// The fully-qualified DLP deidentify template resource name. Format: `projects/{project}/deidentifyTemplates/{template}`
     #[serde(rename="deidentifyTemplate")]
@@ -2025,7 +2367,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1RedactionConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1RuntimeAnnotation {
     /// The unique identifier of the annotation. Format: projects/{project}/locations/{location}/conversationDatasets/{dataset}/conversationDataItems/{data_item}/conversationAnnotations/{annotation}
     #[serde(rename="annotationId")]
@@ -2059,6 +2401,18 @@ pub struct GoogleCloudContactcenterinsightsV1RuntimeAnnotation {
     #[serde(rename="faqAnswer")]
     
     pub faq_answer: Option<GoogleCloudContactcenterinsightsV1FaqAnswerData>,
+    /// The generator suggestion result.
+    #[serde(rename="generatorSuggestionResult")]
+    
+    pub generator_suggestion_result: Option<GoogleCloudContactcenterinsightsV1GetGeneratorSuggestionResponse>,
+    /// The Knowledge Assist result.
+    #[serde(rename="knowledgeAssistResult")]
+    
+    pub knowledge_assist_result: Option<GoogleCloudContactcenterinsightsV1GetKnowledgeAssistResponse>,
+    /// The Knowledge Search result.
+    #[serde(rename="knowledgeSearchResult")]
+    
+    pub knowledge_search_result: Option<GoogleCloudContactcenterinsightsV1SearchKnowledgeAnswer>,
     /// Agent Assist Smart Compose suggestion data.
     #[serde(rename="smartComposeSuggestion")]
     
@@ -2076,12 +2430,67 @@ pub struct GoogleCloudContactcenterinsightsV1RuntimeAnnotation {
 impl client::Part for GoogleCloudContactcenterinsightsV1RuntimeAnnotation {}
 
 
+/// Represents a SearchKnowledge answer.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1SearchKnowledgeAnswer {
+    /// The piece of text from the knowledge base documents that answers the search query
+    
+    pub answer: Option<String>,
+    /// The name of the answer record. Format: `projects//locations//answer Records/`
+    #[serde(rename="answerRecord")]
+    
+    pub answer_record: Option<String>,
+    /// All sources used to generate the answer.
+    #[serde(rename="answerSources")]
+    
+    pub answer_sources: Option<Vec<GoogleCloudContactcenterinsightsV1SearchKnowledgeAnswerAnswerSource>>,
+    /// The type of the answer.
+    #[serde(rename="answerType")]
+    
+    pub answer_type: Option<String>,
+    /// The confidence score in [0.0, 1.0] range.
+    #[serde(rename="confidenceScore")]
+    
+    pub confidence_score: Option<f32>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1SearchKnowledgeAnswer {}
+
+
+/// The sources of the answers.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1SearchKnowledgeAnswerAnswerSource {
+    /// The document from which the snippet was extracted. Format: `projects//knowledgeBases//documents/`
+    
+    pub document: Option<String>,
+    /// The relevant snippet of the article.
+    
+    pub snippet: Option<String>,
+    /// The title of the article.
+    
+    pub title: Option<String>,
+    /// The URI of the article.
+    
+    pub uri: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1SearchKnowledgeAnswerAnswerSource {}
+
+
 /// The data for a sentiment annotation.
 /// 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1SentimentData {
     /// A non-negative number from 0 to infinity which represents the abolute magnitude of sentiment regardless of score.
     
@@ -2104,7 +2513,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1SentimentData {}
 /// * [locations get settings projects](ProjectLocationGetSettingCall) (response)
 /// * [locations update settings projects](ProjectLocationUpdateSettingCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1Settings {
     /// Default analysis settings.
     #[serde(rename="analysisConfig")]
@@ -2126,7 +2535,7 @@ pub struct GoogleCloudContactcenterinsightsV1Settings {
     /// Immutable. The resource name of the settings resource. Format: projects/{project}/locations/{location}/settings
     
     pub name: Option<String>,
-    /// A map that maps a notification trigger to a Pub/Sub topic. Each time a specified trigger occurs, Insights will notify the corresponding Pub/Sub topic. Keys are notification triggers. Supported keys are: * "all-triggers": Notify each time any of the supported triggers occurs. * "create-analysis": Notify each time an analysis is created. * "create-conversation": Notify each time a conversation is created. * "export-insights-data": Notify each time an export is complete. * "update-conversation": Notify each time a conversation is updated via UpdateConversation. * "upload-conversation": Notify when an UploadConversation LRO completes. Values are Pub/Sub topics. The format of each Pub/Sub topic is: projects/{project}/topics/{topic}
+    /// A map that maps a notification trigger to a Pub/Sub topic. Each time a specified trigger occurs, Insights will notify the corresponding Pub/Sub topic. Keys are notification triggers. Supported keys are: * "all-triggers": Notify each time any of the supported triggers occurs. * "create-analysis": Notify each time an analysis is created. * "create-conversation": Notify each time a conversation is created. * "export-insights-data": Notify each time an export is complete. * "ingest-conversations": Notify each time an IngestConversations LRO completes. * "update-conversation": Notify each time a conversation is updated via UpdateConversation. * "upload-conversation": Notify when an UploadConversation LRO completes. Values are Pub/Sub topics. The format of each Pub/Sub topic is: projects/{project}/topics/{topic}
     #[serde(rename="pubsubNotificationSettings")]
     
     pub pubsub_notification_settings: Option<HashMap<String, String>>,
@@ -2153,7 +2562,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1Settings {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1SettingsAnalysisConfig {
     /// To select the annotators to run and the phrase matchers to use (if any). If not specified, all annotators will be run.
     #[serde(rename="annotatorSelector")]
@@ -2177,7 +2586,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1SettingsAnalysisConfig {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1SilenceData { _never_set: Option<bool> }
 
 impl client::Part for GoogleCloudContactcenterinsightsV1SilenceData {}
@@ -2188,7 +2597,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1SilenceData {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1SmartComposeSuggestionData {
     /// The system's confidence score that this suggestion is a good match for this conversation, ranging from 0.0 (completely uncertain) to 1.0 (completely certain).
     #[serde(rename="confidenceScore")]
@@ -2214,7 +2623,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1SmartComposeSuggestionDa
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1SmartReplyData {
     /// The system's confidence score that this reply is a good match for this conversation, ranging from 0.0 (completely uncertain) to 1.0 (completely certain).
     #[serde(rename="confidenceScore")]
@@ -2240,7 +2649,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1SmartReplyData {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1SpeechConfig {
     /// The fully-qualified Speech Recognizer resource name. Format: `projects/{project_id}/locations/{location}/recognizer/{recognizer}`
     #[serde(rename="speechRecognizer")]
@@ -2249,6 +2658,40 @@ pub struct GoogleCloudContactcenterinsightsV1SpeechConfig {
 }
 
 impl client::Part for GoogleCloudContactcenterinsightsV1SpeechConfig {}
+
+
+/// Suggested summary of the conversation.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1SummarySuggestion {
+    /// Required. All the parts of generated summary.
+    #[serde(rename="summarySections")]
+    
+    pub summary_sections: Option<Vec<GoogleCloudContactcenterinsightsV1SummarySuggestionSummarySection>>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1SummarySuggestion {}
+
+
+/// A component of the generated summary.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct GoogleCloudContactcenterinsightsV1SummarySuggestionSummarySection {
+    /// Required. Name of the section.
+    
+    pub section: Option<String>,
+    /// Required. Summary text for the section.
+    
+    pub summary: Option<String>,
+}
+
+impl client::Part for GoogleCloudContactcenterinsightsV1SummarySuggestionSummarySection {}
 
 
 /// The request to undeploy an issue model.
@@ -2260,7 +2703,7 @@ impl client::Part for GoogleCloudContactcenterinsightsV1SpeechConfig {}
 /// 
 /// * [locations issue models undeploy projects](ProjectLocationIssueModelUndeployCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1UndeployIssueModelRequest {
     /// Required. The issue model to undeploy.
     
@@ -2279,7 +2722,7 @@ impl client::RequestValue for GoogleCloudContactcenterinsightsV1UndeployIssueMod
 /// 
 /// * [locations conversations upload projects](ProjectLocationConversationUploadCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1UploadConversationRequest {
     /// Required. The conversation resource to create.
     
@@ -2315,7 +2758,7 @@ impl client::RequestValue for GoogleCloudContactcenterinsightsV1UploadConversati
 /// * [locations views get projects](ProjectLocationViewGetCall) (response)
 /// * [locations views patch projects](ProjectLocationViewPatchCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudContactcenterinsightsV1View {
     /// Output only. The time at which this view was created.
     #[serde(rename="createTime")]
@@ -2350,7 +2793,7 @@ impl client::ResponseResult for GoogleCloudContactcenterinsightsV1View {}
 /// 
 /// * [locations operations list projects](ProjectLocationOperationListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleLongrunningListOperationsResponse {
     /// The standard List next-page token.
     #[serde(rename="nextPageToken")]
@@ -2385,7 +2828,7 @@ impl client::ResponseResult for GoogleLongrunningListOperationsResponse {}
 /// * [locations issue models undeploy projects](ProjectLocationIssueModelUndeployCall) (response)
 /// * [locations operations get projects](ProjectLocationOperationGetCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleLongrunningOperation {
     /// If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.
     
@@ -2421,7 +2864,7 @@ impl client::ResponseResult for GoogleLongrunningOperation {}
 /// * [locations phrase matchers delete projects](ProjectLocationPhraseMatcherDeleteCall) (response)
 /// * [locations views delete projects](ProjectLocationViewDeleteCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleProtobufEmpty { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleProtobufEmpty {}
@@ -2432,7 +2875,7 @@ impl client::ResponseResult for GoogleProtobufEmpty {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleRpcStatus {
     /// The status code, which should be an enum value of google.rpc.Code.
     
@@ -2474,7 +2917,7 @@ impl client::Part for GoogleRpcStatus {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `locations_conversations_analyses_create(...)`, `locations_conversations_analyses_delete(...)`, `locations_conversations_analyses_get(...)`, `locations_conversations_analyses_list(...)`, `locations_conversations_bulk_analyze(...)`, `locations_conversations_bulk_delete(...)`, `locations_conversations_calculate_stats(...)`, `locations_conversations_create(...)`, `locations_conversations_delete(...)`, `locations_conversations_get(...)`, `locations_conversations_ingest(...)`, `locations_conversations_list(...)`, `locations_conversations_patch(...)`, `locations_conversations_upload(...)`, `locations_get_settings(...)`, `locations_insightsdata_export(...)`, `locations_issue_models_calculate_issue_model_stats(...)`, `locations_issue_models_create(...)`, `locations_issue_models_delete(...)`, `locations_issue_models_deploy(...)`, `locations_issue_models_export(...)`, `locations_issue_models_get(...)`, `locations_issue_models_import(...)`, `locations_issue_models_issues_delete(...)`, `locations_issue_models_issues_get(...)`, `locations_issue_models_issues_list(...)`, `locations_issue_models_issues_patch(...)`, `locations_issue_models_list(...)`, `locations_issue_models_patch(...)`, `locations_issue_models_undeploy(...)`, `locations_operations_cancel(...)`, `locations_operations_get(...)`, `locations_operations_list(...)`, `locations_phrase_matchers_create(...)`, `locations_phrase_matchers_delete(...)`, `locations_phrase_matchers_get(...)`, `locations_phrase_matchers_list(...)`, `locations_phrase_matchers_patch(...)`, `locations_update_settings(...)`, `locations_views_create(...)`, `locations_views_delete(...)`, `locations_views_get(...)`, `locations_views_list(...)` and `locations_views_patch(...)`
 /// // to build up your call.
@@ -3337,7 +3780,7 @@ impl<'a, S> ProjectMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3628,7 +4071,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -3726,6 +4169,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -3890,7 +4334,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -3988,6 +4432,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4152,7 +4597,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4265,6 +4710,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4451,7 +4897,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4743,7 +5189,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -5034,7 +5480,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -5137,6 +5583,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -5309,7 +5756,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -5612,7 +6059,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -5715,6 +6162,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -5886,7 +6334,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -5989,6 +6437,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -6161,7 +6610,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -6452,7 +6901,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -6575,6 +7024,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -6775,7 +7225,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -6785,7 +7235,7 @@ where
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.projects().locations_conversations_patch(req, "name")
-///              .update_mask(&Default::default())
+///              .update_mask(FieldMask::new::<&str>(&[]))
 ///              .doit().await;
 /// # }
 /// ```
@@ -7079,7 +7529,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -7371,7 +7821,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -7662,7 +8112,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -7760,6 +8210,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -7924,7 +8375,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -8022,6 +8473,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -8186,7 +8638,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -8284,6 +8736,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -8449,7 +8902,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -8459,7 +8912,7 @@ where
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.projects().locations_issue_models_issues_patch(req, "name")
-///              .update_mask(&Default::default())
+///              .update_mask(FieldMask::new::<&str>(&[]))
 ///              .doit().await;
 /// # }
 /// ```
@@ -8752,7 +9205,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -8850,6 +9303,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -9015,7 +9469,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -9306,7 +9760,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -9404,6 +9858,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -9569,7 +10024,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -9861,7 +10316,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -10152,7 +10607,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -10250,6 +10705,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -10415,7 +10871,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -10706,7 +11162,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -10804,6 +11260,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -10969,7 +11426,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -10979,7 +11436,7 @@ where
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.projects().locations_issue_models_patch(req, "name")
-///              .update_mask(&Default::default())
+///              .update_mask(FieldMask::new::<&str>(&[]))
 ///              .doit().await;
 /// # }
 /// ```
@@ -11273,7 +11730,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -11564,7 +12021,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -11662,6 +12119,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -11826,7 +12284,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -11924,6 +12382,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -12088,7 +12547,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -12201,6 +12660,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -12387,7 +12847,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -12678,7 +13138,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -12776,6 +13236,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -12940,7 +13401,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -13038,6 +13499,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -13202,7 +13664,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -13315,6 +13777,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -13501,7 +13964,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -13511,7 +13974,7 @@ where
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.projects().locations_phrase_matchers_patch(req, "name")
-///              .update_mask(&Default::default())
+///              .update_mask(FieldMask::new::<&str>(&[]))
 ///              .doit().await;
 /// # }
 /// ```
@@ -13805,7 +14268,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -14096,7 +14559,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -14194,6 +14657,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -14358,7 +14822,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -14456,6 +14920,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -14620,7 +15085,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -14728,6 +15193,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -14907,7 +15373,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -14917,7 +15383,7 @@ where
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.projects().locations_views_patch(req, "name")
-///              .update_mask(&Default::default())
+///              .update_mask(FieldMask::new::<&str>(&[]))
 ///              .doit().await;
 /// # }
 /// ```
@@ -15210,7 +15676,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -15308,6 +15774,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -15473,7 +15940,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Contactcenterinsights::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -15483,7 +15950,7 @@ where
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.projects().locations_update_settings(req, "name")
-///              .update_mask(&Default::default())
+///              .update_mask(FieldMask::new::<&str>(&[]))
 ///              .doit().await;
 /// # }
 /// ```

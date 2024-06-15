@@ -59,12 +59,6 @@ where
                 "query" => {
                     call = call.query(value.unwrap_or(""));
                 },
-                "product-product-subline" => {
-                    call = call.product_product_subline(value.unwrap_or(""));
-                },
-                "product-product-line" => {
-                    call = call.product_product_line(value.unwrap_or(""));
-                },
                 "page-token" => {
                     call = call.page_token(value.unwrap_or(""));
                 },
@@ -84,7 +78,7 @@ where
                         err.issues.push(CLIError::UnknownParameter(key.to_string(),
                                                                   {let mut v = Vec::new();
                                                                            v.extend(self.gp.iter().map(|v|*v));
-                                                                           v.extend(["page-size", "page-token", "product-product-line", "product-product-subline", "query"].iter().map(|v|*v));
+                                                                           v.extend(["page-size", "page-token", "query"].iter().map(|v|*v));
                                                                            v } ));
                     }
                 }
@@ -437,8 +431,6 @@ where
                 match &temp_cursor.to_string()[..] {
                     "classification.display-name" => Some(("classification.displayName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "classification.id" => Some(("classification.id", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
-                    "classification.product.product-line" => Some(("classification.product.productLine", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
-                    "classification.product.product-subline" => Some(("classification.product.productSubline", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "contact-email" => Some(("contactEmail", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "create-time" => Some(("createTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "creator.display-name" => Some(("creator.displayName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -458,7 +450,7 @@ where
                     "time-zone" => Some(("timeZone", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "update-time" => Some(("updateTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["classification", "contact-email", "create-time", "creator", "description", "display-name", "email", "escalated", "google-support", "id", "language-code", "name", "priority", "product", "product-line", "product-subline", "severity", "state", "subscriber-email-addresses", "test-case", "time-zone", "update-time", "username"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["classification", "contact-email", "create-time", "creator", "description", "display-name", "email", "escalated", "google-support", "id", "language-code", "name", "priority", "severity", "state", "subscriber-email-addresses", "test-case", "time-zone", "update-time", "username"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -662,9 +654,6 @@ where
         for parg in opt.values_of("v").map(|i|i.collect()).unwrap_or(Vec::new()).iter() {
             let (key, value) = parse_kv_arg(&*parg, err, false);
             match key {
-                "product-line" => {
-                    call = call.product_line(value.unwrap_or(""));
-                },
                 "page-token" => {
                     call = call.page_token(value.unwrap_or(""));
                 },
@@ -687,7 +676,7 @@ where
                         err.issues.push(CLIError::UnknownParameter(key.to_string(),
                                                                   {let mut v = Vec::new();
                                                                            v.extend(self.gp.iter().map(|v|*v));
-                                                                           v.extend(["filter", "page-size", "page-token", "product-line"].iter().map(|v|*v));
+                                                                           v.extend(["filter", "page-size", "page-token"].iter().map(|v|*v));
                                                                            v } ));
                     }
                 }
@@ -746,8 +735,6 @@ where
                 match &temp_cursor.to_string()[..] {
                     "classification.display-name" => Some(("classification.displayName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "classification.id" => Some(("classification.id", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
-                    "classification.product.product-line" => Some(("classification.product.productLine", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
-                    "classification.product.product-subline" => Some(("classification.product.productSubline", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "contact-email" => Some(("contactEmail", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "create-time" => Some(("createTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "creator.display-name" => Some(("creator.displayName", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -767,7 +754,7 @@ where
                     "time-zone" => Some(("timeZone", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "update-time" => Some(("updateTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["classification", "contact-email", "create-time", "creator", "description", "display-name", "email", "escalated", "google-support", "id", "language-code", "name", "priority", "product", "product-line", "product-subline", "severity", "state", "subscriber-email-addresses", "test-case", "time-zone", "update-time", "username"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["classification", "contact-email", "create-time", "creator", "description", "display-name", "email", "escalated", "google-support", "id", "language-code", "name", "priority", "severity", "state", "subscriber-email-addresses", "test-case", "time-zone", "update-time", "username"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -1525,7 +1512,7 @@ async fn main() {
     
     let mut app = App::new("cloudsupport2-beta")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240304")
+           .version("5.0.5+20240416")
            .about("Manages Google Cloud technical support cases for Customer Care support offerings. ")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_cloudsupport2_beta_cli")
            .arg(Arg::with_name("url")
@@ -1600,6 +1587,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

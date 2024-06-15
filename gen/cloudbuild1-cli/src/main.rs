@@ -4692,16 +4692,13 @@ where
                     "private-pool-v1-config.network-config.egress-option" => Some(("privatePoolV1Config.networkConfig.egressOption", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "private-pool-v1-config.network-config.peered-network" => Some(("privatePoolV1Config.networkConfig.peeredNetwork", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "private-pool-v1-config.network-config.peered-network-ip-range" => Some(("privatePoolV1Config.networkConfig.peeredNetworkIpRange", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
-                    "private-pool-v1-config.private-service-connect.network-attachment" => Some(("privatePoolV1Config.privateServiceConnect.networkAttachment", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
-                    "private-pool-v1-config.private-service-connect.public-ip-address-disabled" => Some(("privatePoolV1Config.privateServiceConnect.publicIpAddressDisabled", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
-                    "private-pool-v1-config.private-service-connect.route-all-traffic" => Some(("privatePoolV1Config.privateServiceConnect.routeAllTraffic", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     "private-pool-v1-config.worker-config.disk-size-gb" => Some(("privatePoolV1Config.workerConfig.diskSizeGb", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "private-pool-v1-config.worker-config.machine-type" => Some(("privatePoolV1Config.workerConfig.machineType", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "state" => Some(("state", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "uid" => Some(("uid", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "update-time" => Some(("updateTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["annotations", "create-time", "delete-time", "disk-size-gb", "display-name", "egress-option", "etag", "machine-type", "name", "network-attachment", "network-config", "peered-network", "peered-network-ip-range", "private-pool-v1-config", "private-service-connect", "public-ip-address-disabled", "route-all-traffic", "state", "uid", "update-time", "worker-config"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["annotations", "create-time", "delete-time", "disk-size-gb", "display-name", "egress-option", "etag", "machine-type", "name", "network-config", "peered-network", "peered-network-ip-range", "private-pool-v1-config", "state", "uid", "update-time", "worker-config"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -4973,16 +4970,13 @@ where
                     "private-pool-v1-config.network-config.egress-option" => Some(("privatePoolV1Config.networkConfig.egressOption", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "private-pool-v1-config.network-config.peered-network" => Some(("privatePoolV1Config.networkConfig.peeredNetwork", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "private-pool-v1-config.network-config.peered-network-ip-range" => Some(("privatePoolV1Config.networkConfig.peeredNetworkIpRange", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
-                    "private-pool-v1-config.private-service-connect.network-attachment" => Some(("privatePoolV1Config.privateServiceConnect.networkAttachment", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
-                    "private-pool-v1-config.private-service-connect.public-ip-address-disabled" => Some(("privatePoolV1Config.privateServiceConnect.publicIpAddressDisabled", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
-                    "private-pool-v1-config.private-service-connect.route-all-traffic" => Some(("privatePoolV1Config.privateServiceConnect.routeAllTraffic", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     "private-pool-v1-config.worker-config.disk-size-gb" => Some(("privatePoolV1Config.workerConfig.diskSizeGb", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "private-pool-v1-config.worker-config.machine-type" => Some(("privatePoolV1Config.workerConfig.machineType", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "state" => Some(("state", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "uid" => Some(("uid", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "update-time" => Some(("updateTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["annotations", "create-time", "delete-time", "disk-size-gb", "display-name", "egress-option", "etag", "machine-type", "name", "network-attachment", "network-config", "peered-network", "peered-network-ip-range", "private-pool-v1-config", "private-service-connect", "public-ip-address-disabled", "route-all-traffic", "state", "uid", "update-time", "worker-config"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["annotations", "create-time", "delete-time", "disk-size-gb", "display-name", "egress-option", "etag", "machine-type", "name", "network-config", "peered-network", "peered-network-ip-range", "private-pool-v1-config", "state", "uid", "update-time", "worker-config"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -7983,7 +7977,7 @@ async fn main() {
     
     let mut app = App::new("cloudbuild1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240223")
+           .version("5.0.5+20240411")
            .about("Creates and manages builds on Google Cloud Platform.")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_cloudbuild1_cli")
            .arg(Arg::with_name("url")
@@ -8047,6 +8041,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

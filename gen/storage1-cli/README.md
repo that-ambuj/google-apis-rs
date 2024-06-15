@@ -25,7 +25,7 @@ Find the source code [on github](https://github.com/Byron/google-apis-rs/tree/ma
 
 # Usage
 
-This documentation was generated from the *storage* API at revision *20240229*. The CLI is at version *5.0.4*.
+This documentation was generated from the *storage* API at revision *20240415*. The CLI is at version *5.0.5*.
 
 ```bash
 storage1 [options]
@@ -103,7 +103,7 @@ storage1 [options]
                 insert <bucket> (-r <kv>)... (-u simple -f <file> [-m <mime>]) [-p <v>]... [-o <out>]
                 list <bucket> [-p <v>]... [-o <out>]
                 patch <bucket> <object> (-r <kv>)... [-p <v>]... [-o <out>]
-                restore <bucket> <object> <generation> (-r <kv>)... [-p <v>]... [-o <out>]
+                restore <bucket> <object> <generation> [-p <v>]... [-o <out>]
                 rewrite <source-bucket> <source-object> <destination-bucket> <destination-object> (-r <kv>)... [-p <v>]... [-o <out>]
                 set-iam-policy <bucket> <object> (-r <kv>)... [-p <v>]... [-o <out>]
                 test-iam-permissions <bucket> <object> <permissions>... [-p <v>]... [-o <out>]

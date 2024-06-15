@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -77,7 +78,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -126,7 +127,7 @@ impl<'a, S> Assuredworkloads<S> {
         Assuredworkloads {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://assuredworkloads.googleapis.com/".to_string(),
             _root_url: "https://assuredworkloads.googleapis.com/".to_string(),
         }
@@ -137,7 +138,7 @@ impl<'a, S> Assuredworkloads<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -174,7 +175,7 @@ impl<'a, S> Assuredworkloads<S> {
 /// 
 /// * [locations workloads violations acknowledge organizations](OrganizationLocationWorkloadViolationAcknowledgeCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1AcknowledgeViolationRequest {
     /// Optional. Acknowledge type of specified violation.
     #[serde(rename="acknowledgeType")]
@@ -201,7 +202,7 @@ impl client::RequestValue for GoogleCloudAssuredworkloadsV1AcknowledgeViolationR
 /// 
 /// * [locations workloads violations acknowledge organizations](OrganizationLocationWorkloadViolationAcknowledgeCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1AcknowledgeViolationResponse { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleCloudAssuredworkloadsV1AcknowledgeViolationResponse {}
@@ -216,7 +217,7 @@ impl client::ResponseResult for GoogleCloudAssuredworkloadsV1AcknowledgeViolatio
 /// 
 /// * [locations workloads analyze workload move organizations](OrganizationLocationWorkloadAnalyzeWorkloadMoveCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1AnalyzeWorkloadMoveResponse {
     /// List of analysis results for each asset in scope.
     #[serde(rename="assetMoveAnalyses")]
@@ -236,7 +237,7 @@ impl client::ResponseResult for GoogleCloudAssuredworkloadsV1AnalyzeWorkloadMove
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1AssetMoveAnalysis {
     /// List of eligible analyses performed for the asset.
     #[serde(rename="analysisGroups")]
@@ -263,7 +264,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1AssetMoveAnalysis {}
 /// 
 /// * [locations workloads enable resource monitoring organizations](OrganizationLocationWorkloadEnableResourceMonitoringCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1EnableResourceMonitoringResponse { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleCloudAssuredworkloadsV1EnableResourceMonitoringResponse {}
@@ -278,7 +279,7 @@ impl client::ResponseResult for GoogleCloudAssuredworkloadsV1EnableResourceMonit
 /// 
 /// * [locations workloads violations list organizations](OrganizationLocationWorkloadViolationListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1ListViolationsResponse {
     /// The next page token. Returns empty if reached the last page.
     #[serde(rename="nextPageToken")]
@@ -301,7 +302,7 @@ impl client::ResponseResult for GoogleCloudAssuredworkloadsV1ListViolationsRespo
 /// 
 /// * [locations workloads list organizations](OrganizationLocationWorkloadListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1ListWorkloadsResponse {
     /// The next page token. Return empty if reached the last page.
     #[serde(rename="nextPageToken")]
@@ -320,7 +321,7 @@ impl client::ResponseResult for GoogleCloudAssuredworkloadsV1ListWorkloadsRespon
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1MoveAnalysisGroup {
     /// Result of a successful analysis.
     #[serde(rename="analysisResult")]
@@ -343,7 +344,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1MoveAnalysisGroup {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1MoveAnalysisResult {
     /// List of blockers. If not resolved, these will result in compliance violations in the target.
     
@@ -361,7 +362,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1MoveAnalysisResult {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1MoveImpact {
     /// Explanation of the impact.
     
@@ -380,7 +381,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1MoveImpact {}
 /// 
 /// * [locations workloads mutate partner permissions organizations](OrganizationLocationWorkloadMutatePartnerPermissionCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1MutatePartnerPermissionsRequest {
     /// Optional. The etag of the workload. If this is provided, it must match the server's etag.
     
@@ -407,7 +408,7 @@ impl client::RequestValue for GoogleCloudAssuredworkloadsV1MutatePartnerPermissi
 /// 
 /// * [locations workloads restrict allowed resources organizations](OrganizationLocationWorkloadRestrictAllowedResourceCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1RestrictAllowedResourcesRequest {
     /// Required. The type of restriction for using gcp products in the Workload environment.
     #[serde(rename="restrictionType")]
@@ -427,7 +428,7 @@ impl client::RequestValue for GoogleCloudAssuredworkloadsV1RestrictAllowedResour
 /// 
 /// * [locations workloads restrict allowed resources organizations](OrganizationLocationWorkloadRestrictAllowedResourceCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1RestrictAllowedResourcesResponse { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleCloudAssuredworkloadsV1RestrictAllowedResourcesResponse {}
@@ -442,7 +443,7 @@ impl client::ResponseResult for GoogleCloudAssuredworkloadsV1RestrictAllowedReso
 /// 
 /// * [locations workloads violations get organizations](OrganizationLocationWorkloadViolationGetCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1Violation {
     /// A boolean that indicates if the violation is acknowledged
     
@@ -528,7 +529,7 @@ impl client::ResponseResult for GoogleCloudAssuredworkloadsV1Violation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1ViolationExceptionContext {
     /// Timestamp when the violation was acknowledged.
     #[serde(rename="acknowledgementTime")]
@@ -551,7 +552,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1ViolationExceptionContext {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1ViolationRemediation {
     /// Values that can resolve the violation For example: for list org policy violations, this will either be the list of allowed or denied values
     #[serde(rename="compliantValues")]
@@ -574,7 +575,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1ViolationRemediation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1ViolationRemediationInstructions {
     /// Remediation instructions to resolve violation via cloud console
     #[serde(rename="consoleInstructions")]
@@ -594,7 +595,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1ViolationRemediationInstructi
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1ViolationRemediationInstructionsConsole {
     /// Additional urls for more information about steps
     #[serde(rename="additionalLinks")]
@@ -617,7 +618,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1ViolationRemediationInstructi
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1ViolationRemediationInstructionsGcloud {
     /// Additional urls for more information about steps
     #[serde(rename="additionalLinks")]
@@ -647,7 +648,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1ViolationRemediationInstructi
 /// * [locations workloads mutate partner permissions organizations](OrganizationLocationWorkloadMutatePartnerPermissionCall) (response)
 /// * [locations workloads patch organizations](OrganizationLocationWorkloadPatchCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1Workload {
     /// Optional. The billing account used for the resources which are direct children of workload. This billing account is initially associated with the resources created as part of Workload creation. After the initial creation of these resources, the customer can change the assigned billing account. The resource name has the form `billingAccounts/{billing_account_id}`. For example, `billingAccounts/012345-567890-ABCDEF`.
     #[serde(rename="billingAccount")]
@@ -739,7 +740,7 @@ impl client::ResponseResult for GoogleCloudAssuredworkloadsV1Workload {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1WorkloadComplianceStatus {
     /// Number of current resource violations which are not acknowledged.
     #[serde(rename="acknowledgedResourceViolationCount")]
@@ -767,7 +768,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1WorkloadComplianceStatus {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1WorkloadEkmProvisioningResponse {
     /// Indicates Ekm provisioning error if any.
     #[serde(rename="ekmProvisioningErrorDomain")]
@@ -791,7 +792,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1WorkloadEkmProvisioningRespon
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1WorkloadKMSSettings {
     /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a new version of the crypto key and mark it as the primary.
     #[serde(rename="nextRotationTime")]
@@ -812,7 +813,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1WorkloadKMSSettings {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1WorkloadPartnerPermissions {
     /// Optional. Allow partner to view violation alerts.
     #[serde(rename="assuredWorkloadsMonitoring")]
@@ -836,7 +837,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1WorkloadPartnerPermissions {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1WorkloadResourceInfo {
     /// Resource identifier. For a project this represents project_number.
     #[serde(rename="resourceId")]
@@ -857,7 +858,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1WorkloadResourceInfo {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1WorkloadResourceSettings {
     /// User-assigned resource display name. If not empty it will be used to create a resource with the specified name.
     #[serde(rename="displayName")]
@@ -881,7 +882,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1WorkloadResourceSettings {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudAssuredworkloadsV1WorkloadSaaEnrollmentResponse {
     /// Indicates SAA enrollment setup error if any.
     #[serde(rename="setupErrors")]
@@ -905,7 +906,7 @@ impl client::Part for GoogleCloudAssuredworkloadsV1WorkloadSaaEnrollmentResponse
 /// 
 /// * [locations operations list organizations](OrganizationLocationOperationListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleLongrunningListOperationsResponse {
     /// The standard List next-page token.
     #[serde(rename="nextPageToken")]
@@ -929,7 +930,7 @@ impl client::ResponseResult for GoogleLongrunningListOperationsResponse {}
 /// * [locations operations get organizations](OrganizationLocationOperationGetCall) (response)
 /// * [locations workloads create organizations](OrganizationLocationWorkloadCreateCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleLongrunningOperation {
     /// If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.
     
@@ -960,7 +961,7 @@ impl client::ResponseResult for GoogleLongrunningOperation {}
 /// 
 /// * [locations workloads delete organizations](OrganizationLocationWorkloadDeleteCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleProtobufEmpty { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleProtobufEmpty {}
@@ -971,7 +972,7 @@ impl client::ResponseResult for GoogleProtobufEmpty {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleRpcStatus {
     /// The status code, which should be an enum value of google.rpc.Code.
     
@@ -1013,7 +1014,7 @@ impl client::Part for GoogleRpcStatus {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `locations_operations_get(...)`, `locations_operations_list(...)`, `locations_workloads_analyze_workload_move(...)`, `locations_workloads_create(...)`, `locations_workloads_delete(...)`, `locations_workloads_enable_resource_monitoring(...)`, `locations_workloads_get(...)`, `locations_workloads_list(...)`, `locations_workloads_mutate_partner_permissions(...)`, `locations_workloads_patch(...)`, `locations_workloads_restrict_allowed_resources(...)`, `locations_workloads_violations_acknowledge(...)`, `locations_workloads_violations_get(...)` and `locations_workloads_violations_list(...)`
 /// // to build up your call.
@@ -1327,7 +1328,7 @@ impl<'a, S> OrganizationMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -1425,6 +1426,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -1589,7 +1591,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -1702,6 +1704,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -1888,7 +1891,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2179,7 +2182,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -2277,6 +2280,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -2441,7 +2445,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -2564,6 +2568,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -2763,7 +2768,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -2883,6 +2888,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -3077,7 +3083,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3380,7 +3386,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -3483,6 +3489,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -3654,7 +3661,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -3752,6 +3759,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -3916,7 +3924,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4014,6 +4022,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4178,7 +4187,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4291,6 +4300,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4477,7 +4487,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4769,7 +4779,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4779,7 +4789,7 @@ where
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.organizations().locations_workloads_patch(req, "name")
-///              .update_mask(&Default::default())
+///              .update_mask(FieldMask::new::<&str>(&[]))
 ///              .doit().await;
 /// # }
 /// ```
@@ -5073,7 +5083,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Assuredworkloads::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !

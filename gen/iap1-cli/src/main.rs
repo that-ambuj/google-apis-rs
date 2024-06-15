@@ -1688,7 +1688,7 @@ async fn main() {
                      Some(false)),
                   ]),
             ("validate-attribute-expression",
-                    Some(r##"Validates a given CEL expression conforms to IAP restrictions."##),
+                    Some(r##"Validates that a given CEL expression conforms to IAP restrictions."##),
                     "Details at http://byron.github.io/google-apis-rs/google_iap1_cli/methods_validate-attribute-expression",
                   vec![
                     (Some(r##"name"##),
@@ -2034,7 +2034,7 @@ async fn main() {
     
     let mut app = App::new("iap1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240224")
+           .version("5.0.5+20240412")
            .about("Controls access to cloud applications running on Google Cloud Platform.")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_iap1_cli")
            .arg(Arg::with_name("url")
@@ -2098,6 +2098,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

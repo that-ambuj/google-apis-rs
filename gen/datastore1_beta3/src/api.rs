@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -63,7 +64,7 @@ impl Default for Scope {
 /// extern crate hyper;
 /// extern crate hyper_rustls;
 /// extern crate google_datastore1_beta3 as datastore1_beta3;
-/// use datastore1_beta3::api::LookupRequest;
+/// use datastore1_beta3::api::RunQueryRequest;
 /// use datastore1_beta3::{Result, Error};
 /// # async fn dox() {
 /// use std::default::Default;
@@ -81,16 +82,16 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
-/// let mut req = LookupRequest::default();
+/// let mut req = RunQueryRequest::default();
 /// 
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
-/// let result = hub.projects().lookup(req, "projectId")
+/// let result = hub.projects().run_query(req, "projectId")
 ///              .doit().await;
 /// 
 /// match result {
@@ -129,7 +130,7 @@ impl<'a, S> Datastore<S> {
         Datastore {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://datastore.googleapis.com/".to_string(),
             _root_url: "https://datastore.googleapis.com/".to_string(),
         }
@@ -140,7 +141,7 @@ impl<'a, S> Datastore<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -173,7 +174,7 @@ impl<'a, S> Datastore<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Aggregation {
     /// Optional. Optional name of the property to store the result of the aggregation. If not provided, Datastore will pick a default name following the format `property_`. For example: ``` AGGREGATE COUNT_UP_TO(1) AS count_up_to_1, COUNT_UP_TO(2), COUNT_UP_TO(3) AS count_up_to_3, COUNT(*) OVER ( ... ); ``` becomes: ``` AGGREGATE COUNT_UP_TO(1) AS count_up_to_1, COUNT_UP_TO(2) AS property_1, COUNT_UP_TO(3) AS count_up_to_3, COUNT(*) AS property_2 OVER ( ... ); ``` Requires: * Must be unique across all aggregation aliases. * Conform to entity property name limitations.
     
@@ -197,7 +198,7 @@ impl client::Part for Aggregation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AggregationQuery {
     /// Optional. Series of aggregations to apply over the results of the `nested_query`. Requires: * A minimum of one and maximum of five aggregations per query.
     
@@ -216,7 +217,7 @@ impl client::Part for AggregationQuery {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AggregationResult {
     /// The result of the aggregation functions, ex: `COUNT(*) AS total_entities`. The key is the alias assigned to the aggregation function on input and the size of this map equals the number of aggregation functions in the query.
     #[serde(rename="aggregateProperties")]
@@ -232,7 +233,7 @@ impl client::Part for AggregationResult {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AggregationResultBatch {
     /// The aggregation results for this batch.
     #[serde(rename="aggregationResults")]
@@ -260,7 +261,7 @@ impl client::Part for AggregationResultBatch {}
 /// 
 /// * [allocate ids projects](ProjectAllocateIdCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AllocateIdsRequest {
     /// Required. A list of keys with incomplete key paths for which to allocate IDs. No key may be reserved/read-only.
     
@@ -279,7 +280,7 @@ impl client::RequestValue for AllocateIdsRequest {}
 /// 
 /// * [allocate ids projects](ProjectAllocateIdCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AllocateIdsResponse {
     /// The keys specified in the request (in the same order), each with its key path completed with a newly allocated ID.
     
@@ -294,7 +295,7 @@ impl client::ResponseResult for AllocateIdsResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ArrayValue {
     /// Values in the array. The order of values in an array is preserved as long as all values have identical settings for 'exclude_from_indexes'.
     
@@ -309,7 +310,7 @@ impl client::Part for ArrayValue {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Avg {
     /// The property to aggregate on.
     
@@ -328,7 +329,7 @@ impl client::Part for Avg {}
 /// 
 /// * [begin transaction projects](ProjectBeginTransactionCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct BeginTransactionRequest {
     /// Options for a new transaction.
     #[serde(rename="transactionOptions")]
@@ -348,7 +349,7 @@ impl client::RequestValue for BeginTransactionRequest {}
 /// 
 /// * [begin transaction projects](ProjectBeginTransactionCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct BeginTransactionResponse {
     /// The transaction identifier (always present).
     
@@ -368,7 +369,7 @@ impl client::ResponseResult for BeginTransactionResponse {}
 /// 
 /// * [commit projects](ProjectCommitCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CommitRequest {
     /// The type of commit to perform. Defaults to `TRANSACTIONAL`.
     
@@ -394,7 +395,7 @@ impl client::RequestValue for CommitRequest {}
 /// 
 /// * [commit projects](ProjectCommitCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CommitResponse {
     /// The transaction commit timestamp. Not set for non-transactional commits.
     #[serde(rename="commitTime")]
@@ -418,7 +419,7 @@ impl client::ResponseResult for CommitResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CompositeFilter {
     /// The list of filters to combine. Requires: * At least one filter is present.
     
@@ -436,7 +437,7 @@ impl client::Part for CompositeFilter {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Count {
     /// Optional. Optional constraint on the maximum number of entities to count. This provides a way to set an upper bound on the number of entities to scan, limiting latency, and cost. Unspecified is interpreted as no bound. If a zero value is provided, a count result of zero should always be expected. High-Level Example: ``` AGGREGATE COUNT_UP_TO(1000) OVER ( SELECT * FROM k ); ``` Requires: * Must be non-negative when present.
     #[serde(rename="upTo")]
@@ -453,7 +454,7 @@ impl client::Part for Count {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Entity {
     /// The entity's key. An entity must have a key, unless otherwise documented (for example, an entity in `Value.entity_value` may have no key). An entity's kind is its key path's last element's kind, or null if it has no key.
     
@@ -471,7 +472,7 @@ impl client::Part for Entity {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EntityResult {
     /// The time at which the entity was created. This field is set for `FULL` entity results. If this entity is missing, this field will not be set.
     #[serde(rename="createTime")]
@@ -497,12 +498,78 @@ pub struct EntityResult {
 impl client::Part for EntityResult {}
 
 
+/// Execution statistics for the query.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct ExecutionStats {
+    /// Debugging statistics from the execution of the query. Note that the debugging stats are subject to change as Firestore evolves. It could include: { "indexes_entries_scanned": "1000", "documents_scanned": "20", "billing_details" : { "documents_billable": "20", "index_entries_billable": "1000", "min_query_cost": "0" } }
+    #[serde(rename="debugStats")]
+    
+    pub debug_stats: Option<HashMap<String, json::Value>>,
+    /// Total time to execute the query in the backend.
+    #[serde(rename="executionDuration")]
+    
+    #[serde_as(as = "Option<::client::serde::duration::Wrapper>")]
+    pub execution_duration: Option<client::chrono::Duration>,
+    /// Total billable read operations.
+    #[serde(rename="readOperations")]
+    
+    #[serde_as(as = "Option<::client::serde_with::DisplayFromStr>")]
+    pub read_operations: Option<i64>,
+    /// Total number of results returned, including documents, projections, aggregation results, keys.
+    #[serde(rename="resultsReturned")]
+    
+    #[serde_as(as = "Option<::client::serde_with::DisplayFromStr>")]
+    pub results_returned: Option<i64>,
+}
+
+impl client::Part for ExecutionStats {}
+
+
+/// Explain metrics for the query.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct ExplainMetrics {
+    /// Aggregated stats from the execution of the query. Only present when ExplainOptions.analyze is set to true.
+    #[serde(rename="executionStats")]
+    
+    pub execution_stats: Option<ExecutionStats>,
+    /// Planning phase information for the query.
+    #[serde(rename="planSummary")]
+    
+    pub plan_summary: Option<PlanSummary>,
+}
+
+impl client::Part for ExplainMetrics {}
+
+
+/// Explain options for the query.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct ExplainOptions {
+    /// Optional. Whether to execute this query. When false (the default), the query will be planned, returning only metrics from the planning stages. When true, the query will be planned and executed, returning the full query results along with both planning and execution stage metrics.
+    
+    pub analyze: Option<bool>,
+}
+
+impl client::Part for ExplainOptions {}
+
+
 /// A holder for any type of filter.
 /// 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Filter {
     /// A composite filter.
     #[serde(rename="compositeFilter")]
@@ -522,7 +589,7 @@ impl client::Part for Filter {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GqlQuery {
     /// When false, the query string must not contain any literals and instead must bind all values. For example, `SELECT * FROM Kind WHERE a = 'string literal'` is not allowed, while `SELECT * FROM Kind WHERE a = @value` is.
     #[serde(rename="allowLiterals")]
@@ -550,7 +617,7 @@ impl client::Part for GqlQuery {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GqlQueryParameter {
     /// A query cursor. Query cursors are returned in query result batches.
     
@@ -569,7 +636,7 @@ impl client::Part for GqlQueryParameter {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Key {
     /// Entities are partitioned into subsets, currently identified by a project ID and namespace ID. Queries are scoped to a single partition.
     #[serde(rename="partitionId")]
@@ -588,7 +655,7 @@ impl client::Part for Key {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct KindExpression {
     /// The name of the kind.
     
@@ -603,7 +670,7 @@ impl client::Part for KindExpression {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct LatLng {
     /// The latitude in degrees. It must be in the range [-90.0, +90.0].
     
@@ -625,11 +692,15 @@ impl client::Part for LatLng {}
 /// 
 /// * [lookup projects](ProjectLookupCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct LookupRequest {
     /// Required. Keys of entities to look up.
     
     pub keys: Option<Vec<Key>>,
+    /// The properties to return. Defaults to returning all properties. If this field is set and an entity has a property not referenced in the mask, it will be absent from LookupResponse.found.entity.properties. The entity's key is always returned.
+    #[serde(rename="propertyMask")]
+    
+    pub property_mask: Option<PropertyMask>,
     /// The options for this lookup request.
     #[serde(rename="readOptions")]
     
@@ -648,7 +719,7 @@ impl client::RequestValue for LookupRequest {}
 /// 
 /// * [lookup projects](ProjectLookupCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct LookupResponse {
     /// A list of keys that were not looked up due to resource constraints. The order of results in this field is undefined and has no relation to the order of the keys in the input.
     
@@ -673,7 +744,7 @@ impl client::ResponseResult for LookupResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Mutation {
     /// The version of the entity that this mutation is being applied to. If this does not match the current version on the server, the mutation conflicts.
     #[serde(rename="baseVersion")]
@@ -686,6 +757,10 @@ pub struct Mutation {
     /// The entity to insert. The entity must not already exist. The entity key's final path element may be incomplete.
     
     pub insert: Option<Entity>,
+    /// The properties to write in this mutation. None of the properties in the mask may have a reserved name, except for `__key__`. This field is ignored for `delete`. If the entity already exists, only properties referenced in the mask are updated, others are left untouched. Properties referenced in the mask but not in the entity are deleted.
+    #[serde(rename="propertyMask")]
+    
+    pub property_mask: Option<PropertyMask>,
     /// The entity to update. The entity must already exist. Must have a complete key path.
     
     pub update: Option<Entity>,
@@ -706,7 +781,7 @@ impl client::Part for Mutation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct MutationResult {
     /// Whether a conflict was detected for this mutation. Always false when a conflict detection strategy field is not set in the mutation.
     #[serde(rename="conflictDetected")]
@@ -737,7 +812,7 @@ impl client::Part for MutationResult {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PartitionId {
     /// If not empty, the ID of the namespace to which the entities belong.
     #[serde(rename="namespaceId")]
@@ -757,7 +832,7 @@ impl client::Part for PartitionId {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PathElement {
     /// The auto-allocated ID of the entity. Never equal to zero. Values less than zero are discouraged and may not be supported in the future.
     
@@ -774,12 +849,28 @@ pub struct PathElement {
 impl client::Part for PathElement {}
 
 
+/// Planning phase information for the query.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct PlanSummary {
+    /// The indexes selected for the query. For example: [ {"query_scope": "Collection", "properties": "(foo ASC, __name__ ASC)"}, {"query_scope": "Collection", "properties": "(bar ASC, __name__ ASC)"} ]
+    #[serde(rename="indexesUsed")]
+    
+    pub indexes_used: Option<Vec<HashMap<String, json::Value>>>,
+}
+
+impl client::Part for PlanSummary {}
+
+
 /// A representation of a property in a projection.
 /// 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Projection {
     /// The property to project.
     
@@ -794,7 +885,7 @@ impl client::Part for Projection {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PropertyFilter {
     /// The operator to filter by.
     
@@ -810,12 +901,27 @@ pub struct PropertyFilter {
 impl client::Part for PropertyFilter {}
 
 
+/// The set of arbitrarily nested property paths used to restrict an operation to only a subset of properties in an entity.
+/// 
+/// This type is not used in any activity, and only used as *part* of another schema.
+/// 
+#[serde_with::serde_as(crate = "::client::serde_with")]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct PropertyMask {
+    /// The paths to the properties covered by this mask. A path is a list of property names separated by dots (`.`), for example `foo.bar` means the property `bar` inside the entity property `foo` inside the entity associated with this path. If a property name contains a dot `.` or a backslash `\`, then that name must be escaped. A path must not be empty, and may not reference a value inside an array value.
+    
+    pub paths: Option<Vec<String>>,
+}
+
+impl client::Part for PropertyMask {}
+
+
 /// The desired order for a specific property.
 /// 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PropertyOrder {
     /// The direction to order by. Defaults to `ASCENDING`.
     
@@ -833,7 +939,7 @@ impl client::Part for PropertyOrder {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct PropertyReference {
     /// A reference to a property. Requires: * MUST be a dot-delimited (`.`) string of segments, where each segment conforms to entity property name limitations.
     
@@ -848,7 +954,7 @@ impl client::Part for PropertyReference {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Query {
     /// The properties to make distinct. The query results will contain the first result for each distinct combination of values for the given properties (if empty, all results are returned). Requires: * If `order` is specified, the set of distinct on properties must appear before the non-distinct on properties in `order`.
     #[serde(rename="distinctOn")]
@@ -892,7 +998,7 @@ impl client::Part for Query {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct QueryResultBatch {
     /// A cursor that points to the position after the last result in the batch.
     #[serde(rename="endCursor")]
@@ -939,7 +1045,7 @@ impl client::Part for QueryResultBatch {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ReadOnly {
     /// Reads entities at the given time. This must be a microsecond precision timestamp within the past one hour, or if Point-in-Time Recovery is enabled, can additionally be a whole minute timestamp within the past 7 days.
     #[serde(rename="readTime")]
@@ -955,7 +1061,7 @@ impl client::Part for ReadOnly {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ReadOptions {
     /// The non-transactional read consistency to use.
     #[serde(rename="readConsistency")]
@@ -979,7 +1085,7 @@ impl client::Part for ReadOptions {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ReadWrite {
     /// The transaction identifier of the transaction being retried.
     #[serde(rename="previousTransaction")]
@@ -1000,7 +1106,7 @@ impl client::Part for ReadWrite {}
 /// 
 /// * [reserve ids projects](ProjectReserveIdCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ReserveIdsRequest {
     /// The ID of the database against which to make the request. '(default)' is not allowed; please use empty string '' to refer the default database.
     #[serde(rename="databaseId")]
@@ -1023,7 +1129,7 @@ impl client::RequestValue for ReserveIdsRequest {}
 /// 
 /// * [reserve ids projects](ProjectReserveIdCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ReserveIdsResponse { _never_set: Option<bool> }
 
 impl client::ResponseResult for ReserveIdsResponse {}
@@ -1038,7 +1144,7 @@ impl client::ResponseResult for ReserveIdsResponse {}
 /// 
 /// * [rollback projects](ProjectRollbackCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RollbackRequest {
     /// Required. The transaction identifier, returned by a call to Datastore.BeginTransaction.
     
@@ -1058,7 +1164,7 @@ impl client::RequestValue for RollbackRequest {}
 /// 
 /// * [rollback projects](ProjectRollbackCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RollbackResponse { _never_set: Option<bool> }
 
 impl client::ResponseResult for RollbackResponse {}
@@ -1073,12 +1179,16 @@ impl client::ResponseResult for RollbackResponse {}
 /// 
 /// * [run aggregation query projects](ProjectRunAggregationQueryCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RunAggregationQueryRequest {
     /// The query to run.
     #[serde(rename="aggregationQuery")]
     
     pub aggregation_query: Option<AggregationQuery>,
+    /// Optional. Explain options for the query. If set, additional query statistics will be returned. If not, only query results will be returned.
+    #[serde(rename="explainOptions")]
+    
+    pub explain_options: Option<ExplainOptions>,
     /// The GQL query to run. This query must be an aggregation query.
     #[serde(rename="gqlQuery")]
     
@@ -1105,11 +1215,15 @@ impl client::RequestValue for RunAggregationQueryRequest {}
 /// 
 /// * [run aggregation query projects](ProjectRunAggregationQueryCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RunAggregationQueryResponse {
     /// A batch of aggregation results. Always present.
     
     pub batch: Option<AggregationResultBatch>,
+    /// Query explain metrics. This is only present when the RunAggregationQueryRequest.explain_options is provided, and it is sent only once with the last response in the stream.
+    #[serde(rename="explainMetrics")]
+    
+    pub explain_metrics: Option<ExplainMetrics>,
     /// The parsed form of the `GqlQuery` from the request, if it was set.
     
     pub query: Option<AggregationQuery>,
@@ -1127,8 +1241,12 @@ impl client::ResponseResult for RunAggregationQueryResponse {}
 /// 
 /// * [run query projects](ProjectRunQueryCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RunQueryRequest {
+    /// Optional. Explain options for the query. If set, additional query statistics will be returned. If not, only query results will be returned.
+    #[serde(rename="explainOptions")]
+    
+    pub explain_options: Option<ExplainOptions>,
     /// The GQL query to run. This query must be a non-aggregation query.
     #[serde(rename="gqlQuery")]
     
@@ -1137,6 +1255,10 @@ pub struct RunQueryRequest {
     #[serde(rename="partitionId")]
     
     pub partition_id: Option<PartitionId>,
+    /// The properties to return. This field must not be set for a projection query. See LookupRequest.property_mask.
+    #[serde(rename="propertyMask")]
+    
+    pub property_mask: Option<PropertyMask>,
     /// The query to run.
     
     pub query: Option<Query>,
@@ -1158,11 +1280,15 @@ impl client::RequestValue for RunQueryRequest {}
 /// 
 /// * [run query projects](ProjectRunQueryCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RunQueryResponse {
     /// A batch of query results (always present).
     
     pub batch: Option<QueryResultBatch>,
+    /// Query explain metrics. This is only present when the RunQueryRequest.explain_options is provided, and it is sent only once with the last response in the stream.
+    #[serde(rename="explainMetrics")]
+    
+    pub explain_metrics: Option<ExplainMetrics>,
     /// The parsed form of the `GqlQuery` from the request, if it was set.
     
     pub query: Option<Query>,
@@ -1176,7 +1302,7 @@ impl client::ResponseResult for RunQueryResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Sum {
     /// The property to aggregate on.
     
@@ -1191,7 +1317,7 @@ impl client::Part for Sum {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TransactionOptions {
     /// The transaction should only allow reads.
     #[serde(rename="readOnly")]
@@ -1211,7 +1337,7 @@ impl client::Part for TransactionOptions {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Value {
     /// An array value. Cannot contain another array value. A `Value` instance that sets field `array_value` must not set fields `meaning` or `exclude_from_indexes`.
     #[serde(rename="arrayValue")]
@@ -1297,7 +1423,7 @@ impl client::Part for Value {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `allocate_ids(...)`, `begin_transaction(...)`, `commit(...)`, `lookup(...)`, `reserve_ids(...)`, `rollback(...)`, `run_aggregation_query(...)` and `run_query(...)`
 /// // to build up your call.
@@ -1498,7 +1624,7 @@ impl<'a, S> ProjectMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -1790,7 +1916,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2082,7 +2208,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2374,7 +2500,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2666,7 +2792,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2958,7 +3084,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3250,7 +3376,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3542,7 +3668,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Datastore::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !

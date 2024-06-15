@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -81,7 +82,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -129,7 +130,7 @@ impl<'a, S> IdentityToolkit<S> {
         IdentityToolkit {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://www.googleapis.com/identitytoolkit/v3/relyingparty/".to_string(),
             _root_url: "https://www.googleapis.com/".to_string(),
         }
@@ -140,7 +141,7 @@ impl<'a, S> IdentityToolkit<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -177,7 +178,7 @@ impl<'a, S> IdentityToolkit<S> {
 /// 
 /// * [create auth uri relyingparty](RelyingpartyCreateAuthUriCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateAuthUriResponse {
     /// all providers the user has once used to do federated login
     #[serde(rename="allProviders")]
@@ -227,7 +228,7 @@ impl client::ResponseResult for CreateAuthUriResponse {}
 /// 
 /// * [delete account relyingparty](RelyingpartyDeleteAccountCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteAccountResponse {
     /// The fixed string "identitytoolkit#DeleteAccountResponse".
     
@@ -246,7 +247,7 @@ impl client::ResponseResult for DeleteAccountResponse {}
 /// 
 /// * [download account relyingparty](RelyingpartyDownloadAccountCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DownloadAccountResponse {
     /// The fixed string "identitytoolkit#DownloadAccountResponse".
     
@@ -272,7 +273,7 @@ impl client::ResponseResult for DownloadAccountResponse {}
 /// 
 /// * [email link signin relyingparty](RelyingpartyEmailLinkSigninCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EmailLinkSigninResponse {
     /// The user's email.
     
@@ -311,7 +312,7 @@ impl client::ResponseResult for EmailLinkSigninResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EmailTemplate {
     /// Email body.
     
@@ -347,7 +348,7 @@ impl client::Part for EmailTemplate {}
 /// 
 /// * [get account info relyingparty](RelyingpartyGetAccountInfoCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GetAccountInfoResponse {
     /// The fixed string "identitytoolkit#GetAccountInfoResponse".
     
@@ -369,7 +370,7 @@ impl client::ResponseResult for GetAccountInfoResponse {}
 /// 
 /// * [get oob confirmation code relyingparty](RelyingpartyGetOobConfirmationCodeCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GetOobConfirmationCodeResponse {
     /// The email address that the email is sent to.
     
@@ -395,7 +396,7 @@ impl client::ResponseResult for GetOobConfirmationCodeResponse {}
 /// 
 /// * [get recaptcha param relyingparty](RelyingpartyGetRecaptchaParamCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GetRecaptchaParamResponse {
     /// The fixed string "identitytoolkit#GetRecaptchaParamResponse".
     
@@ -422,7 +423,7 @@ impl client::ResponseResult for GetRecaptchaParamResponse {}
 /// 
 /// * [create auth uri relyingparty](RelyingpartyCreateAuthUriCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyCreateAuthUriRequest {
     /// The app ID of the mobile app, base64(CERT_SHA1):PACKAGE_NAME for Android, BUNDLE_ID for iOS.
     #[serde(rename="appId")]
@@ -501,7 +502,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyCreateAuthUriRequest {}
 /// 
 /// * [delete account relyingparty](RelyingpartyDeleteAccountCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyDeleteAccountRequest {
     /// GCP project number of the requesting delegated app. Currently only intended for Firebase V1 migration.
     #[serde(rename="delegatedProjectNumber")]
@@ -530,7 +531,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyDeleteAccountRequest {}
 /// 
 /// * [download account relyingparty](RelyingpartyDownloadAccountCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyDownloadAccountRequest {
     /// GCP project number of the requesting delegated app. Currently only intended for Firebase V1 migration.
     #[serde(rename="delegatedProjectNumber")]
@@ -563,7 +564,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyDownloadAccountRequest 
 /// 
 /// * [email link signin relyingparty](RelyingpartyEmailLinkSigninCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyEmailLinkSigninRequest {
     /// The email address of the user.
     
@@ -590,7 +591,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyEmailLinkSigninRequest 
 /// 
 /// * [get account info relyingparty](RelyingpartyGetAccountInfoCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyGetAccountInfoRequest {
     /// GCP project number of the requesting delegated app. Currently only intended for Firebase V1 migration.
     #[serde(rename="delegatedProjectNumber")]
@@ -626,7 +627,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyGetAccountInfoRequest {
 /// 
 /// * [get project config relyingparty](RelyingpartyGetProjectConfigCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyGetProjectConfigResponse {
     /// Whether to allow password user sign in or sign up.
     #[serde(rename="allowPasswordUser")]
@@ -690,7 +691,7 @@ impl client::ResponseResult for IdentitytoolkitRelyingpartyGetProjectConfigRespo
 /// 
 /// * [get public keys relyingparty](RelyingpartyGetPublicKeyCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyGetPublicKeysResponse(pub Option<HashMap<String, String>>);
 
 impl client::ResponseResult for IdentitytoolkitRelyingpartyGetPublicKeysResponse {}
@@ -705,7 +706,7 @@ impl client::ResponseResult for IdentitytoolkitRelyingpartyGetPublicKeysResponse
 /// 
 /// * [reset password relyingparty](RelyingpartyResetPasswordCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyResetPasswordRequest {
     /// The email address of the user.
     
@@ -736,7 +737,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyResetPasswordRequest {}
 /// 
 /// * [send verification code relyingparty](RelyingpartySendVerificationCodeCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartySendVerificationCodeRequest {
     /// Receipt of successful app token validation with APNS.
     #[serde(rename="iosReceipt")]
@@ -768,7 +769,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartySendVerificationCodeReq
 /// 
 /// * [send verification code relyingparty](RelyingpartySendVerificationCodeCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartySendVerificationCodeResponse {
     /// Encrypted session information
     #[serde(rename="sessionInfo")]
@@ -788,7 +789,7 @@ impl client::ResponseResult for IdentitytoolkitRelyingpartySendVerificationCodeR
 /// 
 /// * [set account info relyingparty](RelyingpartySetAccountInfoCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartySetAccountInfoRequest {
     /// The captcha challenge.
     #[serde(rename="captchaChallenge")]
@@ -897,7 +898,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartySetAccountInfoRequest {
 /// 
 /// * [set project config relyingparty](RelyingpartySetProjectConfigCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartySetProjectConfigRequest {
     /// Whether to allow password user sign in or sign up.
     #[serde(rename="allowPasswordUser")]
@@ -958,7 +959,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartySetProjectConfigRequest
 /// 
 /// * [set project config relyingparty](RelyingpartySetProjectConfigCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartySetProjectConfigResponse {
     /// Project ID of the relying party.
     #[serde(rename="projectId")]
@@ -978,7 +979,7 @@ impl client::ResponseResult for IdentitytoolkitRelyingpartySetProjectConfigRespo
 /// 
 /// * [sign out user relyingparty](RelyingpartySignOutUserCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartySignOutUserRequest {
     /// Instance id token of the app.
     #[serde(rename="instanceId")]
@@ -1002,7 +1003,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartySignOutUserRequest {}
 /// 
 /// * [sign out user relyingparty](RelyingpartySignOutUserCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartySignOutUserResponse {
     /// The local ID of the user.
     #[serde(rename="localId")]
@@ -1022,7 +1023,7 @@ impl client::ResponseResult for IdentitytoolkitRelyingpartySignOutUserResponse {
 /// 
 /// * [signup new user relyingparty](RelyingpartySignupNewUserCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartySignupNewUserRequest {
     /// The captcha challenge.
     #[serde(rename="captchaChallenge")]
@@ -1092,7 +1093,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartySignupNewUserRequest {}
 /// 
 /// * [upload account relyingparty](RelyingpartyUploadAccountCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyUploadAccountRequest {
     /// Whether allow overwrite existing account when user local_id exists.
     #[serde(rename="allowOverwrite")]
@@ -1164,7 +1165,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyUploadAccountRequest {}
 /// 
 /// * [verify assertion relyingparty](RelyingpartyVerifyAssertionCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyVerifyAssertionRequest {
     /// When it's true, automatically creates a new account if the user doesn't exist. When it's false, allows existing user to sign in normally and throws exception if the user doesn't exist.
     #[serde(rename="autoCreate")]
@@ -1234,7 +1235,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyVerifyAssertionRequest 
 /// 
 /// * [verify custom token relyingparty](RelyingpartyVerifyCustomTokenCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyVerifyCustomTokenRequest {
     /// GCP project number of the requesting delegated app. Currently only intended for Firebase V1 migration.
     #[serde(rename="delegatedProjectNumber")]
@@ -1266,7 +1267,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyVerifyCustomTokenReques
 /// 
 /// * [verify password relyingparty](RelyingpartyVerifyPasswordCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyVerifyPasswordRequest {
     /// The captcha challenge.
     #[serde(rename="captchaChallenge")]
@@ -1326,7 +1327,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyVerifyPasswordRequest {
 /// 
 /// * [verify phone number relyingparty](RelyingpartyVerifyPhoneNumberCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyVerifyPhoneNumberRequest {
     /// no description provided
     
@@ -1368,7 +1369,7 @@ impl client::RequestValue for IdentitytoolkitRelyingpartyVerifyPhoneNumberReques
 /// 
 /// * [verify phone number relyingparty](RelyingpartyVerifyPhoneNumberCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdentitytoolkitRelyingpartyVerifyPhoneNumberResponse {
     /// no description provided
     #[serde(rename="expiresIn")]
@@ -1423,7 +1424,7 @@ impl client::ResponseResult for IdentitytoolkitRelyingpartyVerifyPhoneNumberResp
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct IdpConfig {
     /// OAuth2 client ID.
     #[serde(rename="clientId")]
@@ -1460,7 +1461,7 @@ impl client::Part for IdpConfig {}
 /// 
 /// * [get oob confirmation code relyingparty](RelyingpartyGetOobConfirmationCodeCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Relyingparty {
     /// whether or not to install the android app on the device where the link is opened
     #[serde(rename="androidInstallApp")]
@@ -1533,7 +1534,7 @@ impl client::RequestValue for Relyingparty {}
 /// 
 /// * [reset password relyingparty](RelyingpartyResetPasswordCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ResetPasswordResponse {
     /// The user's email. If the out-of-band code is for email recovery, the user's original email.
     
@@ -1563,7 +1564,7 @@ impl client::ResponseResult for ResetPasswordResponse {}
 /// 
 /// * [set account info relyingparty](RelyingpartySetAccountInfoCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SetAccountInfoResponse {
     /// The name of the user.
     #[serde(rename="displayName")]
@@ -1627,7 +1628,7 @@ impl client::ResponseResult for SetAccountInfoResponse {}
 /// 
 /// * [signup new user relyingparty](RelyingpartySignupNewUserCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SignupNewUserResponse {
     /// The name of the user.
     #[serde(rename="displayName")]
@@ -1670,7 +1671,7 @@ impl client::ResponseResult for SignupNewUserResponse {}
 /// 
 /// * [upload account relyingparty](RelyingpartyUploadAccountCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UploadAccountResponse {
     /// The error encountered while processing the account info.
     
@@ -1688,7 +1689,7 @@ impl client::ResponseResult for UploadAccountResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UserInfo {
     /// User creation timestamp.
     #[serde(rename="createdAt")]
@@ -1781,7 +1782,7 @@ impl client::Part for UserInfo {}
 /// 
 /// * [verify assertion relyingparty](RelyingpartyVerifyAssertionCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct VerifyAssertionResponse {
     /// The action code.
     
@@ -1949,7 +1950,7 @@ impl client::ResponseResult for VerifyAssertionResponse {}
 /// 
 /// * [verify custom token relyingparty](RelyingpartyVerifyCustomTokenCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct VerifyCustomTokenResponse {
     /// If idToken is STS id token, then this field will be expiration time of STS id token in seconds.
     #[serde(rename="expiresIn")]
@@ -1985,7 +1986,7 @@ impl client::ResponseResult for VerifyCustomTokenResponse {}
 /// 
 /// * [verify password relyingparty](RelyingpartyVerifyPasswordCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct VerifyPasswordResponse {
     /// The name of the user.
     #[serde(rename="displayName")]
@@ -2043,7 +2044,7 @@ impl client::ResponseResult for VerifyPasswordResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SetAccountInfoResponseProviderUserInfo {
     /// The user's display name at the IDP.
     #[serde(rename="displayName")]
@@ -2072,7 +2073,7 @@ impl client::Part for SetAccountInfoResponseProviderUserInfo {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UploadAccountResponseError {
     /// The index of the malformed account, starting from 0.
     
@@ -2091,7 +2092,7 @@ impl client::Part for UploadAccountResponseError {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct UserInfoProviderUserInfo {
     /// The user's display name at the IDP.
     #[serde(rename="displayName")]
@@ -2156,7 +2157,7 @@ impl client::Part for UserInfoProviderUserInfo {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `create_auth_uri(...)`, `delete_account(...)`, `download_account(...)`, `email_link_signin(...)`, `get_account_info(...)`, `get_oob_confirmation_code(...)`, `get_project_config(...)`, `get_public_keys(...)`, `get_recaptcha_param(...)`, `reset_password(...)`, `send_verification_code(...)`, `set_account_info(...)`, `set_project_config(...)`, `sign_out_user(...)`, `signup_new_user(...)`, `upload_account(...)`, `verify_assertion(...)`, `verify_custom_token(...)`, `verify_password(...)` and `verify_phone_number(...)`
 /// // to build up your call.
@@ -2532,7 +2533,7 @@ impl<'a, S> RelyingpartyMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2801,7 +2802,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3070,7 +3071,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3339,7 +3340,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3608,7 +3609,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3877,7 +3878,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4145,7 +4146,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4244,6 +4245,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4408,7 +4410,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4497,6 +4499,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4647,7 +4650,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4736,6 +4739,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4887,7 +4891,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -5156,7 +5160,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -5425,7 +5429,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -5694,7 +5698,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -5963,7 +5967,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -6232,7 +6236,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -6501,7 +6505,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -6770,7 +6774,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -7039,7 +7043,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -7308,7 +7312,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -7577,7 +7581,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = IdentityToolkit::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !

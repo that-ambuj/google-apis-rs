@@ -1,4 +1,4 @@
-site_name: Artifact Registry v5.0.4+20240213
+site_name: Artifact Registry v5.0.5+20240329
 site_url: http://byron.github.io/google-apis-rs/google-artifactregistry1-cli
 site_description: A complete library to interact with Artifact Registry (protocol v1)
 
@@ -9,6 +9,8 @@ site_dir: build_html
 
 nav:
 - Home: 'index.md'
+- 'Media':
+    - 'Download': 'media_download.md'
 - 'Projects':
     - 'Get Project Settings': 'projects_get-project-settings.md'
     - 'Locations Get': 'projects_locations-get.md'
@@ -37,6 +39,7 @@ nav:
     - 'Locations Repositories Packages Delete': 'projects_locations-repositories-packages-delete.md'
     - 'Locations Repositories Packages Get': 'projects_locations-repositories-packages-get.md'
     - 'Locations Repositories Packages List': 'projects_locations-repositories-packages-list.md'
+    - 'Locations Repositories Packages Patch': 'projects_locations-repositories-packages-patch.md'
     - 'Locations Repositories Packages Tags Create': 'projects_locations-repositories-packages-tags-create.md'
     - 'Locations Repositories Packages Tags Delete': 'projects_locations-repositories-packages-tags-delete.md'
     - 'Locations Repositories Packages Tags Get': 'projects_locations-repositories-packages-tags-get.md'
@@ -58,5 +61,5 @@ nav:
 
 theme: readthedocs
 
-copyright: Copyright &copy; 2015-2020, `Sebastian Thiel`
+copyright: Copyright &copy; 2015–2024, `Sebastian Thiel`
 

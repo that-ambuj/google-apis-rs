@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -76,15 +77,14 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.cases().list("parent")
-///              .product_line("duo")
-///              .page_token("ipsum")
-///              .page_size(-62)
-///              .filter("Lorem")
+///              .page_token("takimata")
+///              .page_size(-52)
+///              .filter("duo")
 ///              .doit().await;
 /// 
 /// match result {
@@ -123,7 +123,7 @@ impl<'a, S> CloudSupport<S> {
         CloudSupport {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://cloudsupport.googleapis.com/".to_string(),
             _root_url: "https://cloudsupport.googleapis.com/".to_string(),
         }
@@ -140,7 +140,7 @@ impl<'a, S> CloudSupport<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -173,7 +173,7 @@ impl<'a, S> CloudSupport<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Actor {
     /// The name to display for the actor. If not provided, it is inferred from credentials supplied during case creation. When an email is provided, a display name must also be provided. This will be obfuscated if the user is a Google Support agent.
     #[serde(rename="displayName")]
@@ -203,7 +203,7 @@ impl client::Part for Actor {}
 /// 
 /// * [upload media](MediaUploadCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Attachment {
     /// Output only. The time at which the attachment was created.
     #[serde(rename="createTime")]
@@ -237,7 +237,7 @@ impl client::ResponseResult for Attachment {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Blobstore2Info {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="blobGeneration")]
@@ -285,7 +285,7 @@ impl client::Part for Blobstore2Info {}
 /// * [patch cases](CasePatchCall) (request|response)
 /// * [search cases](CaseSearchCall) (none)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Case {
     /// The issue classification applicable to this case.
     
@@ -359,7 +359,7 @@ impl client::ResponseResult for Case {}
 /// 
 /// * [search case classifications](CaseClassificationSearchCall) (none)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CaseClassification {
     /// A display name for the classification. The display name is not static and can change. To uniquely and consistently identify classifications, use the `CaseClassification.id` field.
     #[serde(rename="displayName")]
@@ -368,9 +368,6 @@ pub struct CaseClassification {
     /// The unique ID for a classification. Must be specified for case creation. To retrieve valid classification IDs for case creation, use `caseClassifications.search`. Classification IDs returned by `caseClassifications.search` are guaranteed to be valid for at least 6 months. If a given classification is deactiveated, it will immediately stop being returned. After 6 months, `case.create` requests using the classification ID will fail.
     
     pub id: Option<String>,
-    /// The full product the classification corresponds to.
-    
-    pub product: Option<Product>,
 }
 
 impl client::Resource for CaseClassification {}
@@ -385,13 +382,13 @@ impl client::Resource for CaseClassification {}
 /// 
 /// * [close cases](CaseCloseCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CloseCaseRequest { _never_set: Option<bool> }
 
 impl client::RequestValue for CloseCaseRequest {}
 
 
-/// Case comments are the main way Google Support communicates with a user who has opened a case. When a user responds to Google Support, the user’s responses also appear as comments.
+/// A comment associated with a support case. Case comments are the primary way for Google Support to communicate with a user who has opened a case. When a user responds to Google Support, the user’s responses also appear as comments.
 /// 
 /// # Activities
 /// 
@@ -400,22 +397,22 @@ impl client::RequestValue for CloseCaseRequest {}
 /// 
 /// * [comments create cases](CaseCommentCreateCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Comment {
-    /// The full comment body. Maximum of 12800 characters. This can contain rich text syntax.
+    /// The full comment body. Maximum of 12800 characters.
     
     pub body: Option<String>,
-    /// Output only. The time when this comment was created.
+    /// Output only. The time when the comment was created.
     #[serde(rename="createTime")]
     
     pub create_time: Option<client::chrono::DateTime<client::chrono::offset::Utc>>,
-    /// Output only. The user or Google Support agent created this comment.
+    /// Output only. The user or Google Support agent who created the comment.
     
     pub creator: Option<Actor>,
-    /// Output only. The resource name for the comment.
+    /// Output only. Identifier. The resource name of the comment.
     
     pub name: Option<String>,
-    /// Output only. DEPRECATED. An automatically generated plain text version of body with all rich text syntax stripped.
+    /// Output only. DEPRECATED. DO NOT USE. A duplicate of the `body` field. This field is only present for legacy reasons.
     #[serde(rename="plainTextBody")]
     
     pub plain_text_body: Option<String>,
@@ -430,7 +427,7 @@ impl client::ResponseResult for Comment {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CompositeMedia {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="blobRef")]
@@ -489,7 +486,7 @@ impl client::Part for CompositeMedia {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ContentTypeInfo {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="bestGuess")]
@@ -525,7 +522,7 @@ impl client::Part for ContentTypeInfo {}
 /// 
 /// * [upload media](MediaUploadCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateAttachmentRequest {
     /// Required. The attachment to be created.
     
@@ -540,7 +537,7 @@ impl client::RequestValue for CreateAttachmentRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DiffChecksumsResponse {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="checksumsLocation")]
@@ -574,7 +571,7 @@ impl client::Part for DiffChecksumsResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DiffDownloadResponse {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="objectLocation")]
@@ -590,7 +587,7 @@ impl client::Part for DiffDownloadResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DiffUploadRequest {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="checksumsInfo")]
@@ -614,7 +611,7 @@ impl client::Part for DiffUploadRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DiffUploadResponse {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="objectVersion")]
@@ -634,7 +631,7 @@ impl client::Part for DiffUploadResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DiffVersionResponse {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="objectSizeBytes")]
@@ -655,7 +652,7 @@ impl client::Part for DiffVersionResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DownloadParameters {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="allowGzipCompression")]
@@ -679,7 +676,7 @@ impl client::Part for DownloadParameters {}
 /// 
 /// * [escalate cases](CaseEscalateCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EscalateCaseRequest {
     /// The escalation information to be sent with the escalation request.
     
@@ -694,7 +691,7 @@ impl client::RequestValue for EscalateCaseRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Escalation {
     /// Required. A free text description to accompany the `reason` field above. Provides additional context on why the case is being escalated.
     
@@ -716,7 +713,7 @@ impl client::Part for Escalation {}
 /// 
 /// * [attachments list cases](CaseAttachmentListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ListAttachmentsResponse {
     /// The list of attachments associated with a case.
     
@@ -739,7 +736,7 @@ impl client::ResponseResult for ListAttachmentsResponse {}
 /// 
 /// * [list cases](CaseListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ListCasesResponse {
     /// The list of cases associated with the parent after any filters have been applied.
     
@@ -762,7 +759,7 @@ impl client::ResponseResult for ListCasesResponse {}
 /// 
 /// * [comments list cases](CaseCommentListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ListCommentsResponse {
     /// List of the comments associated with the case.
     
@@ -785,7 +782,7 @@ impl client::ResponseResult for ListCommentsResponse {}
 /// 
 /// * [download media](MediaDownloadCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Media {
     /// # gdata.* are outside protos with mising documentation
     
@@ -919,7 +916,7 @@ impl client::ResponseResult for Media {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ObjectId {
     /// # gdata.* are outside protos with mising documentation
     #[serde(rename="bucketName")]
@@ -938,26 +935,6 @@ pub struct ObjectId {
 impl client::Part for ObjectId {}
 
 
-/// The full product a case may be associated with, including Product Line and Product Subline.
-/// 
-/// This type is not used in any activity, and only used as *part* of another schema.
-/// 
-#[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
-pub struct Product {
-    /// The Product Line of the Product.
-    #[serde(rename="productLine")]
-    
-    pub product_line: Option<String>,
-    /// The Product Subline of the Product, such as "Maps Billing".
-    #[serde(rename="productSubline")]
-    
-    pub product_subline: Option<String>,
-}
-
-impl client::Part for Product {}
-
-
 /// The response message for SearchCaseClassifications endpoint.
 /// 
 /// # Activities
@@ -967,7 +944,7 @@ impl client::Part for Product {}
 /// 
 /// * [search case classifications](CaseClassificationSearchCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SearchCaseClassificationsResponse {
     /// The classifications retrieved.
     #[serde(rename="caseClassifications")]
@@ -991,7 +968,7 @@ impl client::ResponseResult for SearchCaseClassificationsResponse {}
 /// 
 /// * [search cases](CaseSearchCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SearchCasesResponse {
     /// The list of cases associated with the parent after any filters have been applied.
     
@@ -1031,7 +1008,7 @@ impl client::ResponseResult for SearchCasesResponse {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `search(...)`
 /// // to build up your call.
@@ -1055,8 +1032,6 @@ impl<'a, S> CaseClassificationMethods<'a, S> {
         CaseClassificationSearchCall {
             hub: self.hub,
             _query: Default::default(),
-            _product_product_subline: Default::default(),
-            _product_product_line: Default::default(),
             _page_token: Default::default(),
             _page_size: Default::default(),
             _delegate: Default::default(),
@@ -1089,7 +1064,7 @@ impl<'a, S> CaseClassificationMethods<'a, S> {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `attachments_list(...)`, `close(...)`, `comments_create(...)`, `comments_list(...)`, `create(...)`, `escalate(...)`, `get(...)`, `list(...)`, `patch(...)` and `search(...)`
 /// // to build up your call.
@@ -1248,7 +1223,6 @@ impl<'a, S> CaseMethods<'a, S> {
         CaseListCall {
             hub: self.hub,
             _parent: parent.to_string(),
-            _product_line: Default::default(),
             _page_token: Default::default(),
             _page_size: Default::default(),
             _filter: Default::default(),
@@ -1318,7 +1292,7 @@ impl<'a, S> CaseMethods<'a, S> {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `download(...)` and `upload(...)`
 /// // to build up your call.
@@ -1402,16 +1376,14 @@ impl<'a, S> MediaMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.case_classifications().search()
-///              .query("gubergren")
-///              .product_product_subline("eos")
-///              .product_product_line("dolor")
-///              .page_token("ea")
-///              .page_size(-55)
+///              .query("ipsum")
+///              .page_token("gubergren")
+///              .page_size(-51)
 ///              .doit().await;
 /// # }
 /// ```
@@ -1420,8 +1392,6 @@ pub struct CaseClassificationSearchCall<'a, S>
 
     hub: &'a CloudSupport<S>,
     _query: Option<String>,
-    _product_product_subline: Option<String>,
-    _product_product_line: Option<String>,
     _page_token: Option<String>,
     _page_size: Option<i32>,
     _delegate: Option<&'a mut dyn client::Delegate>,
@@ -1452,22 +1422,16 @@ where
         dlg.begin(client::MethodInfo { id: "cloudsupport.caseClassifications.search",
                                http_method: hyper::Method::GET });
 
-        for &field in ["alt", "query", "product.productSubline", "product.productLine", "pageToken", "pageSize"].iter() {
+        for &field in ["alt", "query", "pageToken", "pageSize"].iter() {
             if self._additional_params.contains_key(field) {
                 dlg.finished(false);
                 return Err(client::Error::FieldClash(field));
             }
         }
 
-        let mut params = Params::with_capacity(7 + self._additional_params.len());
+        let mut params = Params::with_capacity(5 + self._additional_params.len());
         if let Some(value) = self._query.as_ref() {
             params.push("query", value);
-        }
-        if let Some(value) = self._product_product_subline.as_ref() {
-            params.push("product.productSubline", value);
-        }
-        if let Some(value) = self._product_product_line.as_ref() {
-            params.push("product.productLine", value);
         }
         if let Some(value) = self._page_token.as_ref() {
             params.push("pageToken", value);
@@ -1516,6 +1480,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -1577,20 +1542,6 @@ where
     /// Sets the *query* query property to the given value.
     pub fn query(mut self, new_value: &str) -> CaseClassificationSearchCall<'a, S> {
         self._query = Some(new_value.to_string());
-        self
-    }
-    /// The Product Subline of the Product, such as "Maps Billing".
-    ///
-    /// Sets the *product.product subline* query property to the given value.
-    pub fn product_product_subline(mut self, new_value: &str) -> CaseClassificationSearchCall<'a, S> {
-        self._product_product_subline = Some(new_value.to_string());
-        self
-    }
-    /// The Product Line of the Product.
-    ///
-    /// Sets the *product.product line* query property to the given value.
-    pub fn product_product_line(mut self, new_value: &str) -> CaseClassificationSearchCall<'a, S> {
-        self._product_product_line = Some(new_value.to_string());
         self
     }
     /// A token identifying the page of results to return. If unspecified, the first page is retrieved.
@@ -1705,13 +1656,13 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.cases().attachments_list("parent")
-///              .page_token("amet")
-///              .page_size(-20)
+///              .page_token("eos")
+///              .page_size(-4)
 ///              .doit().await;
 /// # }
 /// ```
@@ -1813,6 +1764,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -1992,7 +1944,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2283,13 +2235,13 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.cases().comments_list("parent")
-///              .page_token("ut")
-///              .page_size(-12)
+///              .page_token("invidunt")
+///              .page_size(-47)
 ///              .doit().await;
 /// # }
 /// ```
@@ -2391,6 +2343,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -2570,7 +2523,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2862,7 +2815,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3154,7 +3107,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3445,7 +3398,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -3543,6 +3496,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -3707,15 +3661,14 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.cases().list("parent")
-///              .product_line("gubergren")
-///              .page_token("ea")
-///              .page_size(-99)
-///              .filter("Lorem")
+///              .page_token("rebum.")
+///              .page_size(-57)
+///              .filter("ipsum")
 ///              .doit().await;
 /// # }
 /// ```
@@ -3724,7 +3677,6 @@ pub struct CaseListCall<'a, S>
 
     hub: &'a CloudSupport<S>,
     _parent: String,
-    _product_line: Option<String>,
     _page_token: Option<String>,
     _page_size: Option<i32>,
     _filter: Option<String>,
@@ -3756,18 +3708,15 @@ where
         dlg.begin(client::MethodInfo { id: "cloudsupport.cases.list",
                                http_method: hyper::Method::GET });
 
-        for &field in ["alt", "parent", "productLine", "pageToken", "pageSize", "filter"].iter() {
+        for &field in ["alt", "parent", "pageToken", "pageSize", "filter"].iter() {
             if self._additional_params.contains_key(field) {
                 dlg.finished(false);
                 return Err(client::Error::FieldClash(field));
             }
         }
 
-        let mut params = Params::with_capacity(7 + self._additional_params.len());
+        let mut params = Params::with_capacity(6 + self._additional_params.len());
         params.push("parent", self._parent);
-        if let Some(value) = self._product_line.as_ref() {
-            params.push("productLine", value);
-        }
         if let Some(value) = self._page_token.as_ref() {
             params.push("pageToken", value);
         }
@@ -3825,6 +3774,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -3889,13 +3839,6 @@ where
     /// we provide this method for API completeness.
     pub fn parent(mut self, new_value: &str) -> CaseListCall<'a, S> {
         self._parent = new_value.to_string();
-        self
-    }
-    /// The product line for which to request cases for. If unspecified, only Google Cloud cases will be returned.
-    ///
-    /// Sets the *product line* query property to the given value.
-    pub fn product_line(mut self, new_value: &str) -> CaseListCall<'a, S> {
-        self._product_line = Some(new_value.to_string());
         self
     }
     /// A token identifying the page of results to return. If unspecified, the first page is retrieved.
@@ -4018,7 +3961,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4028,7 +3971,7 @@ where
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.cases().patch(req, "name")
-///              .update_mask(&Default::default())
+///              .update_mask(FieldMask::new::<&str>(&[]))
 ///              .doit().await;
 /// # }
 /// ```
@@ -4321,15 +4264,15 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
 /// let result = hub.cases().search()
-///              .query("labore")
-///              .parent("sed")
-///              .page_token("duo")
-///              .page_size(-80)
+///              .query("est")
+///              .parent("gubergren")
+///              .page_token("ea")
+///              .page_size(-99)
 ///              .doit().await;
 /// # }
 /// ```
@@ -4430,6 +4373,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4617,7 +4561,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4724,6 +4668,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4890,7 +4835,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !

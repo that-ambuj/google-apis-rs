@@ -172,6 +172,7 @@ where
                     "event.expected-action" => Some(("event.expectedAction", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "event.express" => Some(("event.express", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     "event.firewall-policy-evaluation" => Some(("event.firewallPolicyEvaluation", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
+                    "event.fraud-prevention" => Some(("event.fraudPrevention", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "event.hashed-account-id" => Some(("event.hashedAccountId", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "event.headers" => Some(("event.headers", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Vec })),
                     "event.ja3" => Some(("event.ja3", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -241,7 +242,7 @@ where
                     "token-properties.ios-bundle-id" => Some(("tokenProperties.iosBundleId", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "token-properties.valid" => Some(("tokenProperties.valid", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["account-defender-assessment", "account-id", "account-verification", "action", "active-days-lower-bound", "address", "administrative-area", "android-package-name", "avs-response-code", "behavioral-trust-verdict", "billing-address", "card-bin", "card-labels", "card-last-four", "card-signals", "card-testing-verdict", "code", "condition", "create-account-time", "create-time", "creation-ms", "currency-code", "cvv-response-code", "description", "email", "email-verified", "encrypted-leak-match-prefixes", "encrypted-user-credentials-hash", "error", "event", "expected-action", "express", "extended-verdict-reasons", "firewall-policy", "firewall-policy-assessment", "firewall-policy-evaluation", "fraud-prevention-assessment", "fraud-signals", "gateway-info", "gateway-response-code", "hashed-account-id", "headers", "hostname", "invalid-reason", "ios-bundle-id", "ja3", "labels", "language-code", "latest-verification-result", "locality", "lookup-hash-prefix", "message", "name", "path", "payment-method", "phone-number", "phone-verified", "postal-code", "private-password-leak-verification", "reasons", "recipient", "reencrypted-user-credentials-hash", "region-code", "requested-uri", "risk", "risk-analysis", "score", "shipping-address", "shipping-value", "site-key", "stolen-instrument-verdict", "synthetic-risk", "token", "token-properties", "transaction-data", "transaction-id", "transaction-risk", "trust", "user", "user-agent", "user-info", "user-ip-address", "user-signals", "username", "valid", "value", "waf-token-assessment"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["account-defender-assessment", "account-id", "account-verification", "action", "active-days-lower-bound", "address", "administrative-area", "android-package-name", "avs-response-code", "behavioral-trust-verdict", "billing-address", "card-bin", "card-labels", "card-last-four", "card-signals", "card-testing-verdict", "code", "condition", "create-account-time", "create-time", "creation-ms", "currency-code", "cvv-response-code", "description", "email", "email-verified", "encrypted-leak-match-prefixes", "encrypted-user-credentials-hash", "error", "event", "expected-action", "express", "extended-verdict-reasons", "firewall-policy", "firewall-policy-assessment", "firewall-policy-evaluation", "fraud-prevention", "fraud-prevention-assessment", "fraud-signals", "gateway-info", "gateway-response-code", "hashed-account-id", "headers", "hostname", "invalid-reason", "ios-bundle-id", "ja3", "labels", "language-code", "latest-verification-result", "locality", "lookup-hash-prefix", "message", "name", "path", "payment-method", "phone-number", "phone-verified", "postal-code", "private-password-leak-verification", "reasons", "recipient", "reencrypted-user-credentials-hash", "region-code", "requested-uri", "risk", "risk-analysis", "score", "shipping-address", "shipping-value", "site-key", "stolen-instrument-verdict", "synthetic-risk", "token", "token-properties", "transaction-data", "transaction-id", "transaction-risk", "trust", "user", "user-agent", "user-info", "user-ip-address", "user-signals", "username", "valid", "value", "waf-token-assessment"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -2123,7 +2124,7 @@ async fn main() {
     
     let mut app = App::new("recaptchaenterprise1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240303")
+           .version("5.0.5+20240414")
            .about("Help protect your website from fraudulent activity, spam, and abuse without creating friction.")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_recaptchaenterprise1_cli")
            .arg(Arg::with_name("url")
@@ -2187,6 +2188,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

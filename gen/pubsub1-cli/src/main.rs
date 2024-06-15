@@ -1696,6 +1696,7 @@ where
                     "bigquery-config.write-metadata" => Some(("bigqueryConfig.writeMetadata", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     "cloud-storage-config.avro-config.write-metadata" => Some(("cloudStorageConfig.avroConfig.writeMetadata", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     "cloud-storage-config.bucket" => Some(("cloudStorageConfig.bucket", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "cloud-storage-config.filename-datetime-format" => Some(("cloudStorageConfig.filenameDatetimeFormat", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "cloud-storage-config.filename-prefix" => Some(("cloudStorageConfig.filenamePrefix", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "cloud-storage-config.filename-suffix" => Some(("cloudStorageConfig.filenameSuffix", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "cloud-storage-config.max-bytes" => Some(("cloudStorageConfig.maxBytes", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -1724,7 +1725,7 @@ where
                     "topic" => Some(("topic", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "topic-message-retention-duration" => Some(("topicMessageRetentionDuration", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["ack-deadline-seconds", "attributes", "audience", "avro-config", "bigquery-config", "bucket", "cloud-storage-config", "dead-letter-policy", "dead-letter-topic", "detached", "drop-unknown-fields", "enable-exactly-once-delivery", "enable-message-ordering", "expiration-policy", "filename-prefix", "filename-suffix", "filter", "labels", "max-bytes", "max-delivery-attempts", "max-duration", "maximum-backoff", "message-retention-duration", "minimum-backoff", "name", "no-wrapper", "oidc-token", "push-config", "push-endpoint", "retain-acked-messages", "retry-policy", "service-account-email", "state", "table", "topic", "topic-message-retention-duration", "ttl", "use-table-schema", "use-topic-schema", "write-metadata"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["ack-deadline-seconds", "attributes", "audience", "avro-config", "bigquery-config", "bucket", "cloud-storage-config", "dead-letter-policy", "dead-letter-topic", "detached", "drop-unknown-fields", "enable-exactly-once-delivery", "enable-message-ordering", "expiration-policy", "filename-datetime-format", "filename-prefix", "filename-suffix", "filter", "labels", "max-bytes", "max-delivery-attempts", "max-duration", "maximum-backoff", "message-retention-duration", "minimum-backoff", "name", "no-wrapper", "oidc-token", "push-config", "push-endpoint", "retain-acked-messages", "retry-policy", "service-account-email", "state", "table", "topic", "topic-message-retention-duration", "ttl", "use-table-schema", "use-topic-schema", "write-metadata"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -2263,6 +2264,7 @@ where
                     "subscription.bigquery-config.write-metadata" => Some(("subscription.bigqueryConfig.writeMetadata", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     "subscription.cloud-storage-config.avro-config.write-metadata" => Some(("subscription.cloudStorageConfig.avroConfig.writeMetadata", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     "subscription.cloud-storage-config.bucket" => Some(("subscription.cloudStorageConfig.bucket", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
+                    "subscription.cloud-storage-config.filename-datetime-format" => Some(("subscription.cloudStorageConfig.filenameDatetimeFormat", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "subscription.cloud-storage-config.filename-prefix" => Some(("subscription.cloudStorageConfig.filenamePrefix", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "subscription.cloud-storage-config.filename-suffix" => Some(("subscription.cloudStorageConfig.filenameSuffix", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "subscription.cloud-storage-config.max-bytes" => Some(("subscription.cloudStorageConfig.maxBytes", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -2292,7 +2294,7 @@ where
                     "subscription.topic-message-retention-duration" => Some(("subscription.topicMessageRetentionDuration", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "update-mask" => Some(("updateMask", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["ack-deadline-seconds", "attributes", "audience", "avro-config", "bigquery-config", "bucket", "cloud-storage-config", "dead-letter-policy", "dead-letter-topic", "detached", "drop-unknown-fields", "enable-exactly-once-delivery", "enable-message-ordering", "expiration-policy", "filename-prefix", "filename-suffix", "filter", "labels", "max-bytes", "max-delivery-attempts", "max-duration", "maximum-backoff", "message-retention-duration", "minimum-backoff", "name", "no-wrapper", "oidc-token", "push-config", "push-endpoint", "retain-acked-messages", "retry-policy", "service-account-email", "state", "subscription", "table", "topic", "topic-message-retention-duration", "ttl", "update-mask", "use-table-schema", "use-topic-schema", "write-metadata"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["ack-deadline-seconds", "attributes", "audience", "avro-config", "bigquery-config", "bucket", "cloud-storage-config", "dead-letter-policy", "dead-letter-topic", "detached", "drop-unknown-fields", "enable-exactly-once-delivery", "enable-message-ordering", "expiration-policy", "filename-datetime-format", "filename-prefix", "filename-suffix", "filter", "labels", "max-bytes", "max-delivery-attempts", "max-duration", "maximum-backoff", "message-retention-duration", "minimum-backoff", "name", "no-wrapper", "oidc-token", "push-config", "push-endpoint", "retain-acked-messages", "retry-policy", "service-account-email", "state", "subscription", "table", "topic", "topic-message-retention-duration", "ttl", "update-mask", "use-table-schema", "use-topic-schema", "write-metadata"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -4883,7 +4885,7 @@ async fn main() {
     
     let mut app = App::new("pubsub1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240227")
+           .version("5.0.5+20240409")
            .about("Provides reliable, many-to-many, asynchronous messaging between applications. ")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_pubsub1_cli")
            .arg(Arg::with_name("url")
@@ -4947,6 +4949,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -76,7 +77,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -119,7 +120,7 @@ impl<'a, S> DLP<S> {
         DLP {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://dlp.googleapis.com/".to_string(),
             _root_url: "https://dlp.googleapis.com/".to_string(),
         }
@@ -142,7 +143,7 @@ impl<'a, S> DLP<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -175,7 +176,7 @@ impl<'a, S> DLP<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1FieldTransformation {
     /// Only apply the transformation if the condition evaluates to true for the
     /// given `RecordCondition`. The conditions are allowed to reference fields
@@ -210,7 +211,7 @@ impl client::Part for GooglePrivacyDlpV2beta1FieldTransformation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1OutputStorageConfig {
     /// The path to a Google Cloud Storage location to store output.
     /// The bucket must already exist and
@@ -273,7 +274,7 @@ impl client::Part for GooglePrivacyDlpV2beta1OutputStorageConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1BucketingConfig {
     /// no description provided
     
@@ -292,7 +293,7 @@ impl client::Part for GooglePrivacyDlpV2beta1BucketingConfig {}
 /// 
 /// * [deidentify content](ContentDeidentifyCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1DeidentifyContentResponse {
     /// no description provided
     
@@ -318,7 +319,7 @@ impl client::ResponseResult for GooglePrivacyDlpV2beta1DeidentifyContentResponse
 /// * [operations create inspect](InspectOperationCreateCall) (response)
 /// * [operations get inspect](InspectOperationGetCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleLongrunningOperation {
     /// If the value is `false`, it means the operation is still in progress.
     /// If `true`, the operation is completed, and either `error` or `response` is
@@ -350,7 +351,7 @@ impl client::ResponseResult for GoogleLongrunningOperation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1KmsWrappedCryptoKey {
     /// The wrapped data crypto key. [required]
     #[serde(rename="wrappedKey")]
@@ -371,7 +372,7 @@ impl client::Part for GooglePrivacyDlpV2beta1KmsWrappedCryptoKey {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1InfoType {
     /// Name of the information type.
     
@@ -387,7 +388,7 @@ impl client::Part for GooglePrivacyDlpV2beta1InfoType {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CharsToIgnore {
     /// no description provided
     #[serde(rename="charactersToSkip")]
@@ -416,7 +417,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CharsToIgnore {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1FixedSizeBucketingConfig {
     /// Upper bound value of buckets. All values greater than upper_bound are
     /// grouped together into a single bucket; for example if `upper_bound` = 89,
@@ -448,7 +449,7 @@ impl client::Part for GooglePrivacyDlpV2beta1FixedSizeBucketingConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CategoryDescription {
     /// Internal name of the category.
     
@@ -467,7 +468,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CategoryDescription {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Conditions {
     /// no description provided
     
@@ -482,7 +483,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Conditions {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1PrimitiveTransformation {
     /// no description provided
     #[serde(rename="replaceWithInfoTypeConfig")]
@@ -531,7 +532,7 @@ impl client::Part for GooglePrivacyDlpV2beta1PrimitiveTransformation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CategoricalStatsConfig {
     /// Field to compute categorical stats on. All column types are
     /// supported except for arrays and structs. However, it may be more
@@ -549,7 +550,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CategoricalStatsConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Finding {
     /// The specific string that may be potentially sensitive info.
     
@@ -583,7 +584,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Finding {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1KMapEstimationConfig {
     /// Several auxiliary tables can be used in the analysis. Each custom_tag
     /// used to tag a quasi-identifiers column must appear in exactly one column
@@ -617,7 +618,7 @@ impl client::Part for GooglePrivacyDlpV2beta1KMapEstimationConfig {}
 /// * [operations list risk analysis](RiskAnalysiOperationListCall) (response)
 /// * [operations list inspect](InspectOperationListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleLongrunningListOperationsResponse {
     /// A list of operations that matches the specified filter in the request.
     
@@ -636,7 +637,7 @@ impl client::ResponseResult for GoogleLongrunningListOperationsResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Row {
     /// no description provided
     
@@ -668,7 +669,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Row {}
 /// * [operations cancel inspect](InspectOperationCancelCall) (response)
 /// * [operations delete inspect](InspectOperationDeleteCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleProtobufEmpty { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleProtobufEmpty {}
@@ -683,7 +684,7 @@ impl client::ResponseResult for GoogleProtobufEmpty {}
 /// 
 /// * [results findings list inspect](InspectResultFindingListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1ListInspectFindingsResponse {
     /// The results.
     
@@ -703,7 +704,7 @@ impl client::ResponseResult for GooglePrivacyDlpV2beta1ListInspectFindingsRespon
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Expressions {
     /// The operator to apply to the result of conditions. Default and currently
     /// only supported value is `AND`.
@@ -724,7 +725,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Expressions {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CloudStorageOptions {
     /// no description provided
     #[serde(rename="fileSet")]
@@ -740,7 +741,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CloudStorageOptions {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CloudStoragePath {
     /// The url, in the format of `gs://bucket/<path>`.
     
@@ -755,7 +756,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CloudStoragePath {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Range {
     /// Index of the first character of the range (inclusive).
     
@@ -777,7 +778,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Range {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeTimeOfDay {
     /// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
     
@@ -803,7 +804,7 @@ impl client::Part for GoogleTypeTimeOfDay {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1DeidentifyConfig {
     /// Treat the dataset as structured. Transformations can be applied to
     /// specific locations within structured datasets, such as transforming
@@ -826,7 +827,7 @@ impl client::Part for GooglePrivacyDlpV2beta1DeidentifyConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1LDiversityConfig {
     /// Sensitive field for computing the l-value.
     #[serde(rename="sensitiveAttribute")]
@@ -848,7 +849,7 @@ impl client::Part for GooglePrivacyDlpV2beta1LDiversityConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1StorageConfig {
     /// BigQuery options specification.
     #[serde(rename="bigQueryOptions")]
@@ -872,7 +873,7 @@ impl client::Part for GooglePrivacyDlpV2beta1StorageConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1OperationConfig {
     /// Max number of findings per file, Datastore entity, or database row.
     #[serde(rename="maxItemFindings")]
@@ -889,7 +890,7 @@ impl client::Part for GooglePrivacyDlpV2beta1OperationConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1BigQueryOptions {
     /// References to fields uniquely identifying rows within the table.
     /// Nested fields in the format, like `person.birthdate.year`, are allowed.
@@ -910,7 +911,7 @@ impl client::Part for GooglePrivacyDlpV2beta1BigQueryOptions {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1PrivacyMetric {
     /// no description provided
     #[serde(rename="kMapEstimationConfig")]
@@ -942,7 +943,7 @@ impl client::Part for GooglePrivacyDlpV2beta1PrivacyMetric {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1ReplaceConfig {
     /// Content replacing sensitive information of given type. Max 256 chars.
     #[serde(rename="replaceWith")]
@@ -966,7 +967,7 @@ impl client::Part for GooglePrivacyDlpV2beta1ReplaceConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1NumericalStatsConfig {
     /// Field to compute numerical stats on. Supported types are
     /// integer, float, date, datetime, timestamp, time.
@@ -982,7 +983,7 @@ impl client::Part for GooglePrivacyDlpV2beta1NumericalStatsConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1DeidentificationSummary {
     /// Total size in bytes that were transformed in some way.
     #[serde(rename="transformedBytes")]
@@ -1004,7 +1005,7 @@ impl client::Part for GooglePrivacyDlpV2beta1DeidentificationSummary {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1RecordCondition {
     /// no description provided
     
@@ -1020,7 +1021,7 @@ impl client::Part for GooglePrivacyDlpV2beta1RecordCondition {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1TimePartConfig {
     /// no description provided
     #[serde(rename="partToExtract")]
@@ -1040,7 +1041,7 @@ impl client::Part for GooglePrivacyDlpV2beta1TimePartConfig {}
 /// 
 /// * [info types list root categories](RootCategoryInfoTypeListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1ListInfoTypesResponse {
     /// Set of sensitive info types belonging to a category.
     #[serde(rename="infoTypes")]
@@ -1056,7 +1057,7 @@ impl client::ResponseResult for GooglePrivacyDlpV2beta1ListInfoTypesResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CloudStorageKey {
     /// Path to the file.
     #[serde(rename="filePath")]
@@ -1095,7 +1096,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CloudStorageKey {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Dictionary {
     /// List of words or phrases to search for.
     #[serde(rename="wordList")]
@@ -1111,7 +1112,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Dictionary {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1DatastoreOptions {
     /// A partition ID identifies a grouping of entities. The grouping is always
     /// by project and namespace, however the namespace ID may be empty.
@@ -1136,7 +1137,7 @@ impl client::Part for GooglePrivacyDlpV2beta1DatastoreOptions {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1RecordTransformations {
     /// Transform the record by applying various field transformations.
     #[serde(rename="fieldTransformations")]
@@ -1159,7 +1160,7 @@ impl client::Part for GooglePrivacyDlpV2beta1RecordTransformations {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1InspectConfig {
     /// Configuration of findings limit given for specified info types.
     #[serde(rename="infoTypeLimits")]
@@ -1202,7 +1203,7 @@ impl client::Part for GooglePrivacyDlpV2beta1InspectConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Projection {
     /// The property to project.
     
@@ -1219,7 +1220,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Projection {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1RedactConfig { _never_set: Option<bool> }
 
 impl client::Part for GooglePrivacyDlpV2beta1RedactConfig {}
@@ -1234,7 +1235,7 @@ impl client::Part for GooglePrivacyDlpV2beta1RedactConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CryptoHashConfig {
     /// The key used by the hash function.
     #[serde(rename="cryptoKey")]
@@ -1253,7 +1254,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CryptoHashConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Key {
     /// The entity path.
     /// An entity path consists of one or more elements composed of a kind and a
@@ -1286,7 +1287,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Key {}
 /// 
 /// * [inspect content](ContentInspectCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1InspectContentRequest {
     /// The list of items to inspect. Items in a single request are
     /// considered "related" unless inspect_config.independent_inputs is true.
@@ -1313,7 +1314,7 @@ impl client::RequestValue for GooglePrivacyDlpV2beta1InspectContentRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeDate {
     /// Month of year. Must be from 1 to 12.
     
@@ -1336,7 +1337,7 @@ impl client::Part for GoogleTypeDate {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1ImageRedactionConfig {
     /// The color to use when redacting content from an image. If not specified,
     /// the default is black.
@@ -1365,7 +1366,7 @@ impl client::Part for GooglePrivacyDlpV2beta1ImageRedactionConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1ReplaceWithInfoTypeConfig { _never_set: Option<bool> }
 
 impl client::Part for GooglePrivacyDlpV2beta1ReplaceWithInfoTypeConfig {}
@@ -1376,7 +1377,7 @@ impl client::Part for GooglePrivacyDlpV2beta1ReplaceWithInfoTypeConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Location {
     /// Key of the finding.
     #[serde(rename="recordKey")]
@@ -1414,7 +1415,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Location {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1RecordSuppression {
     /// no description provided
     
@@ -1433,7 +1434,7 @@ impl client::Part for GooglePrivacyDlpV2beta1RecordSuppression {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1EntityId {
     /// Composite key indicating which field contains the entity identifier.
     
@@ -1449,7 +1450,7 @@ impl client::Part for GooglePrivacyDlpV2beta1EntityId {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1UnwrappedCryptoKey {
     /// The AES 128/192/256 bit key. [required]
     
@@ -1466,7 +1467,7 @@ impl client::Part for GooglePrivacyDlpV2beta1UnwrappedCryptoKey {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CustomInfoType {
     /// Info type configuration. All custom info types must have configurations
     /// that do not conflict with built-in info types or other custom info types.
@@ -1490,7 +1491,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CustomInfoType {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1InfoTypeDescription {
     /// Human readable form of the infoType name.
     #[serde(rename="displayName")]
@@ -1518,7 +1519,7 @@ impl client::Part for GooglePrivacyDlpV2beta1InfoTypeDescription {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1AuxiliaryTable {
     /// Auxiliary table location. [required]
     
@@ -1593,7 +1594,7 @@ impl client::Part for GooglePrivacyDlpV2beta1AuxiliaryTable {}
 /// 
 /// This type is not used in any activity, and only used as *part* of another schema.
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleRpcStatus {
     /// The status code, which should be an enum value of google.rpc.Code.
     
@@ -1620,7 +1621,7 @@ impl client::Part for GoogleRpcStatus {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1PathElement {
     /// The auto-allocated ID of the entity.
     /// Never equal to zero. Values less than zero are discouraged and may not
@@ -1651,7 +1652,7 @@ impl client::Part for GooglePrivacyDlpV2beta1PathElement {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1SummaryResult {
     /// A place for warnings or errors to show up if a transformation didn't
     /// work as expected.
@@ -1678,7 +1679,7 @@ impl client::Part for GooglePrivacyDlpV2beta1SummaryResult {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1BigQueryTable {
     /// Name of the table.
     #[serde(rename="tableId")]
@@ -1707,7 +1708,7 @@ impl client::Part for GooglePrivacyDlpV2beta1BigQueryTable {}
 /// 
 /// * [list root categories](RootCategoryListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1ListRootCategoriesResponse {
     /// List of all into type categories supported by the API.
     
@@ -1725,7 +1726,7 @@ impl client::ResponseResult for GooglePrivacyDlpV2beta1ListRootCategoriesRespons
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1InfoTypeTransformations {
     /// Transformation for each info type. Cannot specify more than one
     /// for a given info type. [required]
@@ -1741,7 +1742,7 @@ impl client::Part for GooglePrivacyDlpV2beta1InfoTypeTransformations {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1KindExpression {
     /// The name of the kind.
     
@@ -1756,7 +1757,7 @@ impl client::Part for GooglePrivacyDlpV2beta1KindExpression {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1FileSet {
     /// The url, in the format `gs://<bucket>/<path>`. Trailing wildcard in the
     /// path is allowed.
@@ -1773,7 +1774,7 @@ impl client::Part for GooglePrivacyDlpV2beta1FileSet {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1InfoTypeTransformation {
     /// Primitive transformation to apply to the info type. [required]
     #[serde(rename="primitiveTransformation")]
@@ -1798,7 +1799,7 @@ impl client::Part for GooglePrivacyDlpV2beta1InfoTypeTransformation {}
 /// 
 /// * [analyze data source](DataSourceAnalyzeCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1AnalyzeDataSourceRiskRequest {
     /// Input dataset to compute metrics over.
     #[serde(rename="sourceTable")]
@@ -1819,7 +1820,7 @@ impl client::RequestValue for GooglePrivacyDlpV2beta1AnalyzeDataSourceRiskReques
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Bucket {
     /// Upper bound of the range, exclusive; type must match min.
     
@@ -1843,7 +1844,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Bucket {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1TableLocation {
     /// The zero-based index of the row where the finding is located.
     #[serde(rename="rowIndex")]
@@ -1860,7 +1861,7 @@ impl client::Part for GooglePrivacyDlpV2beta1TableLocation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1KAnonymityConfig {
     /// Optional message indicating that each distinct entity_id should not
     /// contribute to the k-anonymity count more than once per equivalence class.
@@ -1894,7 +1895,7 @@ impl client::Part for GooglePrivacyDlpV2beta1KAnonymityConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1DatastoreKey {
     /// Datastore entity key.
     #[serde(rename="entityKey")]
@@ -1910,7 +1911,7 @@ impl client::Part for GooglePrivacyDlpV2beta1DatastoreKey {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1RecordKey {
     /// no description provided
     #[serde(rename="cloudStorageKey")]
@@ -1934,7 +1935,7 @@ impl client::Part for GooglePrivacyDlpV2beta1RecordKey {}
 /// 
 /// * [deidentify content](ContentDeidentifyCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1DeidentifyContentRequest {
     /// Configuration for the inspector.
     #[serde(rename="inspectConfig")]
@@ -1958,7 +1959,7 @@ impl client::RequestValue for GooglePrivacyDlpV2beta1DeidentifyContentRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1InspectResult {
     /// If true, then this item might have more findings than were returned,
     /// and the findings returned are an arbitrary subset of all findings.
@@ -1983,7 +1984,7 @@ impl client::Part for GooglePrivacyDlpV2beta1InspectResult {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1QuasiIdField {
     /// no description provided
     
@@ -2002,7 +2003,7 @@ impl client::Part for GooglePrivacyDlpV2beta1QuasiIdField {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1ImageLocation {
     /// Height of the bounding box in pixels.
     
@@ -2026,7 +2027,7 @@ impl client::Part for GooglePrivacyDlpV2beta1ImageLocation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1ReplaceValueConfig {
     /// Value to replace it with.
     #[serde(rename="newValue")]
@@ -2042,7 +2043,7 @@ impl client::Part for GooglePrivacyDlpV2beta1ReplaceValueConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1ContentItem {
     /// Structured content for inspection.
     
@@ -2076,7 +2077,7 @@ impl client::Part for GooglePrivacyDlpV2beta1ContentItem {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CryptoReplaceFfxFpeConfig {
     /// The key used by the encryption algorithm. [required]
     #[serde(rename="cryptoKey")]
@@ -2165,7 +2166,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CryptoReplaceFfxFpeConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Color {
     /// The amount of red in the color as a value in the interval [0, 1].
     
@@ -2186,7 +2187,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Color {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Table {
     /// no description provided
     
@@ -2209,7 +2210,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Table {}
 /// 
 /// This type is not used in any activity, and only used as *part* of another schema.
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1SurrogateType { _never_set: Option<bool> }
 
 impl client::Part for GooglePrivacyDlpV2beta1SurrogateType {}
@@ -2224,7 +2225,7 @@ impl client::Part for GooglePrivacyDlpV2beta1SurrogateType {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CryptoKey {
     /// no description provided
     #[serde(rename="kmsWrapped")]
@@ -2247,7 +2248,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CryptoKey {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1InfoTypeLimit {
     /// Type of information the findings limit applies to. Only one limit per
     /// info_type should be provided. If InfoTypeLimit does not have an
@@ -2270,7 +2271,7 @@ impl client::Part for GooglePrivacyDlpV2beta1InfoTypeLimit {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Value {
     /// no description provided
     #[serde(rename="floatValue")]
@@ -2328,7 +2329,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Value {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1Condition {
     /// Field within the record this condition is evaluated against. [required]
     
@@ -2354,7 +2355,7 @@ impl client::Part for GooglePrivacyDlpV2beta1Condition {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1PartitionId {
     /// If not empty, the ID of the namespace to which the entities belong.
     #[serde(rename="namespaceId")]
@@ -2378,7 +2379,7 @@ impl client::Part for GooglePrivacyDlpV2beta1PartitionId {}
 /// 
 /// * [inspect content](ContentInspectCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1InspectContentResponse {
     /// Each content_item from the request has a result in this list, in the
     /// same order as the request.
@@ -2399,7 +2400,7 @@ impl client::ResponseResult for GooglePrivacyDlpV2beta1InspectContentResponse {}
 /// 
 /// * [redact content](ContentRedactCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1RedactContentRequest {
     /// The list of items to inspect. Up to 100 are allowed per request.
     
@@ -2427,7 +2428,7 @@ impl client::RequestValue for GooglePrivacyDlpV2beta1RedactContentRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1WordList {
     /// Words or phrases defining the dictionary. The dictionary must contain
     /// at least one phrase and every phrase must contain at least 2 characters
@@ -2444,7 +2445,7 @@ impl client::Part for GooglePrivacyDlpV2beta1WordList {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1FieldId {
     /// Name describing the field.
     #[serde(rename="columnName")]
@@ -2460,7 +2461,7 @@ impl client::Part for GooglePrivacyDlpV2beta1FieldId {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1TransformationSummary {
     /// The field transformation that was applied. This list will contain
     /// multiple only in the case of errors.
@@ -2499,7 +2500,7 @@ impl client::Part for GooglePrivacyDlpV2beta1TransformationSummary {}
 /// * [operations cancel risk analysis](RiskAnalysiOperationCancelCall) (request)
 /// * [operations cancel inspect](InspectOperationCancelCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleLongrunningCancelOperationRequest { _never_set: Option<bool> }
 
 impl client::RequestValue for GoogleLongrunningCancelOperationRequest {}
@@ -2515,7 +2516,7 @@ impl client::RequestValue for GoogleLongrunningCancelOperationRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CharacterMaskConfig {
     /// When masking a string, items in this list will be skipped when replacing.
     /// For example, if your string is 555-555-5555 and you ask us to skip `-` and
@@ -2554,7 +2555,7 @@ impl client::Part for GooglePrivacyDlpV2beta1CharacterMaskConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1TransientCryptoKey {
     /// Name of the key. [required]
     /// This is an arbitrary string used to differentiate different keys.
@@ -2579,7 +2580,7 @@ impl client::Part for GooglePrivacyDlpV2beta1TransientCryptoKey {}
 /// 
 /// * [operations create inspect](InspectOperationCreateCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1CreateInspectOperationRequest {
     /// Specification of the data set to process.
     #[serde(rename="storageConfig")]
@@ -2607,7 +2608,7 @@ impl client::RequestValue for GooglePrivacyDlpV2beta1CreateInspectOperationReque
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1TaggedField {
     /// A column can be tagged with a custom tag. In this case, the user must
     /// indicate an auxiliary table that contains statistical information on
@@ -2642,7 +2643,7 @@ impl client::Part for GooglePrivacyDlpV2beta1TaggedField {}
 /// 
 /// * [redact content](ContentRedactCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1RedactContentResponse {
     /// The redacted content.
     
@@ -2657,7 +2658,7 @@ impl client::ResponseResult for GooglePrivacyDlpV2beta1RedactContentResponse {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GooglePrivacyDlpV2beta1PropertyReference {
     /// The name of the property.
     /// If name includes "."s, it may be interpreted as a property name path.
@@ -2694,7 +2695,7 @@ impl client::Part for GooglePrivacyDlpV2beta1PropertyReference {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `deidentify(...)`, `inspect(...)` and `redact(...)`
 /// // to build up your call.
@@ -2789,7 +2790,7 @@ impl<'a, S> ContentMethods<'a, S> {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `info_types_list(...)` and `list(...)`
 /// // to build up your call.
@@ -2861,7 +2862,7 @@ impl<'a, S> RootCategoryMethods<'a, S> {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `operations_cancel(...)`, `operations_delete(...)`, `operations_get(...)` and `operations_list(...)`
 /// // to build up your call.
@@ -2977,7 +2978,7 @@ impl<'a, S> RiskAnalysiMethods<'a, S> {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `analyze(...)`
 /// // to build up your call.
@@ -3036,7 +3037,7 @@ impl<'a, S> DataSourceMethods<'a, S> {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `operations_cancel(...)`, `operations_create(...)`, `operations_delete(...)`, `operations_get(...)`, `operations_list(...)` and `results_findings_list(...)`
 /// // to build up your call.
@@ -3201,7 +3202,7 @@ impl<'a, S> InspectMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3477,7 +3478,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3753,7 +3754,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4027,7 +4028,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4130,6 +4131,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4305,7 +4307,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4399,6 +4401,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -4565,7 +4568,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -4858,7 +4861,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -4956,6 +4959,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -5122,7 +5126,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -5235,6 +5239,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -5424,7 +5429,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -5522,6 +5527,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -5690,7 +5696,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -5966,7 +5972,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -6241,7 +6247,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -6534,7 +6540,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -6632,6 +6638,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -6798,7 +6805,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -6911,6 +6918,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -7100,7 +7108,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -7198,6 +7206,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -7364,7 +7373,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = DLP::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -7477,6 +7486,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await

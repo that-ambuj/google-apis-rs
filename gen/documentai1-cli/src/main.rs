@@ -2003,6 +2003,8 @@ where
                     "document-schema.metadata.document-splitter" => Some(("documentSchema.metadata.documentSplitter", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     "document-schema.metadata.prefixed-naming-on-properties" => Some(("documentSchema.metadata.prefixedNamingOnProperties", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
                     "document-schema.metadata.skip-naming-validation" => Some(("documentSchema.metadata.skipNamingValidation", JsonTypeInfo { jtype: JsonType::Boolean, ctype: ComplexType::Pod })),
+                    "foundation-model-tuning-options.learning-rate-multiplier" => Some(("foundationModelTuningOptions.learningRateMultiplier", JsonTypeInfo { jtype: JsonType::Float, ctype: ComplexType::Pod })),
+                    "foundation-model-tuning-options.train-steps" => Some(("foundationModelTuningOptions.trainSteps", JsonTypeInfo { jtype: JsonType::Int, ctype: ComplexType::Pod })),
                     "input-data.test-documents.gcs-prefix.gcs-uri-prefix" => Some(("inputData.testDocuments.gcsPrefix.gcsUriPrefix", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "input-data.training-documents.gcs-prefix.gcs-uri-prefix" => Some(("inputData.trainingDocuments.gcsPrefix.gcsUriPrefix", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "processor-version.create-time" => Some(("processorVersion.createTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -2046,7 +2048,7 @@ where
                     "processor-version.name" => Some(("processorVersion.name", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "processor-version.state" => Some(("processorVersion.state", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["aggregate-metrics", "aggregate-metrics-exact", "base-processor-version", "create-time", "custom-document-extraction-options", "deprecation-info", "deprecation-time", "description", "display-name", "document-allow-multiple-labels", "document-schema", "document-splitter", "evaluation", "f1-score", "false-negatives-count", "false-positives-count", "gcs-prefix", "gcs-uri-prefix", "google-managed", "ground-truth-document-count", "ground-truth-occurrences-count", "input-data", "kms-key-name", "kms-key-version-name", "latest-evaluation", "metadata", "model-type", "name", "operation", "precision", "predicted-document-count", "predicted-occurrences-count", "prefixed-naming-on-properties", "processor-version", "recall", "replacement-processor-version", "skip-naming-validation", "state", "test-documents", "total-documents-count", "training-documents", "training-method", "true-positives-count"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["aggregate-metrics", "aggregate-metrics-exact", "base-processor-version", "create-time", "custom-document-extraction-options", "deprecation-info", "deprecation-time", "description", "display-name", "document-allow-multiple-labels", "document-schema", "document-splitter", "evaluation", "f1-score", "false-negatives-count", "false-positives-count", "foundation-model-tuning-options", "gcs-prefix", "gcs-uri-prefix", "google-managed", "ground-truth-document-count", "ground-truth-occurrences-count", "input-data", "kms-key-name", "kms-key-version-name", "latest-evaluation", "learning-rate-multiplier", "metadata", "model-type", "name", "operation", "precision", "predicted-document-count", "predicted-occurrences-count", "prefixed-naming-on-properties", "processor-version", "recall", "replacement-processor-version", "skip-naming-validation", "state", "test-documents", "total-documents-count", "train-steps", "training-documents", "training-method", "true-positives-count"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -3284,7 +3286,7 @@ async fn main() {
     
     let mut app = App::new("documentai1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240223")
+           .version("5.0.5+20240417")
            .about("Service to parse structured information from unstructured or semi-structured documents using state-of-the-art Google AI such as natural language, computer vision, translation, and AutoML.")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_documentai1_cli")
            .arg(Arg::with_name("url")
@@ -3348,6 +3350,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

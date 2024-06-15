@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -77,7 +78,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = PlayIntegrity::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = PlayIntegrity::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -125,7 +126,7 @@ impl<'a, S> PlayIntegrity<S> {
         PlayIntegrity {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://playintegrity.googleapis.com/".to_string(),
             _root_url: "https://playintegrity.googleapis.com/".to_string(),
         }
@@ -136,7 +137,7 @@ impl<'a, S> PlayIntegrity<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -169,7 +170,7 @@ impl<'a, S> PlayIntegrity<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AccountActivity {
     /// Required. Indicates the activity level of the account.
     #[serde(rename="activityLevel")]
@@ -185,7 +186,7 @@ impl client::Part for AccountActivity {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AccountDetails {
     /// (Restricted Access) Details about the account activity for the user in the scope.
     #[serde(rename="accountActivity")]
@@ -205,7 +206,7 @@ impl client::Part for AccountDetails {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AppAccessRiskVerdict {
     /// Required. App access risk verdict related to apps that are not installed by Google Play, and are not preloaded on the system image by the device manufacturer.
     #[serde(rename="otherApps")]
@@ -225,7 +226,7 @@ impl client::Part for AppAccessRiskVerdict {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AppIntegrity {
     /// Required. Details about the app recognition verdict
     #[serde(rename="appRecognitionVerdict")]
@@ -258,7 +259,7 @@ impl client::Part for AppIntegrity {}
 /// 
 /// * [decode integrity token](MethodDecodeIntegrityTokenCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DecodeIntegrityTokenRequest {
     /// Encoded integrity token.
     #[serde(rename="integrityToken")]
@@ -278,7 +279,7 @@ impl client::RequestValue for DecodeIntegrityTokenRequest {}
 /// 
 /// * [decode integrity token](MethodDecodeIntegrityTokenCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DecodeIntegrityTokenResponse {
     /// Plain token payload generated from the decoded integrity token.
     #[serde(rename="tokenPayloadExternal")]
@@ -289,12 +290,12 @@ pub struct DecodeIntegrityTokenResponse {
 impl client::ResponseResult for DecodeIntegrityTokenResponse {}
 
 
-/// Contains the device attestation information.
+/// Contains the device attestation information. Next tag: 4
 /// 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeviceIntegrity {
     /// Details about the integrity of the device the app is running on.
     #[serde(rename="deviceRecognitionVerdict")]
@@ -314,7 +315,7 @@ impl client::Part for DeviceIntegrity {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EnvironmentDetails {
     /// The evaluation of the App Access Risk verdicts.
     #[serde(rename="appAccessRiskVerdict")]
@@ -334,7 +335,7 @@ impl client::Part for EnvironmentDetails {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RecentDeviceActivity {
     /// Required. Indicates the activity level of the device.
     #[serde(rename="deviceActivityLevel")]
@@ -350,7 +351,7 @@ impl client::Part for RecentDeviceActivity {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct RequestDetails {
     /// Nonce that was provided in the request (which is base64 web-safe no-wrap).
     
@@ -378,7 +379,7 @@ impl client::Part for RequestDetails {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TestingDetails {
     /// Required. Indicates that the information contained in this payload is a testing response that is statically overridden for a tester.
     #[serde(rename="isTestingResponse")]
@@ -394,7 +395,7 @@ impl client::Part for TestingDetails {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TokenPayloadExternal {
     /// Required. Details about the Play Store account.
     #[serde(rename="accountDetails")]
@@ -451,7 +452,7 @@ impl client::Part for TokenPayloadExternal {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = PlayIntegrity::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = PlayIntegrity::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `decode_integrity_token(...)`
 /// // to build up your call.
@@ -519,7 +520,7 @@ impl<'a, S> MethodMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PlayIntegrity::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PlayIntegrity::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !

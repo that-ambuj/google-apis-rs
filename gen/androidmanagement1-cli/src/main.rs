@@ -3070,12 +3070,12 @@ async fn main() {
                      Some(false)),
                   ]),
             ("migration-tokens-create",
-                    Some(r##"Creates a migration token, to migrate an existing device from being managed by the EMM's Device Policy Controller (DPC) to being managed by the Android Management API."##),
+                    Some(r##"Creates a migration token, to migrate an existing device from being managed by the EMM's Device Policy Controller (DPC) to being managed by the Android Management API. See the guide (https://developers.google.com/android/management/dpc-migration) for more details."##),
                     "Details at http://byron.github.io/google-apis-rs/google_androidmanagement1_cli/enterprises_migration-tokens-create",
                   vec![
                     (Some(r##"parent"##),
                      None,
-                     Some(r##"Required. The enterprise in which this migration token will be created. Format: enterprises/{enterprise}"##),
+                     Some(r##"Required. The enterprise in which this migration token is created. This must be the same enterprise which already manages the device in the Play EMM API. Format: enterprises/{enterprise}"##),
                      Some(true),
                      Some(false)),
         
@@ -3463,7 +3463,7 @@ async fn main() {
     
     let mut app = App::new("androidmanagement1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240221")
+           .version("5.0.5+20240416")
            .about("The Android Management API provides remote enterprise management of Android devices and apps.")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_androidmanagement1_cli")
            .arg(Arg::with_name("url")
@@ -3527,6 +3527,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

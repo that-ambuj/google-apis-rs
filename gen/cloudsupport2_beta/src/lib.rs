@@ -2,7 +2,7 @@
 // This file was generated automatically from 'src/generator/templates/api/lib.rs.mako'
 // DO NOT EDIT !
 
-//! This documentation was generated from *Cloud Support* crate version *5.0.4+20240304*, where *20240304* is the exact revision of the *cloudsupport:v2beta* schema built by the [mako](http://www.makotemplates.org/) code generator *v5.0.4*.
+//! This documentation was generated from *Cloud Support* crate version *5.0.5+20240416*, where *20240416* is the exact revision of the *cloudsupport:v2beta* schema built by the [mako](http://www.makotemplates.org/) code generator *v5.0.5*.
 //! 
 //! Everything else about the *Cloud Support* *v2_beta* API can be found at the
 //! [official documentation site](https://cloud.google.com/support/docs/apis).
@@ -112,15 +112,14 @@
 //!         secret,
 //!         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 //!     ).build().await.unwrap();
-//! let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+//! let mut hub = CloudSupport::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 //! // You can configure optional parameters by calling the respective setters at will, and
 //! // execute the final call using `doit()`.
 //! // Values shown here are possibly random and not representative !
 //! let result = hub.cases().list("parent")
-//!              .product_line("sanctus")
-//!              .page_token("sed")
-//!              .page_size(-2)
-//!              .filter("takimata")
+//!              .page_token("At")
+//!              .page_size(-8)
+//!              .filter("sed")
 //!              .doit().await;
 //! 
 //! match result {

@@ -2147,7 +2147,7 @@ async fn main() {
                   vec![
                     (Some(r##"name"##),
                      None,
-                     Some(r##"Required. `projects/{project_id}/locations/{location_id}/instances/{instance_id}`. The resource name of the instance, in the format"##),
+                     Some(r##"Required. The resource name of the instance, in the format `projects/{project_id}/locations/{location_id}/instances/{instance_id}`."##),
                      Some(true),
                      Some(false)),
         
@@ -2413,7 +2413,7 @@ async fn main() {
     
     let mut app = App::new("file1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240126")
+           .version("5.0.5+20240307")
            .about("The Cloud Filestore API is used for creating and managing cloud file servers.")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_file1_cli")
            .arg(Arg::with_name("url")
@@ -2477,6 +2477,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -77,7 +78,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -125,7 +126,7 @@ impl<'a, S> Document<S> {
         Document {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://documentai.googleapis.com/".to_string(),
             _root_url: "https://documentai.googleapis.com/".to_string(),
         }
@@ -136,7 +137,7 @@ impl<'a, S> Document<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -169,7 +170,7 @@ impl<'a, S> Document<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2AutoMlParams {
     /// Resource name of the AutoML model. Format: `projects/{project-id}/locations/{location-id}/models/{model-id}`.
     
@@ -184,7 +185,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2AutoMlParams {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2Barcode {
     /// Format of a barcode. The supported formats are: - `CODE_128`: Code 128 type. - `CODE_39`: Code 39 type. - `CODE_93`: Code 93 type. - `CODABAR`: Codabar type. - `DATA_MATRIX`: 2D Data Matrix type. - `ITF`: ITF type. - `EAN_13`: EAN-13 type. - `EAN_8`: EAN-8 type. - `QR_CODE`: 2D QR code type. - `UPC_A`: UPC-A type. - `UPC_E`: UPC-E type. - `PDF417`: PDF417 type. - `AZTEC`: 2D Aztec code type. - `DATABAR`: GS1 DataBar code type.
     
@@ -212,7 +213,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2Barcode {}
 /// * [documents batch process projects](ProjectDocumentBatchProcesCall) (request)
 /// * [locations documents batch process projects](ProjectLocationDocumentBatchProcesCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2BatchProcessDocumentsRequest {
     /// Required. Individual requests for each document.
     
@@ -227,7 +228,7 @@ impl client::RequestValue for GoogleCloudDocumentaiV1beta2BatchProcessDocumentsR
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2BoundingPoly {
     /// The bounding polygon normalized vertices.
     #[serde(rename="normalizedVertices")]
@@ -251,7 +252,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2BoundingPoly {}
 /// * [documents process projects](ProjectDocumentProcesCall) (response)
 /// * [locations documents process projects](ProjectLocationDocumentProcesCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2Document {
     /// Optional. Inline document content, represented as a stream of bytes. Note: As with all `bytes` fields, protobuffers use a pure binary representation, whereas JSON representations use base64.
     
@@ -308,7 +309,7 @@ impl client::ResponseResult for GoogleCloudDocumentaiV1beta2Document {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentEntity {
     /// Optional. Confidence of detected Schema entity. Range `[0, 1]`.
     
@@ -359,7 +360,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentEntity {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentEntityNormalizedValue {
     /// Postal address. See also: https://github.com/googleapis/googleapis/blob/master/google/type/postal_address.proto
     #[serde(rename="addressValue")]
@@ -402,7 +403,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentEntityNormalizedValue 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentEntityRelation {
     /// Object entity id.
     #[serde(rename="objectId")]
@@ -425,7 +426,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentEntityRelation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentLabel {
     /// Label is generated AutoML model. This field stores the full resource name of the AutoML model. Format: `projects/{project-id}/locations/{location-id}/models/{model-id}`
     #[serde(rename="automlModel")]
@@ -447,7 +448,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentLabel {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPage {
     /// A list of visually detected text blocks on the page. A block has a set of lines (collected into paragraphs) that have a common line-spacing and orientation.
     
@@ -516,7 +517,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPage {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageAnchor {
     /// One or more references to visual page elements
     #[serde(rename="pageRefs")]
@@ -532,7 +533,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageAnchor {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageAnchorPageRef {
     /// Optional. Identifies the bounding polygon of a layout element on the page. If `layout_type` is set, the bounding polygon must be exactly the same to the layout element it's referring to.
     #[serde(rename="boundingPoly")]
@@ -563,7 +564,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageAnchorPageRef {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageBlock {
     /// A list of detected languages together with confidence.
     #[serde(rename="detectedLanguages")]
@@ -585,7 +586,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageBlock {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageDetectedBarcode {
     /// Detailed barcode information of the DetectedBarcode.
     
@@ -603,7 +604,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageDetectedBarcode {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageDetectedLanguage {
     /// Confidence of detected language. Range `[0, 1]`.
     
@@ -622,7 +623,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageDetectedLanguage {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageDimension {
     /// Page height.
     
@@ -643,7 +644,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageDimension {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageFormField {
     /// Created for Labeling UI to export key text. If corrections were made to the text identified by the `field_name.text_anchor`, this field will contain the correction.
     #[serde(rename="correctedKeyText")]
@@ -686,7 +687,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageFormField {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageImage {
     /// Raw byte content of the image.
     
@@ -712,7 +713,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageImage {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageImageQualityScores {
     /// A list of detected defects.
     #[serde(rename="detectedDefects")]
@@ -732,7 +733,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageImageQualityScores
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageImageQualityScoresDetectedDefect {
     /// Confidence of detected defect. Range `[0, 1]` where `1` indicates strong confidence that the defect exists.
     
@@ -751,7 +752,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageImageQualityScores
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageLayout {
     /// The bounding polygon for the Layout.
     #[serde(rename="boundingPoly")]
@@ -777,7 +778,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageLayout {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageLine {
     /// A list of detected languages together with confidence.
     #[serde(rename="detectedLanguages")]
@@ -799,7 +800,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageLine {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageMatrix {
     /// Number of columns in the matrix.
     
@@ -825,7 +826,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageMatrix {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageParagraph {
     /// A list of detected languages together with confidence.
     #[serde(rename="detectedLanguages")]
@@ -847,7 +848,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageParagraph {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageSymbol {
     /// A list of detected languages together with confidence.
     #[serde(rename="detectedLanguages")]
@@ -866,7 +867,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageSymbol {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageTable {
     /// Body rows of the table.
     #[serde(rename="bodyRows")]
@@ -896,7 +897,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageTable {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageTableTableCell {
     /// How many columns this cell spans.
     #[serde(rename="colSpan")]
@@ -923,7 +924,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageTableTableCell {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageTableTableRow {
     /// Cells that make up this row.
     
@@ -938,7 +939,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageTableTableRow {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageToken {
     /// Detected break at the end of a Token.
     #[serde(rename="detectedBreak")]
@@ -968,7 +969,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageToken {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageTokenDetectedBreak {
     /// Detected break type.
     #[serde(rename="type")]
@@ -984,7 +985,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageTokenDetectedBreak
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageTokenStyleInfo {
     /// Color of the background.
     #[serde(rename="backgroundColor")]
@@ -1019,16 +1020,16 @@ pub struct GoogleCloudDocumentaiV1beta2DocumentPageTokenStyleInfo {
     #[serde(rename="pixelFontSize")]
     
     pub pixel_font_size: Option<f64>,
-    /// Whether the text is in small caps.
+    /// Whether the text is in small caps. This feature is not supported yet.
     
     pub smallcaps: Option<bool>,
-    /// Whether the text is strikethrough.
+    /// Whether the text is strikethrough. This feature is not supported yet.
     
     pub strikeout: Option<bool>,
-    /// Whether the text is a subscript.
+    /// Whether the text is a subscript. This feature is not supported yet.
     
     pub subscript: Option<bool>,
-    /// Whether the text is a superscript.
+    /// Whether the text is a superscript. This feature is not supported yet.
     
     pub superscript: Option<bool>,
     /// Color of the text.
@@ -1048,7 +1049,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageTokenStyleInfo {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentPageVisualElement {
     /// A list of detected languages together with confidence.
     #[serde(rename="detectedLanguages")]
@@ -1071,7 +1072,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentPageVisualElement {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentProvenance {
     /// The Id of this operation. Needs to be unique within the scope of the revision.
     
@@ -1096,7 +1097,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentProvenance {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentProvenanceParent {
     /// The id of the parent provenance.
     
@@ -1117,7 +1118,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentProvenanceParent {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentRevision {
     /// If the change was made by a person specify the name or id of that person.
     
@@ -1153,7 +1154,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentRevision {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentRevisionHumanReview {
     /// Human review state. e.g. `requested`, `succeeded`, `rejected`.
     
@@ -1172,7 +1173,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentRevisionHumanReview {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentShardInfo {
     /// Total number of shards.
     #[serde(rename="shardCount")]
@@ -1199,7 +1200,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentShardInfo {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentStyle {
     /// Text background color.
     #[serde(rename="backgroundColor")]
@@ -1242,7 +1243,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentStyle {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentStyleFontSize {
     /// Font size for the text.
     
@@ -1260,7 +1261,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentStyleFontSize {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentTextAnchor {
     /// Contains the content of the text span so that users do not have to look it up in the text_segments. It is always populated for formFields.
     
@@ -1279,7 +1280,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentTextAnchor {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentTextAnchorTextSegment {
     /// TextSegment half open end UTF-8 char index in the Document.text.
     #[serde(rename="endIndex")]
@@ -1301,7 +1302,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentTextAnchorTextSegment 
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2DocumentTextChange {
     /// The text that replaces the text identified in the `text_anchor`.
     #[serde(rename="changedText")]
@@ -1324,7 +1325,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2DocumentTextChange {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2EntityExtractionParams {
     /// Whether to enable entity extraction.
     
@@ -1343,7 +1344,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2EntityExtractionParams {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2FormExtractionParams {
     /// Whether to enable form extraction.
     
@@ -1366,7 +1367,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2FormExtractionParams {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2GcsDestination {
     /// no description provided
     
@@ -1381,7 +1382,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2GcsDestination {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2GcsSource {
     /// no description provided
     
@@ -1396,7 +1397,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2GcsSource {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2InputConfig {
     /// Content in bytes, represented as a stream of bytes. Note: As with all `bytes` fields, proto buffer messages use a pure binary representation, whereas JSON representations use base64. This field only works for synchronous ProcessDocument method.
     
@@ -1420,7 +1421,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2InputConfig {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2KeyValuePairHint {
     /// The key text for the hint.
     
@@ -1439,7 +1440,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2KeyValuePairHint {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2NormalizedVertex {
     /// X coordinate.
     
@@ -1457,7 +1458,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2NormalizedVertex {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2OcrParams {
     /// List of languages to use for OCR. In most cases, an empty value yields the best results since it enables automatic language detection. For languages based on the Latin alphabet, setting `language_hints` is not needed. In rare cases, when the language of the text in the image is known, setting a hint will help get better results (although it will be a significant hindrance if the hint is wrong). Document processing returns an error if one or more of the specified languages is not one of the supported languages.
     #[serde(rename="languageHints")]
@@ -1473,7 +1474,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2OcrParams {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2OutputConfig {
     /// The Google Cloud Storage location to write the output to.
     #[serde(rename="gcsDestination")]
@@ -1498,7 +1499,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2OutputConfig {}
 /// * [documents process projects](ProjectDocumentProcesCall) (request)
 /// * [locations documents process projects](ProjectLocationDocumentProcesCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2ProcessDocumentRequest {
     /// Controls AutoML model prediction behavior. AutoMlParams cannot be used together with other Params.
     #[serde(rename="automlParams")]
@@ -1545,7 +1546,7 @@ impl client::RequestValue for GoogleCloudDocumentaiV1beta2ProcessDocumentRequest
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2TableBoundHint {
     /// Bounding box hint for a table on this page. The coordinates must be normalized to [0,1] and the bounding box must be an axis-aligned rectangle.
     #[serde(rename="boundingBox")]
@@ -1565,7 +1566,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2TableBoundHint {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2TableExtractionParams {
     /// Whether to enable table extraction.
     
@@ -1592,7 +1593,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2TableExtractionParams {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudDocumentaiV1beta2Vertex {
     /// X coordinate.
     
@@ -1617,7 +1618,7 @@ impl client::Part for GoogleCloudDocumentaiV1beta2Vertex {}
 /// * [locations operations get projects](ProjectLocationOperationGetCall) (response)
 /// * [operations get projects](ProjectOperationGetCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleLongrunningOperation {
     /// If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.
     
@@ -1644,7 +1645,7 @@ impl client::ResponseResult for GoogleLongrunningOperation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleRpcStatus {
     /// The status code, which should be an enum value of google.rpc.Code.
     
@@ -1665,7 +1666,7 @@ impl client::Part for GoogleRpcStatus {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeColor {
     /// The fraction of this color that should be applied to the pixel. That is, the final pixel color is defined by the equation: `pixel color = alpha * (this color) + (1.0 - alpha) * (background color)` This means that a value of 1.0 corresponds to a solid color, whereas a value of 0.0 corresponds to a completely transparent color. This uses a wrapper message rather than a simple float scalar so that it is possible to distinguish between a default value and the value being unset. If omitted, this color object is rendered as a solid color (as if the alpha value had been explicitly given a value of 1.0).
     
@@ -1689,7 +1690,7 @@ impl client::Part for GoogleTypeColor {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeDate {
     /// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.
     
@@ -1710,7 +1711,7 @@ impl client::Part for GoogleTypeDate {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeDateTime {
     /// Optional. Day of month. Must be from 1 to 31 and valid for the year and month, or 0 if specifying a datetime without a day.
     
@@ -1752,7 +1753,7 @@ impl client::Part for GoogleTypeDateTime {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeMoney {
     /// The three-letter currency code defined in ISO 4217.
     #[serde(rename="currencyCode")]
@@ -1775,7 +1776,7 @@ impl client::Part for GoogleTypeMoney {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypePostalAddress {
     /// Unstructured address lines describing the lower levels of an address. Because values in address_lines do not have type information and may sometimes contain multiple values in a single field (e.g. "Austin, TX"), it is important that the line order is clear. The order of address lines should be "envelope order" for the country/region of the address. In places where this can vary (e.g. Japan), address_language is used to make it explicit (e.g. "ja" for large-to-small ordering and "ja-Latn" or "en" for small-to-large). This way, the most specific line of an address can be selected based on the language. The minimum permitted structural representation of an address consists of a region_code with all remaining information placed in the address_lines. It would be possible to format such an address very approximately without geocoding, but no semantic reasoning could be made about any of the address components until it was at least partially resolved. Creating an address only containing a region_code and address_lines, and then geocoding is the recommended way to handle completely unstructured addresses (as opposed to guessing which parts of the address should be localities or administrative areas).
     #[serde(rename="addressLines")]
@@ -1826,7 +1827,7 @@ impl client::Part for GoogleTypePostalAddress {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeTimeZone {
     /// IANA Time Zone Database time zone, e.g. "America/New_York".
     
@@ -1865,7 +1866,7 @@ impl client::Part for GoogleTypeTimeZone {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `documents_batch_process(...)`, `documents_process(...)`, `locations_documents_batch_process(...)`, `locations_documents_process(...)`, `locations_operations_get(...)` and `operations_get(...)`
 /// // to build up your call.
@@ -2024,7 +2025,7 @@ impl<'a, S> ProjectMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2316,7 +2317,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2608,7 +2609,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2900,7 +2901,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3191,7 +3192,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -3289,6 +3290,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -3453,7 +3455,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = Document::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -3551,6 +3553,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await

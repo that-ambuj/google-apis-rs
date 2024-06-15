@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -55,7 +56,7 @@ use crate::{client, client::GetToken, client::serde_with};
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -103,7 +104,7 @@ impl<'a, S> PlayableLocations<S> {
         PlayableLocations {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://playablelocations.googleapis.com/".to_string(),
             _root_url: "https://playablelocations.googleapis.com/".to_string(),
         }
@@ -114,7 +115,7 @@ impl<'a, S> PlayableLocations<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -147,7 +148,7 @@ impl<'a, S> PlayableLocations<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3Impression {
     /// An arbitrary, developer-defined type identifier for each type of game
     /// object used in your game.
@@ -184,7 +185,7 @@ impl client::Part for GoogleMapsPlayablelocationsV3Impression {}
 /// 
 /// * [log impressions](MethodLogImpressionCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3LogImpressionsRequest {
     /// Required. Information about the client device. For example, device model and
     /// operating system.
@@ -220,7 +221,7 @@ impl client::RequestValue for GoogleMapsPlayablelocationsV3LogImpressionsRequest
 /// 
 /// * [log impressions](MethodLogImpressionCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3LogImpressionsResponse { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleMapsPlayablelocationsV3LogImpressionsResponse {}
@@ -235,7 +236,7 @@ impl client::ResponseResult for GoogleMapsPlayablelocationsV3LogImpressionsRespo
 /// 
 /// * [log player reports](MethodLogPlayerReportCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3LogPlayerReportsRequest {
     /// Required. Information about the client device (for example, device model and
     /// operating system).
@@ -274,7 +275,7 @@ impl client::RequestValue for GoogleMapsPlayablelocationsV3LogPlayerReportsReque
 /// 
 /// * [log player reports](MethodLogPlayerReportCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3LogPlayerReportsResponse { _never_set: Option<bool> }
 
 impl client::ResponseResult for GoogleMapsPlayablelocationsV3LogPlayerReportsResponse {}
@@ -286,7 +287,7 @@ impl client::ResponseResult for GoogleMapsPlayablelocationsV3LogPlayerReportsRes
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3PlayerReport {
     /// Language code (in BCP-47 format) indicating the language of the freeform
     /// description provided in `reason_details`. Examples are "en", "en-US" or
@@ -317,7 +318,7 @@ impl client::Part for GoogleMapsPlayablelocationsV3PlayerReport {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3SampleAreaFilter {
     /// Required. The S2 cell ID of the area you want. This must be between cell level 11 and
     /// 14 (inclusive).
@@ -346,7 +347,7 @@ impl client::Part for GoogleMapsPlayablelocationsV3SampleAreaFilter {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3SampleCriterion {
     /// Specifies which `PlayableLocation` fields are returned.
     /// 
@@ -389,7 +390,7 @@ impl client::Part for GoogleMapsPlayablelocationsV3SampleCriterion {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3SampleFilter {
     /// Restricts the set of playable locations to just the
     /// [types](https://developers.google.com/maps/documentation/gaming/tt/types) that you want.
@@ -418,7 +419,7 @@ impl client::Part for GoogleMapsPlayablelocationsV3SampleFilter {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3SamplePlayableLocation {
     /// Required. The latitude and longitude associated with the center of the playable
     /// location.
@@ -462,7 +463,7 @@ impl client::Part for GoogleMapsPlayablelocationsV3SamplePlayableLocation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3SamplePlayableLocationList {
     /// A list of playable locations for this game object type.
     
@@ -506,7 +507,7 @@ impl client::Part for GoogleMapsPlayablelocationsV3SamplePlayableLocationList {}
 /// 
 /// * [sample playable locations](MethodSamplePlayableLocationCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3SamplePlayableLocationsRequest {
     /// Required. Specifies the area to search within for playable locations.
     #[serde(rename="areaFilter")]
@@ -532,7 +533,7 @@ impl client::RequestValue for GoogleMapsPlayablelocationsV3SamplePlayableLocatio
 /// 
 /// * [sample playable locations](MethodSamplePlayableLocationCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3SamplePlayableLocationsResponse {
     /// Each PlayableLocation object corresponds to a game_object_type specified
     /// in the request.
@@ -559,7 +560,7 @@ impl client::ResponseResult for GoogleMapsPlayablelocationsV3SamplePlayableLocat
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsPlayablelocationsV3SampleSpacingOptions {
     /// Required. The minimum spacing between any two playable locations, measured in meters.
     /// The minimum value is 30.
@@ -625,7 +626,7 @@ impl client::Part for GoogleMapsPlayablelocationsV3SampleSpacingOptions {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleMapsUnityClientInfo {
     /// API client name and version. For example, the SDK calling the API. The
     /// exact format is up to the client.
@@ -681,7 +682,7 @@ impl client::Part for GoogleMapsUnityClientInfo {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeLatLng {
     /// The latitude in degrees. It must be in the range [-90.0, +90.0].
     
@@ -720,7 +721,7 @@ impl client::Part for GoogleTypeLatLng {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `log_impressions(...)`, `log_player_reports(...)` and `sample_playable_locations(...)`
 /// // to build up your call.
@@ -832,7 +833,7 @@ impl<'a, S> MethodMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -1063,7 +1064,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -1295,7 +1296,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PlayableLocations::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !

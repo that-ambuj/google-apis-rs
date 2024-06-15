@@ -25,7 +25,7 @@ Find the source code [on github](https://github.com/Byron/google-apis-rs/tree/ma
 
 # Usage
 
-This documentation was generated from the *Bigtable Admin* API at revision *20240221*. The CLI is at version *5.0.4*.
+This documentation was generated from the *Bigtable Admin* API at revision *20240331*. The CLI is at version *5.0.5*.
 
 ```bash
 bigtableadmin2 [options]
@@ -61,6 +61,14 @@ bigtableadmin2 [options]
                 instances-list <parent> [-p <v>]... [-o <out>]
                 instances-partial-update-instance <name> (-r <kv>)... [-p <v>]... [-o <out>]
                 instances-set-iam-policy <resource> (-r <kv>)... [-p <v>]... [-o <out>]
+                instances-tables-authorized-views-create <parent> (-r <kv>)... [-p <v>]... [-o <out>]
+                instances-tables-authorized-views-delete <name> [-p <v>]... [-o <out>]
+                instances-tables-authorized-views-get <name> [-p <v>]... [-o <out>]
+                instances-tables-authorized-views-get-iam-policy <resource> (-r <kv>)... [-p <v>]... [-o <out>]
+                instances-tables-authorized-views-list <parent> [-p <v>]... [-o <out>]
+                instances-tables-authorized-views-patch <name> (-r <kv>)... [-p <v>]... [-o <out>]
+                instances-tables-authorized-views-set-iam-policy <resource> (-r <kv>)... [-p <v>]... [-o <out>]
+                instances-tables-authorized-views-test-iam-permissions <resource> (-r <kv>)... [-p <v>]... [-o <out>]
                 instances-tables-check-consistency <name> (-r <kv>)... [-p <v>]... [-o <out>]
                 instances-tables-create <parent> (-r <kv>)... [-p <v>]... [-o <out>]
                 instances-tables-delete <name> [-p <v>]... [-o <out>]

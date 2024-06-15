@@ -380,6 +380,7 @@ where
                     "processing-state" => Some(("processingState", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "products" => Some(("products", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Vec })),
                     "promotions" => Some(("promotions", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Vec })),
+                    "purchase-time" => Some(("purchaseTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "redirect-uri" => Some(("redirectUri", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "renewal-time" => Some(("renewalTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "service-location.postal-code" => Some(("serviceLocation.postalCode", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -389,7 +390,7 @@ where
                     "upgrade-downgrade-details.billing-cycle-spec" => Some(("upgradeDowngradeDetails.billingCycleSpec", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "upgrade-downgrade-details.previous-subscription-id" => Some(("upgradeDowngradeDetails.previousSubscriptionId", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["billing-cycle-spec", "cancellation-details", "create-time", "cycle-end-time", "end-user-entitled", "free-trial-end-time", "name", "partner-user-token", "postal-code", "previous-subscription-id", "processing-state", "products", "promotions", "reason", "redirect-uri", "region-code", "renewal-time", "service-location", "state", "update-time", "upgrade-downgrade-details"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["billing-cycle-spec", "cancellation-details", "create-time", "cycle-end-time", "end-user-entitled", "free-trial-end-time", "name", "partner-user-token", "postal-code", "previous-subscription-id", "processing-state", "products", "promotions", "purchase-time", "reason", "redirect-uri", "region-code", "renewal-time", "service-location", "state", "update-time", "upgrade-downgrade-details"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -710,6 +711,7 @@ where
                     "processing-state" => Some(("processingState", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "products" => Some(("products", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Vec })),
                     "promotions" => Some(("promotions", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Vec })),
+                    "purchase-time" => Some(("purchaseTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "redirect-uri" => Some(("redirectUri", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "renewal-time" => Some(("renewalTime", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "service-location.postal-code" => Some(("serviceLocation.postalCode", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
@@ -719,7 +721,7 @@ where
                     "upgrade-downgrade-details.billing-cycle-spec" => Some(("upgradeDowngradeDetails.billingCycleSpec", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     "upgrade-downgrade-details.previous-subscription-id" => Some(("upgradeDowngradeDetails.previousSubscriptionId", JsonTypeInfo { jtype: JsonType::String, ctype: ComplexType::Pod })),
                     _ => {
-                        let suggestion = FieldCursor::did_you_mean(key, &vec!["billing-cycle-spec", "cancellation-details", "create-time", "cycle-end-time", "end-user-entitled", "free-trial-end-time", "name", "partner-user-token", "postal-code", "previous-subscription-id", "processing-state", "products", "promotions", "reason", "redirect-uri", "region-code", "renewal-time", "service-location", "state", "update-time", "upgrade-downgrade-details"]);
+                        let suggestion = FieldCursor::did_you_mean(key, &vec!["billing-cycle-spec", "cancellation-details", "create-time", "cycle-end-time", "end-user-entitled", "free-trial-end-time", "name", "partner-user-token", "postal-code", "previous-subscription-id", "processing-state", "products", "promotions", "purchase-time", "reason", "redirect-uri", "region-code", "renewal-time", "service-location", "state", "update-time", "upgrade-downgrade-details"]);
                         err.issues.push(CLIError::Field(FieldError::Unknown(temp_cursor.to_string(), suggestion, value.map(|v| v.to_string()))));
                         None
                     }
@@ -1252,7 +1254,7 @@ async fn main() {
     
     let mut app = App::new("paymentsresellersubscription1")
            .author("Sebastian Thiel <byronimo@gmail.com>")
-           .version("5.0.4+20240303")
+           .version("5.0.5+20240418")
            .about("")
            .after_help("All documentation details can be found at http://byron.github.io/google-apis-rs/google_paymentsresellersubscription1_cli")
            .arg(Arg::with_name("url")
@@ -1316,6 +1318,7 @@ async fn main() {
 
     let debug = matches.is_present("adebug");
     let connector = hyper_rustls::HttpsConnectorBuilder::new().with_native_roots()
+        .unwrap()
         .https_or_http()
         .enable_http1()
         .build();

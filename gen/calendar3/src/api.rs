@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -228,7 +229,7 @@ impl<'a, S> CalendarHub<S> {
 /// 
 /// * [list acl](AclListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Acl {
     /// ETag of the collection.
     
@@ -264,7 +265,7 @@ impl client::ResponseResult for Acl {}
 /// * [patch acl](AclPatchCall) (request|response)
 /// * [update acl](AclUpdateCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AclRule {
     /// ETag of the resource.
     
@@ -306,7 +307,7 @@ impl client::ResponseResult for AclRule {}
 /// * [patch calendars](CalendarPatchCall) (request|response)
 /// * [update calendars](CalendarUpdateCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Calendar {
     /// Conferencing properties for this calendar, for example what types of conferences are allowed.
     #[serde(rename="conferenceProperties")]
@@ -350,7 +351,7 @@ impl client::ResponseResult for Calendar {}
 /// 
 /// * [list calendar list](CalendarListListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CalendarList {
     /// ETag of the collection.
     
@@ -386,7 +387,7 @@ impl client::ResponseResult for CalendarList {}
 /// * [patch calendar list](CalendarListPatchCall) (request|response)
 /// * [update calendar list](CalendarListUpdateCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CalendarListEntry {
     /// The effective access role that the authenticated user has on the calendar. Read-only. Possible values are:  
     /// - "freeBusyReader" - Provides read access to free/busy information. 
@@ -469,7 +470,7 @@ impl client::ResponseResult for CalendarListEntry {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CalendarNotification {
     /// The method used to deliver the notification. The possible value is:  
     /// - "email" - Notifications are sent via email.  
@@ -504,7 +505,7 @@ impl client::Part for CalendarNotification {}
 /// * [watch events](EventWatchCall) (request|response)
 /// * [watch settings](SettingWatchCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Channel {
     /// The address where notifications are delivered for this channel.
     
@@ -552,7 +553,7 @@ impl client::ResponseResult for Channel {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ColorDefinition {
     /// The background color associated with this color definition.
     
@@ -574,7 +575,7 @@ impl client::Part for ColorDefinition {}
 /// 
 /// * [get colors](ColorGetCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Colors {
     /// A global palette of calendar colors, mapping from the color ID to its definition. A calendarListEntry resource refers to one of these color IDs in its colorId field. Read-only.
     
@@ -598,7 +599,7 @@ impl client::ResponseResult for Colors {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ConferenceData {
     /// The ID of the conference.
     /// Can be used by developers to keep track of conferences, should not be displayed to users.
@@ -649,7 +650,7 @@ impl client::Part for ConferenceData {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ConferenceParameters {
     /// Additional add-on specific data.
     #[serde(rename="addOnParameters")]
@@ -665,7 +666,7 @@ impl client::Part for ConferenceParameters {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ConferenceParametersAddOnParameters {
     /// no description provided
     
@@ -680,7 +681,7 @@ impl client::Part for ConferenceParametersAddOnParameters {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ConferenceProperties {
     /// The types of conference solutions that are supported for this calendar.
     /// The possible values are:  
@@ -700,7 +701,7 @@ impl client::Part for ConferenceProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ConferenceRequestStatus {
     /// The current status of the conference create request. Read-only.
     /// The possible values are:  
@@ -720,7 +721,7 @@ impl client::Part for ConferenceRequestStatus {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ConferenceSolution {
     /// The user-visible icon for this solution.
     #[serde(rename="iconUri")]
@@ -742,7 +743,7 @@ impl client::Part for ConferenceSolution {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ConferenceSolutionKey {
     /// The conference solution type.
     /// If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
@@ -764,7 +765,7 @@ impl client::Part for ConferenceSolutionKey {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CreateConferenceRequest {
     /// The conference solution, such as Hangouts or Google Meet.
     #[serde(rename="conferenceSolutionKey")]
@@ -788,7 +789,7 @@ impl client::Part for CreateConferenceRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EntryPoint {
     /// The access code to access the conference. The maximum length is 128 characters.
     /// When creating new conference data, populate only the subset of {meetingCode, accessCode, passcode, password, pin} fields that match the terminology that the conference provider uses. Only the populated fields should be displayed.
@@ -861,7 +862,7 @@ impl client::Part for EntryPoint {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Error {
     /// Domain, or broad category, of the error.
     
@@ -897,7 +898,7 @@ impl client::Part for Error {}
 /// * [update events](EventUpdateCall) (request|response)
 /// * [watch events](EventWatchCall) (none)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Event {
     /// Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
     #[serde(rename="anyoneCanAddSelf")]
@@ -1083,7 +1084,7 @@ impl client::ResponseResult for Event {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventAttachment {
     /// ID of the attached file. Read-only.
     /// For Google Drive files, this is the ID of the corresponding Files resource entry in the Drive API.
@@ -1117,7 +1118,7 @@ impl client::Part for EventAttachment {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventAttendee {
     /// Number of additional guests. Optional. The default is 0.
     #[serde(rename="additionalGuests")]
@@ -1168,7 +1169,7 @@ impl client::Part for EventAttendee {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventDateTime {
     /// The date, in the format "yyyy-mm-dd", if this is an all-day event.
     
@@ -1191,7 +1192,7 @@ impl client::Part for EventDateTime {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventFocusTimeProperties {
     /// Whether to decline meeting invitations which overlap Focus Time events. Valid values are declineNone, meaning that no meeting invitations are declined; declineAllConflictingInvitations, meaning that all conflicting meeting invitations that conflict with the event are declined; and declineOnlyNewConflictingInvitations, meaning that only new conflicting meeting invitations which arrive while the Focus Time event is present are to be declined.
     #[serde(rename="autoDeclineMode")]
@@ -1215,7 +1216,7 @@ impl client::Part for EventFocusTimeProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventOutOfOfficeProperties {
     /// Whether to decline meeting invitations which overlap Out of office events. Valid values are declineNone, meaning that no meeting invitations are declined; declineAllConflictingInvitations, meaning that all conflicting meeting invitations that conflict with the event are declined; and declineOnlyNewConflictingInvitations, meaning that only new conflicting meeting invitations which arrive while the Out of office event is present are to be declined.
     #[serde(rename="autoDeclineMode")]
@@ -1235,7 +1236,7 @@ impl client::Part for EventOutOfOfficeProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventReminder {
     /// The method used by this reminder. Possible values are:  
     /// - "email" - Reminders are sent via email. 
@@ -1257,7 +1258,7 @@ impl client::Part for EventReminder {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventWorkingLocationProperties {
     /// If present, specifies that the user is working from a custom location.
     #[serde(rename="customLocation")]
@@ -1294,7 +1295,7 @@ impl client::Part for EventWorkingLocationProperties {}
 /// * [instances events](EventInstanceCall) (response)
 /// * [list events](EventListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Events {
     /// The user's access role for this calendar. Read-only. Possible values are:  
     /// - "none" - The user has no access. 
@@ -1349,7 +1350,7 @@ impl client::ResponseResult for Events {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct FreeBusyCalendar {
     /// List of time ranges during which this calendar should be regarded as busy.
     
@@ -1367,7 +1368,7 @@ impl client::Part for FreeBusyCalendar {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct FreeBusyGroup {
     /// List of calendars' identifiers within a group.
     
@@ -1389,7 +1390,7 @@ impl client::Part for FreeBusyGroup {}
 /// 
 /// * [query freebusy](FreebusyQueryCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct FreeBusyRequest {
     /// Maximal number of calendars for which FreeBusy information is to be provided. Optional. Maximum value is 50.
     #[serde(rename="calendarExpansionMax")]
@@ -1424,7 +1425,7 @@ impl client::RequestValue for FreeBusyRequest {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct FreeBusyRequestItem {
     /// The identifier of a calendar or a group.
     
@@ -1443,7 +1444,7 @@ impl client::Part for FreeBusyRequestItem {}
 /// 
 /// * [query freebusy](FreebusyQueryCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct FreeBusyResponse {
     /// List of free/busy information for calendars.
     
@@ -1478,7 +1479,7 @@ impl client::ResponseResult for FreeBusyResponse {}
 /// * [list settings](SettingListCall) (none)
 /// * [watch settings](SettingWatchCall) (none)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Setting {
     /// ETag of the resource.
     
@@ -1507,7 +1508,7 @@ impl client::ResponseResult for Setting {}
 /// 
 /// * [list settings](SettingListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct Settings {
     /// Etag of the collection.
     
@@ -1536,7 +1537,7 @@ impl client::ResponseResult for Settings {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct TimePeriod {
     /// The (exclusive) end of the time period.
     
@@ -1554,7 +1555,7 @@ impl client::Part for TimePeriod {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct AclRuleScope {
     /// The type of the scope. Possible values are:  
     /// - "default" - The public scope. This is the default value. 
@@ -1578,7 +1579,7 @@ impl client::Part for AclRuleScope {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct CalendarListEntryNotificationSettings {
     /// The list of notifications set for this calendar.
     
@@ -1594,7 +1595,7 @@ impl client::Part for CalendarListEntryNotificationSettings {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventCreator {
     /// The creator's name, if available.
     #[serde(rename="displayName")]
@@ -1621,7 +1622,7 @@ impl client::Part for EventCreator {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventExtendedProperties {
     /// Properties that are private to the copy of the event that appears on this calendar.
     
@@ -1640,7 +1641,7 @@ impl client::Part for EventExtendedProperties {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventGadget {
     /// The gadget's display mode. Deprecated. Possible values are:  
     /// - "icon" - The gadget displays next to the event's title in the calendar view. 
@@ -1681,7 +1682,7 @@ impl client::Part for EventGadget {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventOrganizer {
     /// The organizer's name, if available.
     #[serde(rename="displayName")]
@@ -1708,7 +1709,7 @@ impl client::Part for EventOrganizer {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventReminders {
     /// If the event doesn't use the default reminders, this lists the reminders specific to the event, or, if not set, indicates that no reminders are set for this event. The maximum number of override reminders is 5.
     
@@ -1728,7 +1729,7 @@ impl client::Part for EventReminders {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventSource {
     /// Title of the source; for example a title of a web page or an email subject.
     
@@ -1747,7 +1748,7 @@ impl client::Part for EventSource {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventWorkingLocationPropertiesCustomLocation {
     /// An optional extra label for additional information.
     
@@ -1763,7 +1764,7 @@ impl client::Part for EventWorkingLocationPropertiesCustomLocation {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct EventWorkingLocationPropertiesOfficeLocation {
     /// An optional building identifier. This should reference a building ID in the organization's Resources database.
     #[serde(rename="buildingId")]

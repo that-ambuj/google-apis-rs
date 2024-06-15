@@ -1,4 +1,4 @@
-site_name: Bigtable Admin v5.0.4+20240221
+site_name: Bigtable Admin v5.0.5+20240331
 site_url: http://byron.github.io/google-apis-rs/google-bigtableadmin2-cli
 site_description: A complete library to interact with Bigtable Admin (protocol v2)
 
@@ -41,6 +41,14 @@ nav:
     - 'Instances List': 'projects_instances-list.md'
     - 'Instances Partial Update Instance': 'projects_instances-partial-update-instance.md'
     - 'Instances Set Iam Policy': 'projects_instances-set-iam-policy.md'
+    - 'Instances Tables Authorized Views Create': 'projects_instances-tables-authorized-views-create.md'
+    - 'Instances Tables Authorized Views Delete': 'projects_instances-tables-authorized-views-delete.md'
+    - 'Instances Tables Authorized Views Get': 'projects_instances-tables-authorized-views-get.md'
+    - 'Instances Tables Authorized Views Get Iam Policy': 'projects_instances-tables-authorized-views-get-iam-policy.md'
+    - 'Instances Tables Authorized Views List': 'projects_instances-tables-authorized-views-list.md'
+    - 'Instances Tables Authorized Views Patch': 'projects_instances-tables-authorized-views-patch.md'
+    - 'Instances Tables Authorized Views Set Iam Policy': 'projects_instances-tables-authorized-views-set-iam-policy.md'
+    - 'Instances Tables Authorized Views Test Iam Permissions': 'projects_instances-tables-authorized-views-test-iam-permissions.md'
     - 'Instances Tables Check Consistency': 'projects_instances-tables-check-consistency.md'
     - 'Instances Tables Create': 'projects_instances-tables-create.md'
     - 'Instances Tables Delete': 'projects_instances-tables-delete.md'
@@ -61,5 +69,5 @@ nav:
 
 theme: readthedocs
 
-copyright: Copyright &copy; 2015-2020, `Sebastian Thiel`
+copyright: Copyright &copy; 2015–2024, `Sebastian Thiel`
 

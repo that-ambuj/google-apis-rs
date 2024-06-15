@@ -25,10 +25,12 @@ Find the source code [on github](https://github.com/Byron/google-apis-rs/tree/ma
 
 # Usage
 
-This documentation was generated from the *Artifact Registry* API at revision *20240213*. The CLI is at version *5.0.4*.
+This documentation was generated from the *Artifact Registry* API at revision *20240329*. The CLI is at version *5.0.5*.
 
 ```bash
 artifactregistry1 [options]
+        media
+                download <name> [-p <v>]... [-o <out>]
         projects
                 get-project-settings <name> [-p <v>]... [-o <out>]
                 locations-get <name> [-p <v>]... [-o <out>]
@@ -57,6 +59,7 @@ artifactregistry1 [options]
                 locations-repositories-packages-delete <name> [-p <v>]... [-o <out>]
                 locations-repositories-packages-get <name> [-p <v>]... [-o <out>]
                 locations-repositories-packages-list <parent> [-p <v>]... [-o <out>]
+                locations-repositories-packages-patch <name> (-r <kv>)... [-p <v>]... [-o <out>]
                 locations-repositories-packages-tags-create <parent> (-r <kv>)... [-p <v>]... [-o <out>]
                 locations-repositories-packages-tags-delete <name> [-p <v>]... [-o <out>]
                 locations-repositories-packages-tags-get <name> [-p <v>]... [-o <out>]

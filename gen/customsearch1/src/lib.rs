@@ -2,7 +2,7 @@
 // This file was generated automatically from 'src/generator/templates/api/lib.rs.mako'
 // DO NOT EDIT !
 
-//! This documentation was generated from *CustomSearch API* crate version *5.0.4+20240303*, where *20240303* is the exact revision of the *customsearch:v1* schema built by the [mako](http://www.makotemplates.org/) code generator *v5.0.4*.
+//! This documentation was generated from *CustomSearch API* crate version *5.0.5+20240418*, where *20240418* is the exact revision of the *customsearch:v1* schema built by the [mako](http://www.makotemplates.org/) code generator *v5.0.5*.
 //! 
 //! Everything else about the *CustomSearch API* *v1* API can be found at the
 //! [official documentation site](https://developers.google.com/custom-search/v1/introduction).
@@ -92,42 +92,43 @@
 //!         secret,
 //!         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 //!     ).build().await.unwrap();
-//! let mut hub = CustomSearchAPI::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+//! let mut hub = CustomSearchAPI::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 //! // You can configure optional parameters by calling the respective setters at will, and
 //! // execute the final call using `doit()`.
 //! // Values shown here are possibly random and not representative !
 //! let result = hub.cse().siterestrict_list()
-//!              .start(94)
-//!              .sort("gubergren")
-//!              .site_search_filter("ea")
-//!              .site_search("dolor")
-//!              .search_type("Lorem")
-//!              .safe("eos")
-//!              .rights("labore")
+//!              .start(39)
+//!              .sort("ea")
+//!              .snippet_length(-99)
+//!              .site_search_filter("Lorem")
+//!              .site_search("eos")
+//!              .search_type("labore")
+//!              .safe("sed")
+//!              .rights("duo")
 //!              .related_site("sed")
-//!              .q("duo")
-//!              .or_terms("sed")
-//!              .num(-61)
-//!              .lr("Stet")
-//!              .low_range("kasd")
+//!              .q("no")
+//!              .or_terms("Stet")
+//!              .num(-13)
+//!              .lr("et")
+//!              .low_range("sed")
 //!              .link_site("et")
-//!              .img_type("sed")
-//!              .img_size("et")
-//!              .img_dominant_color("et")
-//!              .img_color_type("vero")
-//!              .hq("erat")
-//!              .hl("sed")
-//!              .high_range("duo")
-//!              .googlehost("dolore")
-//!              .gl("et")
-//!              .filter("voluptua.")
-//!              .file_type("amet.")
-//!              .exclude_terms("consetetur")
-//!              .exact_terms("diam")
-//!              .date_restrict("dolor")
-//!              .cx("et")
-//!              .cr("et")
-//!              .c2coff("sadipscing")
+//!              .img_type("et")
+//!              .img_size("vero")
+//!              .img_dominant_color("erat")
+//!              .img_color_type("sed")
+//!              .hq("duo")
+//!              .hl("dolore")
+//!              .high_range("et")
+//!              .googlehost("voluptua.")
+//!              .gl("amet.")
+//!              .filter("consetetur")
+//!              .file_type("diam")
+//!              .exclude_terms("dolor")
+//!              .exact_terms("et")
+//!              .date_restrict("et")
+//!              .cx("sadipscing")
+//!              .cr("Stet")
+//!              .c2coff("dolor")
 //!              .doit().await;
 //! 
 //! match result {

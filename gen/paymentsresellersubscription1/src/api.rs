@@ -13,6 +13,7 @@ use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::time::sleep;
 use tower_service;
 use serde::{Serialize, Deserialize};
+use utoipa::ToSchema;
 
 use crate::{client, client::GetToken, client::serde_with};
 
@@ -77,7 +78,7 @@ impl Default for Scope {
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -126,7 +127,7 @@ impl<'a, S> PaymentsResellerSubscription<S> {
         PaymentsResellerSubscription {
             client,
             auth: Box::new(auth),
-            _user_agent: "google-api-rust-client/5.0.4".to_string(),
+            _user_agent: "google-api-rust-client/5.0.5".to_string(),
             _base_url: "https://paymentsresellersubscription.googleapis.com/".to_string(),
             _root_url: "https://paymentsresellersubscription.googleapis.com/".to_string(),
         }
@@ -137,7 +138,7 @@ impl<'a, S> PaymentsResellerSubscription<S> {
     }
 
     /// Set the user-agent header field to use in all requests to the server.
-    /// It defaults to `google-api-rust-client/5.0.4`.
+    /// It defaults to `google-api-rust-client/5.0.5`.
     ///
     /// Returns the previously set user-agent.
     pub fn user_agent(&mut self, agent_name: String) -> String {
@@ -170,7 +171,7 @@ impl<'a, S> PaymentsResellerSubscription<S> {
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1Amount {
     /// Required. Amount in micros (1_000_000 micros = 1 currency unit)
     #[serde(rename="amountMicros")]
@@ -195,7 +196,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1Amount {}
 /// 
 /// * [subscriptions cancel partners](PartnerSubscriptionCancelCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1CancelSubscriptionRequest {
     /// Optional. If true, Google will cancel the subscription immediately, and may or may not (based on the contract) issue a prorated refund for the remainder of the billing cycle. Otherwise, Google defers the cancelation at renewal_time, and will not issue a refund.
     #[serde(rename="cancelImmediately")]
@@ -219,7 +220,7 @@ impl client::RequestValue for GoogleCloudPaymentsResellerSubscriptionV1CancelSub
 /// 
 /// * [subscriptions cancel partners](PartnerSubscriptionCancelCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1CancelSubscriptionResponse {
     /// The cancelled subscription resource.
     
@@ -234,7 +235,7 @@ impl client::ResponseResult for GoogleCloudPaymentsResellerSubscriptionV1CancelS
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1Duration {
     /// number of duration units to be included.
     
@@ -256,7 +257,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1Duration {}
 /// 
 /// * [subscriptions entitle partners](PartnerSubscriptionEntitleCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1EntitleSubscriptionRequest {
     /// Optional. The line items to be entitled. If unspecified, all line items will be entitled.
     #[serde(rename="lineItemEntitlementDetails")]
@@ -272,7 +273,7 @@ impl client::RequestValue for GoogleCloudPaymentsResellerSubscriptionV1EntitleSu
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1EntitleSubscriptionRequestLineItemEntitlementDetails {
     /// Required. The index of the line item to be entitled.
     #[serde(rename="lineItemIndex")]
@@ -295,7 +296,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1EntitleSubscripti
 /// 
 /// * [subscriptions entitle partners](PartnerSubscriptionEntitleCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1EntitleSubscriptionResponse {
     /// The subscription that has user linked to it.
     
@@ -314,7 +315,7 @@ impl client::ResponseResult for GoogleCloudPaymentsResellerSubscriptionV1Entitle
 /// 
 /// * [subscriptions extend partners](PartnerSubscriptionExtendCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionRequest {
     /// Required. Specifies details of the extension. Currently, the duration of the extension must be exactly one billing cycle of the original subscription.
     
@@ -337,7 +338,7 @@ impl client::RequestValue for GoogleCloudPaymentsResellerSubscriptionV1ExtendSub
 /// 
 /// * [subscriptions extend partners](PartnerSubscriptionExtendCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionResponse {
     /// The time at which the subscription is expected to be extended, in ISO 8061 format. UTC timezone. Example, "cycleEndTime":"2019-08-31T17:28:54.564Z"
     #[serde(rename="cycleEndTime")]
@@ -361,7 +362,7 @@ impl client::ResponseResult for GoogleCloudPaymentsResellerSubscriptionV1ExtendS
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1Extension {
     /// Required. Specifies the period of access the subscription should grant.
     
@@ -384,7 +385,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1Extension {}
 /// 
 /// * [promotions find eligible partners](PartnerPromotionFindEligibleCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1FindEligiblePromotionsRequest {
     /// Optional. Specifies the filters for the promotion results. The syntax is defined in https://google.aip.dev/160 with the following caveats: 1. Only the following features are supported: - Logical operator `AND` - Comparison operator `=` (no wildcards `*`) - Traversal operator `.` - Has operator `:` (no wildcards `*`) 2. Only the following fields are supported: - `applicableProducts` - `regionCodes` - `youtubePayload.partnerEligibilityId` - `youtubePayload.postalCode` 3. Unless explicitly mentioned above, other features are not supported. Example: `applicableProducts:partners/partner1/products/product1 AND regionCodes:US AND youtubePayload.postalCode=94043 AND youtubePayload.partnerEligibilityId=eligibility-id`
     
@@ -411,7 +412,7 @@ impl client::RequestValue for GoogleCloudPaymentsResellerSubscriptionV1FindEligi
 /// 
 /// * [promotions find eligible partners](PartnerPromotionFindEligibleCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1FindEligiblePromotionsResponse {
     /// A token, which can be sent as `page_token` to retrieve the next page. If this field is empty, there are no subsequent pages.
     #[serde(rename="nextPageToken")]
@@ -430,7 +431,7 @@ impl client::ResponseResult for GoogleCloudPaymentsResellerSubscriptionV1FindEli
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1FiniteBillingCycleDetails {
     /// Required. The number of a subscription line item billing cycles after which billing will stop automatically.
     #[serde(rename="billingCycleCountLimit")]
@@ -447,7 +448,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1FiniteBillingCycl
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1GoogleOnePayload {
     /// Campaign attributed to sales of this subscription.
     
@@ -477,7 +478,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1GoogleOnePayload 
 /// 
 /// * [products list partners](PartnerProductListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1ListProductsResponse {
     /// A token, which can be sent as `page_token` to retrieve the next page. If this field is empty, there are no subsequent pages.
     #[serde(rename="nextPageToken")]
@@ -500,7 +501,7 @@ impl client::ResponseResult for GoogleCloudPaymentsResellerSubscriptionV1ListPro
 /// 
 /// * [promotions list partners](PartnerPromotionListCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1ListPromotionsResponse {
     /// A token, which can be sent as `page_token` to retrieve the next page. If this field is empty, there are no subsequent pages.
     #[serde(rename="nextPageToken")]
@@ -519,7 +520,7 @@ impl client::ResponseResult for GoogleCloudPaymentsResellerSubscriptionV1ListPro
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1Location {
     /// The postal code this location refers to. Ex. "94043"
     #[serde(rename="postalCode")]
@@ -539,7 +540,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1Location {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1Product {
     /// Output only. Output Only. Specifies the details for a bundle product.
     #[serde(rename="bundleDetails")]
@@ -581,7 +582,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1Product {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1ProductBundleDetailsBundleElement {
     /// Required. Output only. Product resource name that identifies the bundle element. The format is 'partners/{partner_id}/products/{product_id}'.
     
@@ -596,7 +597,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1ProductBundleDeta
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1ProductPayload {
     /// Product-specific payloads. Payload specific to Google One products.
     #[serde(rename="googleOnePayload")]
@@ -616,7 +617,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1ProductPayload {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1ProductPriceConfig {
     /// Output only. The price in the region.
     
@@ -635,7 +636,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1ProductPriceConfi
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1Promotion {
     /// Output only. The product ids this promotion can be applied to.
     #[serde(rename="applicableProducts")]
@@ -681,7 +682,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1Promotion {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetails {
     /// Output only. Specifies the introductory pricing periods.
     #[serde(rename="introductoryPricingSpecs")]
@@ -697,7 +698,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1PromotionIntroduc
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetailsIntroductoryPricingSpec {
     /// Output only. The discount amount. The value is positive.
     #[serde(rename="discountAmount")]
@@ -726,7 +727,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1PromotionIntroduc
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1ServicePeriod {
     /// Optional. The end time of the service period. Time is exclusive.
     #[serde(rename="endTime")]
@@ -752,7 +753,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1ServicePeriod {}
 /// * [subscriptions get partners](PartnerSubscriptionGetCall) (response)
 /// * [subscriptions provision partners](PartnerSubscriptionProvisionCall) (request|response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1Subscription {
     /// Output only. Describes the details of a cancelled subscription. Only applicable to subscription of state `STATE_CANCELLED`.
     #[serde(rename="cancellationDetails")]
@@ -799,6 +800,10 @@ pub struct GoogleCloudPaymentsResellerSubscriptionV1Subscription {
     /// Optional. Deprecated: consider using the top-level `promotion_specs` as the input. Optional. Resource name that identifies one or more promotions that can be applied on the product. A typical promotion for a subscription is Free trial. The format will be 'partners/{partner_id}/promotions/{promotion_id}'.
     
     pub promotions: Option<Vec<String>>,
+    /// Optional. The timestamp when the user transaction was made with the Partner. Specify for the case of "bundle with choice", and it must be before the provision_time (when the user makes a selection).
+    #[serde(rename="purchaseTime")]
+    
+    pub purchase_time: Option<client::chrono::DateTime<client::chrono::offset::Utc>>,
     /// Output only. The place where partners should redirect the end-user to after creation. This field might also be populated when creation failed. However, Partners should always prepare a default URL to redirect the user in case this field is empty.
     #[serde(rename="redirectUri")]
     
@@ -833,7 +838,7 @@ impl client::ResponseResult for GoogleCloudPaymentsResellerSubscriptionV1Subscri
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1SubscriptionCancellationDetails {
     /// Output only. The reason of the cancellation.
     
@@ -848,7 +853,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1SubscriptionCance
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItem {
     /// Output only. The price of the product/service in this line item. The amount could be the wholesale price, or it can include a cost of sale based on the contract.
     
@@ -872,7 +877,7 @@ pub struct GoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItem {
     #[serde(rename="lineItemIndex")]
     
     pub line_item_index: Option<i32>,
-    /// Optional. The promotions applied on the line item. It can be: - a free trial promotion, which overrides the subscription-level free trial promotion. - an introductory pricing promotion. When used as input in Create or Provision API, specify its resource name only.
+    /// Optional. The promotions applied on the line item. It can be: - an introductory pricing promotion. - a free trial promotion. This feature is not enabled. If used, the request will be rejected. When used as input in Create or Provision API, specify its resource name only.
     #[serde(rename="lineItemPromotionSpecs")]
     
     pub line_item_promotion_specs: Option<Vec<GoogleCloudPaymentsResellerSubscriptionV1SubscriptionPromotionSpec>>,
@@ -904,7 +909,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineI
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItemBundleDetailsBundleElementDetails {
     /// Output only. Product resource name that identifies the bundle element. The format is 'partners/{partner_id}/products/{product_id}'.
     
@@ -923,7 +928,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineI
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineItemOneTimeRecurrenceDetails {
     /// Output only. The service period of the ONE_TIME line item.
     #[serde(rename="servicePeriod")]
@@ -939,7 +944,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1SubscriptionLineI
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1SubscriptionPromotionSpec {
     /// Output only. The duration of the free trial if the promotion is of type FREE_TRIAL.
     #[serde(rename="freeTrialDuration")]
@@ -966,7 +971,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1SubscriptionPromo
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1SubscriptionUpgradeDowngradeDetails {
     /// Required. Specifies the billing cycle spec for the new upgraded/downgraded subscription.
     #[serde(rename="billingCycleSpec")]
@@ -990,7 +995,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1SubscriptionUpgra
 /// 
 /// * [subscriptions undo cancel partners](PartnerSubscriptionUndoCancelCall) (request)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1UndoCancelSubscriptionRequest { _never_set: Option<bool> }
 
 impl client::RequestValue for GoogleCloudPaymentsResellerSubscriptionV1UndoCancelSubscriptionRequest {}
@@ -1005,7 +1010,7 @@ impl client::RequestValue for GoogleCloudPaymentsResellerSubscriptionV1UndoCance
 /// 
 /// * [subscriptions undo cancel partners](PartnerSubscriptionUndoCancelCall) (response)
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1UndoCancelSubscriptionResponse {
     /// The updated subscription resource.
     
@@ -1020,7 +1025,7 @@ impl client::ResponseResult for GoogleCloudPaymentsResellerSubscriptionV1UndoCan
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleCloudPaymentsResellerSubscriptionV1YoutubePayload {
     /// Output only. The access expiration time for this line item.
     #[serde(rename="accessEndTime")]
@@ -1044,7 +1049,7 @@ impl client::Part for GoogleCloudPaymentsResellerSubscriptionV1YoutubePayload {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct GoogleTypeLocalizedText {
     /// The text's BCP-47 language code, such as "en-US" or "sr-Latn". For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
     #[serde(rename="languageCode")]
@@ -1063,7 +1068,7 @@ impl client::Part for GoogleTypeLocalizedText {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct ProductBundleDetails {
     /// The individual products that are included in the bundle.
     #[serde(rename="bundleElements")]
@@ -1083,7 +1088,7 @@ impl client::Part for ProductBundleDetails {}
 /// This type is not used in any activity, and only used as *part* of another schema.
 /// 
 #[serde_with::serde_as(crate = "::client::serde_with")]
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct SubscriptionLineItemBundleDetails {
     /// Output only. The details for each element in the hard bundle.
     #[serde(rename="bundleElementDetails")]
@@ -1120,7 +1125,7 @@ impl client::Part for SubscriptionLineItemBundleDetails {}
 ///         secret,
 ///         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 ///     ).build().await.unwrap();
-/// let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // Usually you wouldn't bind this to a variable, but keep calling *CallBuilders*
 /// // like `products_list(...)`, `promotions_find_eligible(...)`, `promotions_list(...)`, `subscriptions_cancel(...)`, `subscriptions_create(...)`, `subscriptions_entitle(...)`, `subscriptions_extend(...)`, `subscriptions_get(...)`, `subscriptions_provision(...)` and `subscriptions_undo_cancel(...)`
 /// // to build up your call.
@@ -1360,7 +1365,7 @@ impl<'a, S> PartnerMethods<'a, S> {
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -1473,6 +1478,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -1659,7 +1665,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -1950,7 +1956,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -2063,6 +2069,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -2249,7 +2256,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2541,7 +2548,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -2845,7 +2852,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3137,7 +3144,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3428,7 +3435,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // You can configure optional parameters by calling the respective setters at will, and
 /// // execute the final call using `doit()`.
 /// // Values shown here are possibly random and not representative !
@@ -3526,6 +3533,7 @@ where
 
 
                         let request = req_builder
+                        .header(CONTENT_LENGTH, 0_u64)
                         .body(hyper::body::Body::empty());
 
                 client.request(request.unwrap()).await
@@ -3691,7 +3699,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
@@ -3995,7 +4003,7 @@ where
 /// #         secret,
 /// #         oauth2::InstalledFlowReturnMethod::HTTPRedirect,
 /// #     ).build().await.unwrap();
-/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().build()), auth);
+/// # let mut hub = PaymentsResellerSubscription::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().unwrap().https_or_http().enable_http1().build()), auth);
 /// // As the method needs a request, you would usually fill it with the desired information
 /// // into the respective structure. Some of the parts shown here might not be applicable !
 /// // Values shown here are possibly random and not representative !
